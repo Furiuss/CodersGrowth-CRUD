@@ -17,5 +17,16 @@ namespace PetMais
 		public SexoPet Sexo { get; set; }
 		public DateTime DataDeNascimento { get; set; }
 		public DateTime DataDeCadastro { get; set; }
+
+		public Pet(int id, string nome, string tipo, string cor, SexoPet sexo, DateTime dataDeNascimento, DateTime dataDeCadastro)
+		{
+			Id = id;
+			Nome = nome;
+			Tipo = tipo;
+			Cor = cor;
+			Sexo = sexo;
+			DataDeNascimento = dataDeNascimento;
+			DataDeCadastro = dataDeCadastro;
+		}
 	}
 }
