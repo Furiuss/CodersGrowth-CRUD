@@ -16,6 +16,6 @@ namespace PetMais
 		public string Cor { get; set;}
 		public SexoPet Sexo { get; set; }
 		public DateTime DataDeNascimento { get; set; }
-		public DateTime HorarioDeCadastro { get; set; }
+		public DateTime DataDeCadastro { get; set; }
 	}
 }
