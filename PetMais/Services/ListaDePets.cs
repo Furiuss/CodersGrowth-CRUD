@@ -10,39 +10,30 @@ namespace PetMais.Services
 {
 	public class ListaDePets
 	{
-		public static List<Pet> ListaPets { get; set; }
+		public List<Pet> Pets { get; set; } = new List<Pet>();
 
-		public ListaDePets()
+		public void AdicionarPet(Pet pet)
 		{
-			ListaPets = new List<Pet>();
-			ListaPets.AddRange(new[]
+			int idGerado;
+			DateTime dataDeCadastro = DateTime.Now;
+
+			if (Pets.Count > 0)
 			{
-				new Pet(1, "Junior", "Gato", "Preto", SexoPet.MASCULINO, DateTime.Now, DateTime.Now),
-				new Pet(2, "Max", "Cachorro", "Caramelo", SexoPet.MASCULINO, DateTime.Now, DateTime.Now),
-				new Pet(3, "Judite", "Cachorro", "Branco", SexoPet.FEMININO, DateTime.Now, DateTime.Now)
-			});
-		}
-
-		public static void AddPet(Pet pet)
-		{
-			int id = gerarId();
-			DateTime dataAtual = DateTime.Now;
-
-			ListaPets.AddRange(new[]
+				idGerado = Pets.Max(pet => pet.Id) + 1;		
+			}
+			else
 			{
-				new Pet(id, pet.Nome, pet.Cor, pet.Tipo, pet.Sexo, pet.DataDeNascimento, dataAtual)
-			}); ;
+				idGerado = 1;
+			}
+
+			pet.Id = idGerado;
+			pet.DataDeCadastro = dataDeCadastro;
+			Pets.Add(pet);
 		}
 
-		private static int gerarId()
+		public List<Pet> MostrarPets()
 		{
-			var lastItem = ListaPets.Last();
-			return lastItem.Id + 1;
-		}
-
-		public static List<Pet> mostrarListaDePets()
-		{
-			return ListaPets;
+			return Pets;
 		}
 	}
 }

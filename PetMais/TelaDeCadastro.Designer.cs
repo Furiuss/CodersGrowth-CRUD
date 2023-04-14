@@ -33,13 +33,13 @@
 			label3 = new Label();
 			label4 = new Label();
 			label5 = new Label();
-			textBox1 = new TextBox();
-			textBox2 = new TextBox();
-			textBox3 = new TextBox();
-			comboBox1 = new ComboBox();
-			dateTimePicker1 = new DateTimePicker();
+			txtNome = new TextBox();
+			txtTipo = new TextBox();
+			txtCor = new TextBox();
+			cbSexo = new ComboBox();
+			dtpNascimento = new DateTimePicker();
 			btnCadastrar = new Button();
-			button1 = new Button();
+			btnCancelar = new Button();
 			SuspendLayout();
 			// 
 			// label1
@@ -87,43 +87,42 @@
 			label5.TabIndex = 4;
 			label5.Text = "Data de Nascimento";
 			// 
-			// textBox1
+			// txtNome
 			// 
-			textBox1.Location = new Point(12, 51);
-			textBox1.Name = "textBox1";
-			textBox1.Size = new Size(333, 23);
-			textBox1.TabIndex = 5;
+			txtNome.Location = new Point(12, 51);
+			txtNome.Name = "txtNome";
+			txtNome.Size = new Size(333, 23);
+			txtNome.TabIndex = 5;
 			// 
-			// textBox2
+			// txtTipo
 			// 
-			textBox2.Location = new Point(12, 106);
-			textBox2.Name = "textBox2";
-			textBox2.Size = new Size(333, 23);
-			textBox2.TabIndex = 6;
+			txtTipo.Location = new Point(12, 106);
+			txtTipo.Name = "txtTipo";
+			txtTipo.Size = new Size(333, 23);
+			txtTipo.TabIndex = 6;
 			// 
-			// textBox3
+			// txtCor
 			// 
-			textBox3.Location = new Point(12, 172);
-			textBox3.Name = "textBox3";
-			textBox3.Size = new Size(147, 23);
-			textBox3.TabIndex = 7;
+			txtCor.Location = new Point(12, 172);
+			txtCor.Name = "txtCor";
+			txtCor.Size = new Size(147, 23);
+			txtCor.TabIndex = 7;
 			// 
-			// comboBox1
+			// cbSexo
 			// 
-			comboBox1.FormattingEnabled = true;
-			comboBox1.Items.AddRange(new object[] { "Macho", "Fêmea" });
-			comboBox1.Location = new Point(202, 172);
-			comboBox1.Name = "comboBox1";
-			comboBox1.Size = new Size(143, 23);
-			comboBox1.TabIndex = 10;
-			comboBox1.Text = "Escolha o sexo do pet";
+			cbSexo.FormattingEnabled = true;
+			cbSexo.Location = new Point(202, 172);
+			cbSexo.Name = "cbSexo";
+			cbSexo.Size = new Size(143, 23);
+			cbSexo.TabIndex = 10;
+			cbSexo.Text = "Escolha o sexo do pet";
 			// 
-			// dateTimePicker1
+			// dtpNascimento
 			// 
-			dateTimePicker1.Location = new Point(12, 235);
-			dateTimePicker1.Name = "dateTimePicker1";
-			dateTimePicker1.Size = new Size(262, 23);
-			dateTimePicker1.TabIndex = 11;
+			dtpNascimento.Location = new Point(12, 235);
+			dtpNascimento.Name = "dtpNascimento";
+			dtpNascimento.Size = new Size(262, 23);
+			dtpNascimento.TabIndex = 11;
 			// 
 			// btnCadastrar
 			// 
@@ -142,34 +141,34 @@
 			btnCadastrar.UseVisualStyleBackColor = false;
 			btnCadastrar.Click += btnCadastrar_Click;
 			// 
-			// button1
+			// btnCancelar
 			// 
-			button1.BackColor = Color.Red;
-			button1.BackgroundImageLayout = ImageLayout.None;
-			button1.Cursor = Cursors.Hand;
-			button1.FlatAppearance.BorderSize = 0;
-			button1.FlatStyle = FlatStyle.Flat;
-			button1.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point);
-			button1.ForeColor = SystemColors.ButtonFace;
-			button1.Location = new Point(260, 294);
-			button1.Name = "button1";
-			button1.Size = new Size(85, 27);
-			button1.TabIndex = 13;
-			button1.Text = "Cancelar";
-			button1.UseVisualStyleBackColor = false;
+			btnCancelar.BackColor = Color.Red;
+			btnCancelar.BackgroundImageLayout = ImageLayout.None;
+			btnCancelar.Cursor = Cursors.Hand;
+			btnCancelar.FlatAppearance.BorderSize = 0;
+			btnCancelar.FlatStyle = FlatStyle.Flat;
+			btnCancelar.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point);
+			btnCancelar.ForeColor = SystemColors.ButtonFace;
+			btnCancelar.Location = new Point(260, 294);
+			btnCancelar.Name = "btnCancelar";
+			btnCancelar.Size = new Size(85, 27);
+			btnCancelar.TabIndex = 13;
+			btnCancelar.Text = "Cancelar";
+			btnCancelar.UseVisualStyleBackColor = false;
 			// 
 			// TelaDeCadastro
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(357, 333);
-			Controls.Add(button1);
+			Controls.Add(btnCancelar);
 			Controls.Add(btnCadastrar);
-			Controls.Add(dateTimePicker1);
-			Controls.Add(comboBox1);
-			Controls.Add(textBox3);
-			Controls.Add(textBox2);
-			Controls.Add(textBox1);
+			Controls.Add(dtpNascimento);
+			Controls.Add(cbSexo);
+			Controls.Add(txtCor);
+			Controls.Add(txtTipo);
+			Controls.Add(txtNome);
 			Controls.Add(label5);
 			Controls.Add(label4);
 			Controls.Add(label3);
@@ -188,12 +187,12 @@
 		private Label label3;
 		private Label label4;
 		private Label label5;
-		private TextBox textBox1;
-		private TextBox textBox2;
-		private TextBox textBox3;
-		private ComboBox comboBox1;
-		private DateTimePicker dateTimePicker1;
+		private TextBox txtNome;
+		private TextBox txtTipo;
+		private TextBox txtCor;
+		private ComboBox cbSexo;
+		private DateTimePicker dtpNascimento;
 		private Button btnCadastrar;
-		private Button button1;
+		private Button btnCancelar;
 	}
 }

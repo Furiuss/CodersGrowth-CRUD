@@ -5,18 +5,24 @@ namespace PetMais
 {
 	public partial class TelaDeVisualizacao : Form
 	{
+		public ListaDePets ListaDePets = new ListaDePets();
+
 		public TelaDeVisualizacao()
 		{
 			InitializeComponent();
-			ListaDePets listaDePets = new ListaDePets();
-
-			this.dgvListaDePets.DataSource = listaDePets.ListaPets;
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			TelaDeCadastro telaDeCadastro = new TelaDeCadastro();
-			telaDeCadastro.Show();
+			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(this);
+			telaDeCadastro.ShowDialog();
+			PopularDados();
+		}
+
+		void PopularDados()
+		{
+			dgvListaDePets.DataSource = null;
+			dgvListaDePets.DataSource = ListaDePets.MostrarPets();
 		}
 	}
 }
