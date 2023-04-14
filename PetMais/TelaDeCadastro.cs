@@ -19,26 +19,40 @@ namespace PetMais
 
 		private ListaDePets ListaDePets;
 
+
 		public TelaDeCadastro(ListaDePets listaDePets)
 		{
 			InitializeComponent();
 			cbSexo.DataSource = Enum.GetValues(typeof(SexoPet));
+			cbCor.DataSource = Enum.GetValues(typeof(CorPet));
+			cbTipo.DataSource = Enum.GetValues(typeof(TipoPet));
 			ListaDePets = listaDePets;
 		}
 
 		private void AoClicarBotaoAdicionar(object sender, EventArgs e)
 		{
-			var novoPet = new Pet()
+			try
 			{
-				Nome = txtNome.Text,
-				Cor = txtCor.Text,
-				Tipo = txtTipo.Text,
-				Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo.SelectedItem.ToString()),
-				DataDeNascimento = dtpNascimento.Value
-			};
-			ListaDePets.AdicionarPet(novoPet);
+				ValidarForm.CampoDeTextoNaoPodeEstarVazio(txtNome.Text, "nome");
+				ValidarForm.Minimo2LetrasEMAximo20Letras(txtNome.Text
 
-			this.Close();
+				var novoPet = new Pet()
+				{
+					Nome = txtNome.Text,
+					Cor = (CorPet)Enum.Parse(typeof(CorPet), cbCor.SelectedItem.ToString()),
+					Tipo = (TipoPet)Enum.Parse(typeof(TipoPet), cbTipo.SelectedItem.ToString()),
+					Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo.SelectedItem.ToString()),
+					DataDeNascimento = dtpNascimento.Value
+				};
+				ListaDePets.AdicionarPet(novoPet);
+
+				this.DialogResult = DialogResult.OK;
+
+			}
+			catch (MensagensDeErros ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
 		}
 	}
 }
