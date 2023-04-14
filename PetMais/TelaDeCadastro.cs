@@ -26,7 +26,8 @@ namespace PetMais
 			telaDeVisualizacao = tv;
 		}
 
-		private void btnCadastrar_Click(object sender, EventArgs e)
+
+		private void btnAdicionar_Click_1(object sender, EventArgs e)
 		{
 			//Pet pet1 = new Pet("Joao", "Preto", "Cachorro", Enums.SexoPet.MASCULINO, DateTime.Now);
 			//Pet pet2 = new Pet("Marta", "Branco", "Gato", Enums.SexoPet.FEMININO, DateTime.Now);

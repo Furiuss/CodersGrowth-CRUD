@@ -38,7 +38,7 @@
 			txtCor = new TextBox();
 			cbSexo = new ComboBox();
 			dtpNascimento = new DateTimePicker();
-			btnCadastrar = new Button();
+			btnAdicionar = new Button();
 			btnCancelar = new Button();
 			SuspendLayout();
 			// 
@@ -124,28 +124,30 @@
 			dtpNascimento.Size = new Size(262, 23);
 			dtpNascimento.TabIndex = 11;
 			// 
-			// btnCadastrar
+			// btnAdicionar
 			// 
-			btnCadastrar.BackColor = Color.LimeGreen;
-			btnCadastrar.BackgroundImageLayout = ImageLayout.None;
-			btnCadastrar.Cursor = Cursors.Hand;
-			btnCadastrar.FlatAppearance.BorderSize = 0;
-			btnCadastrar.FlatStyle = FlatStyle.Flat;
-			btnCadastrar.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point);
-			btnCadastrar.ForeColor = SystemColors.ButtonFace;
-			btnCadastrar.Location = new Point(14, 294);
-			btnCadastrar.Name = "btnCadastrar";
-			btnCadastrar.Size = new Size(85, 27);
-			btnCadastrar.TabIndex = 12;
-			btnCadastrar.Text = "Adicionar";
-			btnCadastrar.UseVisualStyleBackColor = false;
-			btnCadastrar.Click += btnCadastrar_Click;
+			btnAdicionar.BackColor = Color.LimeGreen;
+			btnAdicionar.BackgroundImageLayout = ImageLayout.None;
+			btnAdicionar.Cursor = Cursors.Hand;
+			btnAdicionar.DialogResult = DialogResult.OK;
+			btnAdicionar.FlatAppearance.BorderSize = 0;
+			btnAdicionar.FlatStyle = FlatStyle.Flat;
+			btnAdicionar.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point);
+			btnAdicionar.ForeColor = SystemColors.ButtonFace;
+			btnAdicionar.Location = new Point(14, 294);
+			btnAdicionar.Name = "btnAdicionar";
+			btnAdicionar.Size = new Size(85, 27);
+			btnAdicionar.TabIndex = 12;
+			btnAdicionar.Text = "Adicionar";
+			btnAdicionar.UseVisualStyleBackColor = false;
+			btnAdicionar.Click += btnAdicionar_Click_1;
 			// 
 			// btnCancelar
 			// 
 			btnCancelar.BackColor = Color.Red;
 			btnCancelar.BackgroundImageLayout = ImageLayout.None;
 			btnCancelar.Cursor = Cursors.Hand;
+			btnCancelar.DialogResult = DialogResult.Cancel;
 			btnCancelar.FlatAppearance.BorderSize = 0;
 			btnCancelar.FlatStyle = FlatStyle.Flat;
 			btnCancelar.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point);
@@ -163,7 +165,7 @@
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(357, 333);
 			Controls.Add(btnCancelar);
-			Controls.Add(btnCadastrar);
+			Controls.Add(btnAdicionar);
 			Controls.Add(dtpNascimento);
 			Controls.Add(cbSexo);
 			Controls.Add(txtCor);
@@ -192,7 +194,7 @@
 		private TextBox txtCor;
 		private ComboBox cbSexo;
 		private DateTimePicker dtpNascimento;
-		private Button btnCadastrar;
+		private Button btnAdicionar;
 		private Button btnCancelar;
 	}
 }

@@ -12,17 +12,24 @@ namespace PetMais
 			InitializeComponent();
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void AoClicarBotaoCadastrar(object sender, EventArgs e)
 		{
 			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(this);
-			telaDeCadastro.ShowDialog();
-			PopularDados();
+
+			if (telaDeCadastro.ShowDialog(this) == DialogResult.OK)
+			{
+				PopularDados();
+			}
+			else
+			{
+				telaDeCadastro.Close();
+			}
 		}
 
 		void PopularDados()
 		{
 			dgvListaDePets.DataSource = null;
 			dgvListaDePets.DataSource = ListaDePets.MostrarPets();
-		}
+		}		
 	}
 }
