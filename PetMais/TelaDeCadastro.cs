@@ -19,18 +19,14 @@ namespace PetMais
 
 		private ListaDePets ListaDePets;
 
-		public TelaDeCadastro()
+		public TelaDeCadastro(ListaDePets listaDePets)
 		{
 			InitializeComponent();
-		}
-
-		public TelaDeCadastro(ListaDePets listaDePets) : this()
-		{
 			cbSexo.DataSource = Enum.GetValues(typeof(SexoPet));
 			ListaDePets = listaDePets;
 		}
 
-		private void btnAdicionar_Click_1(object sender, EventArgs e)
+		private void AoClicarBotaoAdicionar(object sender, EventArgs e)
 		{
 			var novoPet = new Pet()
 			{

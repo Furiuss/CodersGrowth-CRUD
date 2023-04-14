@@ -140,7 +140,7 @@
 			btnAdicionar.TabIndex = 12;
 			btnAdicionar.Text = "Adicionar";
 			btnAdicionar.UseVisualStyleBackColor = false;
-			btnAdicionar.Click += btnAdicionar_Click_1;
+			btnAdicionar.Click += AoClicarBotaoAdicionar;
 			// 
 			// btnCancelar
 			// 
