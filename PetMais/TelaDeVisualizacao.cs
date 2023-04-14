@@ -5,7 +5,7 @@ namespace PetMais
 {
 	public partial class TelaDeVisualizacao : Form
 	{
-		public ListaDePets ListaDePets = new ListaDePets();
+		private ListaDePets ListaDePets = new ListaDePets();
 
 		public TelaDeVisualizacao()
 		{
@@ -14,15 +14,11 @@ namespace PetMais
 
 		private void AoClicarBotaoCadastrar(object sender, EventArgs e)
 		{
-			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(this);
+			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(ListaDePets);
 
 			if (telaDeCadastro.ShowDialog(this) == DialogResult.OK)
 			{
 				PopularDados();
-			}
-			else
-			{
-				telaDeCadastro.Close();
 			}
 		}
 

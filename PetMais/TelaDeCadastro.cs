@@ -17,23 +17,21 @@ namespace PetMais
 	public partial class TelaDeCadastro : Form
 	{
 
-		public TelaDeVisualizacao telaDeVisualizacao;
+		private ListaDePets ListaDePets;
 
-		public TelaDeCadastro(TelaDeVisualizacao tv)
+		public TelaDeCadastro()
 		{
 			InitializeComponent();
-			cbSexo.DataSource = Enum.GetValues(typeof(SexoPet));
-			telaDeVisualizacao = tv;
 		}
 
+		public TelaDeCadastro(ListaDePets listaDePets) : this()
+		{
+			cbSexo.DataSource = Enum.GetValues(typeof(SexoPet));
+			ListaDePets = listaDePets;
+		}
 
 		private void btnAdicionar_Click_1(object sender, EventArgs e)
 		{
-			//Pet pet1 = new Pet("Joao", "Preto", "Cachorro", Enums.SexoPet.MASCULINO, DateTime.Now);
-			//Pet pet2 = new Pet("Marta", "Branco", "Gato", Enums.SexoPet.FEMININO, DateTime.Now);
-			//telaDeVisualizacao.ListaDePets.AdicionarPet(pet1);
-			//telaDeVisualizacao.ListaDePets.AdicionarPet(pet2);
-
 			var novoPet = new Pet()
 			{
 				Nome = txtNome.Text,
@@ -42,7 +40,7 @@ namespace PetMais
 				Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo.SelectedItem.ToString()),
 				DataDeNascimento = dtpNascimento.Value
 			};
-			telaDeVisualizacao.ListaDePets.AdicionarPet(novoPet);
+			ListaDePets.AdicionarPet(novoPet);
 
 			this.Close();
 		}
