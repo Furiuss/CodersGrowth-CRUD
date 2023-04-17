@@ -8,6 +8,7 @@ namespace PetMais.Enums
 {
 	public enum TipoPet
 	{
+		SELECIONAR,
 		GATO,
 		CACHORRO,
 		PEIXE,

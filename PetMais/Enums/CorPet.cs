@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace PetMais.Enums
 {
 	public enum CorPet
-	{
+	{	
+		SELECIONAR,
 		AMARELO,
 		CHOCOLATE,
 		BRANCO,

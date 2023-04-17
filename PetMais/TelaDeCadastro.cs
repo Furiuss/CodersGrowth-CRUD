@@ -23,7 +23,6 @@ namespace PetMais
 		public TelaDeCadastro(ListaDePets listaDePets)
 		{
 			InitializeComponent();
-			ConfigurarComboBoxesComEnums();
 			ListaDePets = listaDePets;
 		}
 
@@ -35,9 +34,9 @@ namespace PetMais
 				var novoPet = new Pet()
 				{
 					Nome = txtNome.Text,
-					Cor = (CorPet)Enum.Parse(typeof(CorPet), cbCor.SelectedItem.ToString()),
-					Tipo = (TipoPet)Enum.Parse(typeof(TipoPet), cbTipo.SelectedItem.ToString()),
-					Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo.SelectedItem.ToString()),
+					Cor = (CorPet)Enum.Parse(typeof(CorPet), cbCor?.SelectedValue?.ToString()),
+					Tipo = (TipoPet)Enum.Parse(typeof(TipoPet), cbTipo?.SelectedValue?.ToString()),
+					Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo?.SelectedValue?.ToString()),
 					DataDeNascimento = dtpNascimento.Value
 				};
 
@@ -58,6 +57,11 @@ namespace PetMais
 			cbSexo.DataSource = Enum.GetValues(typeof(SexoPet));
 			cbCor.DataSource = Enum.GetValues(typeof(CorPet));
 			cbTipo.DataSource = Enum.GetValues(typeof(TipoPet));
+		}
+
+		private void TelaDeCadastro_Load(object sender, EventArgs e)
+		{
+			ConfigurarComboBoxesComEnums();
 		}
 	}
 }

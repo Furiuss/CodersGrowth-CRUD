@@ -7,48 +7,101 @@ using System.Threading.Tasks;
 
 namespace PetMais.Services
 {
-	public static class ValidarForm
+	public class ValidarForm
 	{
+		public List<string> erros { get; set; } = new List<string>();
 
 		public static void ValidacaoDosCampos(Pet pet)
 		{
-			CampoDeTextoNaoPodeEstarVazio(pet.Nome, "nome");
-			Minimo2LetrasEMAximo20Letras(pet.Nome);
-			NomeNaoPodeConterNumeroOuCaractereEspecial(pet.Nome);
-			DataDeNascimentoNaoPodeSerFuturaADataAtual(pet.DataDeNascimento);
-		}
+			string erros = "";								
 
-		private static void CampoDeTextoNaoPodeEstarVazio(string texto, string campo)
-		{
-			if (texto == "")
+			if (CampoNaoPodeEstarVazio(pet.Sexo.ToString()))
 			{
-				throw new MensagensDeErros($"O campo {campo} não pode ficar vazio");
+				erros += "O campo sexo precisa ser selecionado\n";
+			}
+			if (CampoNaoPodeEstarVazio(pet.Cor.ToString()))
+			{
+				erros += $"O campo cor precisa ser selecionado\n";
+			}
+			if (CampoNaoPodeEstarVazio(pet.Tipo.ToString()))
+			{
+				erros += $"O campo tipo precisa ser selecionado\n";
+			}
+			if (Minimo2LetrasEMAximo20Letras(pet.Nome))
+			{
+				erros += "O nome tem que ter entre 2 e 20 letras\n";
+			}
+			if (NomeNaoPodeConterNumeroOuCaractereEspecial(pet.Nome))
+			{
+				erros += "O nome não pode conter números ou caracteres especiais\n";
+			}
+			if (DataDeNascimentoNaoPodeSerFuturaADataAtual(pet.DataDeNascimento))
+			{
+				erros += "Data de nascimento não pode ser futura\n";
+			}
+			if (IdadeNaoPodeUltrapassar150Anos(pet.DataDeNascimento))
+			{
+				erros += "Idade do pet não pode ultrapassar 150 anos\n";
+			}
+
+			if (erros.Length > 1)
+			{
+				throw new MensagensDeErros(erros);
 			}
 		}
 
-		private static void Minimo2LetrasEMAximo20Letras(string texto)
+		private static bool CampoNaoPodeEstarVazio(string cb)
+		{
+			if (cb == "SELECIONAR")
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		private static bool Minimo2LetrasEMAximo20Letras(string texto)
 		{
 			if (texto.Length < 2 || texto.Length > 20)
 			{
-				throw new MensagensDeErros($"O nome tem que ter entre 2 e 20 letras");
+				return true;
 			}
+
+			return false;
 		}
 
-		private static void NomeNaoPodeConterNumeroOuCaractereEspecial(string texto)
+		private static bool NomeNaoPodeConterNumeroOuCaractereEspecial(string texto)
 		{
 			Regex regex = new Regex(@"^[a-zA-Z\s]+$");
 			if(!regex.IsMatch(texto))
 			{
-				throw new MensagensDeErros("O nome não pode conter números ou caracteres especiais");
+				return true;
 			}
+			return false;
 		}
 
-		private static void DataDeNascimentoNaoPodeSerFuturaADataAtual(DateTime dataNascimento)
+		private static bool DataDeNascimentoNaoPodeSerFuturaADataAtual(DateTime dataNascimento)
 		{
 			if (dataNascimento > DateTime.Now)
 			{
-				throw new MensagensDeErros("Data de nascimento não pode ser futura");
+				return true;
 			}
+
+			return false;
+		}
+
+		private static bool IdadeNaoPodeUltrapassar150Anos(DateTime dataNascimento)
+		{
+			int dataAtual = DateTime.Now.Year;
+			int nascimento = dataNascimento.Year;
+			int idade = dataAtual - nascimento;
+
+			if (idade > 150)
+			{
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

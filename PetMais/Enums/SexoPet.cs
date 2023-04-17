@@ -8,6 +8,7 @@ namespace PetMais.Enums
 {
 	public enum SexoPet
 	{
+		SELECIONAR,
 		MASCULINO,
 		FEMININO
 	}
