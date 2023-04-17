@@ -31,6 +31,27 @@ namespace PetMais.Services
 			Pets.Add(pet);
 		}
 
+		public void EditarPet(Pet pet)
+		{
+			int indice = Pets.FindIndex(i => i.Id == pet.Id);
+			if (indice > -1)
+			{
+				Pets[indice] = pet;
+			}
+		}
+
+		public Pet PegarPetPeloId(int id)
+		{
+			Pet pet = Pets.Find(i => i.Id == id);
+
+			if (pet == null)
+			{
+				return null;
+			}
+
+			return pet;
+		}
+
 		public List<Pet> MostrarPets()
 		{
 			return Pets;

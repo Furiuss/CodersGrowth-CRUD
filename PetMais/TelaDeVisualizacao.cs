@@ -1,5 +1,6 @@
 using PetMais.Enums;
 using PetMais.Services;
+using System.Windows.Forms;
 
 namespace PetMais
 {
@@ -16,9 +17,32 @@ namespace PetMais
 		{
 			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(ListaDePets);
 
-			if (telaDeCadastro.ShowDialog(this) == DialogResult.OK)
+			if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 			{
 				PopularDados();
+			}
+		}
+
+		private void AoClicarNoBotaoEditar(object sender, EventArgs e)
+		{
+			int linhasSelecionadas = dgvListaDePets.SelectedRows.Count;
+
+			try
+			{
+				VerificarLinhasSelecionada(linhasSelecionadas);
+				DataGridViewRow row = dgvListaDePets.SelectedRows[0];
+				int id = int.Parse(dgvListaDePets.SelectedRows[0].Cells["ID"].Value.ToString());
+				Pet petParaEditar = ListaDePets.PegarPetPeloId(id);
+				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(ListaDePets, petParaEditar);
+
+				if (telaDeCadastro.ShowDialog() == DialogResult.OK)
+				{
+					AtualizarDados();
+				}
+			}
+			catch (MensagensDeErros ex)
+			{
+				MessageBox.Show(ex.Message);
 			}
 		}
 
@@ -26,6 +50,25 @@ namespace PetMais
 		{
 			dgvListaDePets.DataSource = null;
 			dgvListaDePets.DataSource = ListaDePets.MostrarPets();
-		}		
+		}
+
+		void AtualizarDados()
+		{
+			dgvListaDePets.Update();
+			dgvListaDePets.Refresh();
+		}
+
+		void VerificarLinhasSelecionada(int linhaSelecionada)
+		{
+			if (linhaSelecionada > 1)
+			{
+				throw new MensagensDeErros("Selecione apenas uma linha para efetuar a edição");
+			}
+
+			if (linhaSelecionada < 1)
+			{
+				throw new MensagensDeErros("Selecione pelo menos uma linha para efetuar a edição");
+			}
+		}
 	}
 }

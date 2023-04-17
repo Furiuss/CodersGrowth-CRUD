@@ -18,30 +18,48 @@ namespace PetMais
 	{
 
 		private ListaDePets ListaDePets;
+		private Pet PetASerEditado;
 
 
-		public TelaDeCadastro(ListaDePets listaDePets)
+		public TelaDeCadastro(ListaDePets listaDePets, Pet petASerEditado = null)
 		{
 			InitializeComponent();
 			ListaDePets = listaDePets;
+			PetASerEditado = petASerEditado;
 		}
 
 		private void AoClicarBotaoAdicionar(object sender, EventArgs e)
 		{
 			try
 			{
+				Pet pet;
+				bool isUpdate = false;
 
-				var novoPet = new Pet()
+				if (PetASerEditado != null)
 				{
-					Nome = txtNome.Text,
-					Cor = (CorPet)Enum.Parse(typeof(CorPet), cbCor?.SelectedValue?.ToString()),
-					Tipo = (TipoPet)Enum.Parse(typeof(TipoPet), cbTipo?.SelectedValue?.ToString()),
-					Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo?.SelectedValue?.ToString()),
-					DataDeNascimento = dtpNascimento.Value
-				};
+					pet = ListaDePets.PegarPetPeloId(PetASerEditado.Id);
+					isUpdate = true;
+				}
+				else
+				{
+					pet = new();
+				}
 
-				ValidarForm.ValidacaoDosCampos(novoPet);
-				ListaDePets.AdicionarPet(novoPet);
+				pet.Nome = txtNome.Text;
+				pet.Cor = (CorPet)Enum.Parse(typeof(CorPet), cbCor.SelectedItem.ToString());
+				pet.Tipo = (TipoPet)Enum.Parse(typeof(TipoPet), cbTipo.SelectedItem.ToString());
+				pet.Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo.SelectedItem.ToString());
+				pet.DataDeNascimento = dtpNascimento.Value;
+				ValidarForm.ValidacaoDosCampos(pet);
+
+				if (isUpdate)
+				{
+					ListaDePets.EditarPet(pet);
+				}
+				else
+				{
+					ListaDePets.AdicionarPet(pet);
+				}
 
 				this.DialogResult = DialogResult.OK;
 
@@ -62,6 +80,11 @@ namespace PetMais
 		private void TelaDeCadastro_Load(object sender, EventArgs e)
 		{
 			ConfigurarComboBoxesComEnums();
+			this.txtNome.Text = PetASerEditado?.Nome;
+			this.cbCor.Text = PetASerEditado?.Cor.ToString();
+			this.cbTipo.Text = PetASerEditado?.Tipo.ToString();
+			this.cbSexo.Text = PetASerEditado?.Sexo.ToString();
+			this.dtpNascimento.Value = PetASerEditado is null ? DateTime.Now : PetASerEditado.DataDeNascimento;
 		}
 	}
 }
