@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PetMais.Services
 {
-	class MensagensDeErros : ApplicationException
+	class MensagensDeErros : Exception
 	{
 		public MensagensDeErros(string message) : base(message)
 		{

@@ -9,8 +9,6 @@ namespace PetMais.Services
 {
 	public class ValidarForm
 	{
-		public List<string> erros { get; set; } = new List<string>();
-
 		public static void ValidacaoDosCampos(Pet pet)
 		{
 			string erros = "";								
@@ -21,11 +19,11 @@ namespace PetMais.Services
 			}
 			if (CampoNaoPodeEstarVazio(pet.Cor.ToString()))
 			{
-				erros += $"O campo cor precisa ser selecionado\n";
+				erros += "O campo cor precisa ser selecionado\n";
 			}
 			if (CampoNaoPodeEstarVazio(pet.Tipo.ToString()))
 			{
-				erros += $"O campo tipo precisa ser selecionado\n";
+				erros += "O campo tipo precisa ser selecionado\n";
 			}
 			if (Minimo2LetrasEMAximo20Letras(pet.Nome))
 			{
