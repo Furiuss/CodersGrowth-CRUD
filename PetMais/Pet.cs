@@ -12,13 +12,13 @@ namespace PetMais
 	{
 		public int Id { get; set; }
 		public string Nome { get; set; }
-		public string Tipo { get; set; }
-		public string Cor { get; set;}
+		public TipoPet Tipo { get; set; }
+		public CorPet Cor { get; set;}
 		public SexoPet Sexo { get; set; }
 		public DateTime DataDeNascimento { get; set; }
 		public DateTime DataDeCadastro { get; set; }
 
-		public Pet(string nome, string tipo, string cor, SexoPet sexo, DateTime dataDeNascimento)
+		public Pet(string nome, TipoPet tipo, CorPet cor, SexoPet sexo, DateTime dataDeNascimento)
 		{
 			Nome = nome;
 			Tipo = tipo;

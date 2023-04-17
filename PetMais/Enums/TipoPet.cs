@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace PetMais.Enums
 {
-	public enum SexoPet
+	public enum TipoPet
 	{
 		SELECIONAR,
-		MASCULINO,
-		FEMININO
+		GATO,
+		CACHORRO,
+		PEIXE,
+		TARTARUGA,
+		COELHO,
+		PATO,
+		PASSARO
 	}
 }

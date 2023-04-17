@@ -34,12 +34,12 @@
 			label4 = new Label();
 			label5 = new Label();
 			txtNome = new TextBox();
-			txtTipo = new TextBox();
-			txtCor = new TextBox();
 			cbSexo = new ComboBox();
 			dtpNascimento = new DateTimePicker();
 			btnAdicionar = new Button();
 			btnCancelar = new Button();
+			cbTipo = new ComboBox();
+			cbCor = new ComboBox();
 			SuspendLayout();
 			// 
 			// label1
@@ -63,7 +63,7 @@
 			// label3
 			// 
 			label3.AutoSize = true;
-			label3.Location = new Point(12, 154);
+			label3.Location = new Point(187, 88);
 			label3.Name = "label3";
 			label3.Size = new Size(26, 15);
 			label3.TabIndex = 2;
@@ -72,7 +72,7 @@
 			// label4
 			// 
 			label4.AutoSize = true;
-			label4.Location = new Point(202, 154);
+			label4.Location = new Point(14, 149);
 			label4.Name = "label4";
 			label4.Size = new Size(32, 15);
 			label4.TabIndex = 3;
@@ -81,7 +81,7 @@
 			// label5
 			// 
 			label5.AutoSize = true;
-			label5.Location = new Point(12, 217);
+			label5.Location = new Point(187, 150);
 			label5.Name = "label5";
 			label5.Size = new Size(114, 15);
 			label5.TabIndex = 4;
@@ -89,39 +89,29 @@
 			// 
 			// txtNome
 			// 
-			txtNome.Location = new Point(12, 51);
+			txtNome.Location = new Point(18, 51);
 			txtNome.Name = "txtNome";
-			txtNome.Size = new Size(333, 23);
+			txtNome.Size = new Size(327, 23);
 			txtNome.TabIndex = 5;
-			// 
-			// txtTipo
-			// 
-			txtTipo.Location = new Point(12, 106);
-			txtTipo.Name = "txtTipo";
-			txtTipo.Size = new Size(333, 23);
-			txtTipo.TabIndex = 6;
-			// 
-			// txtCor
-			// 
-			txtCor.Location = new Point(12, 172);
-			txtCor.Name = "txtCor";
-			txtCor.Size = new Size(147, 23);
-			txtCor.TabIndex = 7;
 			// 
 			// cbSexo
 			// 
+			cbSexo.BackColor = Color.White;
+			cbSexo.Cursor = Cursors.Hand;
+			cbSexo.DropDownStyle = ComboBoxStyle.DropDownList;
+			cbSexo.FlatStyle = FlatStyle.Popup;
 			cbSexo.FormattingEnabled = true;
-			cbSexo.Location = new Point(202, 172);
+			cbSexo.Location = new Point(16, 167);
 			cbSexo.Name = "cbSexo";
-			cbSexo.Size = new Size(143, 23);
+			cbSexo.Size = new Size(160, 23);
 			cbSexo.TabIndex = 10;
-			cbSexo.Text = "Escolha o sexo do pet";
 			// 
 			// dtpNascimento
 			// 
-			dtpNascimento.Location = new Point(12, 235);
+			dtpNascimento.Format = DateTimePickerFormat.Short;
+			dtpNascimento.Location = new Point(187, 168);
 			dtpNascimento.Name = "dtpNascimento";
-			dtpNascimento.Size = new Size(262, 23);
+			dtpNascimento.Size = new Size(158, 23);
 			dtpNascimento.TabIndex = 11;
 			// 
 			// btnAdicionar
@@ -129,12 +119,11 @@
 			btnAdicionar.BackColor = Color.LimeGreen;
 			btnAdicionar.BackgroundImageLayout = ImageLayout.None;
 			btnAdicionar.Cursor = Cursors.Hand;
-			btnAdicionar.DialogResult = DialogResult.OK;
 			btnAdicionar.FlatAppearance.BorderSize = 0;
 			btnAdicionar.FlatStyle = FlatStyle.Flat;
 			btnAdicionar.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point);
 			btnAdicionar.ForeColor = SystemColors.ButtonFace;
-			btnAdicionar.Location = new Point(14, 294);
+			btnAdicionar.Location = new Point(14, 251);
 			btnAdicionar.Name = "btnAdicionar";
 			btnAdicionar.Size = new Size(85, 27);
 			btnAdicionar.TabIndex = 12;
@@ -152,24 +141,48 @@
 			btnCancelar.FlatStyle = FlatStyle.Flat;
 			btnCancelar.Font = new Font("Calibri", 12F, FontStyle.Regular, GraphicsUnit.Point);
 			btnCancelar.ForeColor = SystemColors.ButtonFace;
-			btnCancelar.Location = new Point(260, 294);
+			btnCancelar.Location = new Point(253, 251);
 			btnCancelar.Name = "btnCancelar";
 			btnCancelar.Size = new Size(85, 27);
 			btnCancelar.TabIndex = 13;
 			btnCancelar.Text = "Cancelar";
 			btnCancelar.UseVisualStyleBackColor = false;
 			// 
+			// cbTipo
+			// 
+			cbTipo.BackColor = Color.White;
+			cbTipo.Cursor = Cursors.Hand;
+			cbTipo.DropDownStyle = ComboBoxStyle.DropDownList;
+			cbTipo.FlatStyle = FlatStyle.Flat;
+			cbTipo.FormattingEnabled = true;
+			cbTipo.Location = new Point(18, 106);
+			cbTipo.Name = "cbTipo";
+			cbTipo.Size = new Size(158, 23);
+			cbTipo.TabIndex = 14;
+			// 
+			// cbCor
+			// 
+			cbCor.BackColor = Color.White;
+			cbCor.Cursor = Cursors.Hand;
+			cbCor.DropDownStyle = ComboBoxStyle.DropDownList;
+			cbCor.FlatStyle = FlatStyle.Popup;
+			cbCor.FormattingEnabled = true;
+			cbCor.Location = new Point(187, 106);
+			cbCor.Name = "cbCor";
+			cbCor.Size = new Size(158, 23);
+			cbCor.TabIndex = 15;
+			// 
 			// TelaDeCadastro
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(357, 333);
+			ClientSize = new Size(357, 297);
+			Controls.Add(cbCor);
+			Controls.Add(cbTipo);
 			Controls.Add(btnCancelar);
 			Controls.Add(btnAdicionar);
 			Controls.Add(dtpNascimento);
 			Controls.Add(cbSexo);
-			Controls.Add(txtCor);
-			Controls.Add(txtTipo);
 			Controls.Add(txtNome);
 			Controls.Add(label5);
 			Controls.Add(label4);
@@ -178,6 +191,7 @@
 			Controls.Add(label1);
 			Name = "TelaDeCadastro";
 			Text = "TelaDeCadastro";
+			Load += TelaDeCadastro_Load;
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -190,11 +204,12 @@
 		private Label label4;
 		private Label label5;
 		private TextBox txtNome;
-		private TextBox txtTipo;
 		private TextBox txtCor;
 		private ComboBox cbSexo;
 		private DateTimePicker dtpNascimento;
 		private Button btnAdicionar;
 		private Button btnCancelar;
+		private ComboBox cbTipo;
+		private ComboBox cbCor;
 	}
 }

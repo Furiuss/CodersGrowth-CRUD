@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PetMais.Enums
+namespace PetMais.Services
 {
-	public enum SexoPet
+	class MensagensDeErros : Exception
 	{
-		SELECIONAR,
-		MASCULINO,
-		FEMININO
+		public MensagensDeErros(string message) : base(message)
+		{
+
+		}
 	}
 }

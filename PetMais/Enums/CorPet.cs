@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace PetMais.Enums
 {
-	public enum SexoPet
-	{
+	public enum CorPet
+	{	
 		SELECIONAR,
-		MASCULINO,
-		FEMININO
+		AMARELO,
+		CHOCOLATE,
+		BRANCO,
+		PRETO,
+		CINZENTO,
+		DOURADO,
+		CREME,
 	}
 }
