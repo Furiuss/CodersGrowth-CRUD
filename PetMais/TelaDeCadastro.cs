@@ -23,9 +23,7 @@ namespace PetMais
 		public TelaDeCadastro(ListaDePets listaDePets)
 		{
 			InitializeComponent();
-			cbSexo.DataSource = Enum.GetValues(typeof(SexoPet));
-			cbCor.DataSource = Enum.GetValues(typeof(CorPet));
-			cbTipo.DataSource = Enum.GetValues(typeof(TipoPet));
+			ConfigurarComboBoxesComEnums();
 			ListaDePets = listaDePets;
 		}
 
@@ -33,8 +31,6 @@ namespace PetMais
 		{
 			try
 			{
-				ValidarForm.CampoDeTextoNaoPodeEstarVazio(txtNome.Text, "nome");
-				ValidarForm.Minimo2LetrasEMAximo20Letras(txtNome.Text
 
 				var novoPet = new Pet()
 				{
@@ -44,6 +40,8 @@ namespace PetMais
 					Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo.SelectedItem.ToString()),
 					DataDeNascimento = dtpNascimento.Value
 				};
+
+				ValidarForm.ValidacaoDosCampos(novoPet);
 				ListaDePets.AdicionarPet(novoPet);
 
 				this.DialogResult = DialogResult.OK;
@@ -53,6 +51,13 @@ namespace PetMais
 			{
 				MessageBox.Show(ex.Message);
 			}
+		}
+
+		void ConfigurarComboBoxesComEnums()
+		{
+			cbSexo.DataSource = Enum.GetValues(typeof(SexoPet));
+			cbCor.DataSource = Enum.GetValues(typeof(CorPet));
+			cbTipo.DataSource = Enum.GetValues(typeof(TipoPet));
 		}
 	}
 }

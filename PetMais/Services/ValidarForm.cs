@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PetMais.Services
@@ -13,6 +14,8 @@ namespace PetMais.Services
 		{
 			CampoDeTextoNaoPodeEstarVazio(pet.Nome, "nome");
 			Minimo2LetrasEMAximo20Letras(pet.Nome);
+			NomeNaoPodeConterNumeroOuCaractereEspecial(pet.Nome);
+			DataDeNascimentoNaoPodeSerFuturaADataAtual(pet.DataDeNascimento);
 		}
 
 		private static void CampoDeTextoNaoPodeEstarVazio(string texto, string campo)
@@ -31,11 +34,20 @@ namespace PetMais.Services
 			}
 		}
 
-		private static void NomeNaoPodeSerNumero(string texto)
+		private static void NomeNaoPodeConterNumeroOuCaractereEspecial(string texto)
 		{
-			if (texto.Length < 2 || texto.Length > 20)
+			Regex regex = new Regex(@"^[a-zA-Z\s]+$");
+			if(!regex.IsMatch(texto))
 			{
-				throw new MensagensDeErros($"O nome tem que ter entre 2 e 20 letras");
+				throw new MensagensDeErros("O nome não pode conter números ou caracteres especiais");
+			}
+		}
+
+		private static void DataDeNascimentoNaoPodeSerFuturaADataAtual(DateTime dataNascimento)
+		{
+			if (dataNascimento > DateTime.Now)
+			{
+				throw new MensagensDeErros("Data de nascimento não pode ser futura");
 			}
 		}
 	}
