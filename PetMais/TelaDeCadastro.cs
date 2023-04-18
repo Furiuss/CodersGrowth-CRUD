@@ -1,0 +1,133 @@
+﻿using PetMais.Enums;
+using PetMais.Services;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Windows.Forms.DataFormats;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
+namespace PetMais
+{
+	public partial class TelaDeCadastro : Form
+	{
+		private List<Pet> Pets;
+		private Pet Pet;
+
+
+		public TelaDeCadastro(List<Pet> pets, Pet petASerEditado = null)
+		{
+			InitializeComponent();
+			ConfigurarComboBoxesComEnums();
+			Pets = pets;
+			Pet = petASerEditado;
+		}
+
+		private void AoClicarBotaoAdicionar(object sender, EventArgs e)
+		{
+			try
+			{
+				Pet pet;
+
+				if (Pet != null)
+				{
+					EditarPet();
+				}
+				else
+				{
+					AdicionarPet();
+				}
+
+				this.DialogResult = DialogResult.OK;
+
+			}
+			catch (MensagensDeErros ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+		}
+
+		void ConfigurarComboBoxesComEnums()
+		{
+			cbSexo.DataSource = Enum.GetValues(typeof(SexoPet));
+			cbCor.DataSource = Enum.GetValues(typeof(CorPet));
+			cbTipo.DataSource = Enum.GetValues(typeof(TipoPet));
+		}
+
+		private void TelaDeCadastro_Load(object sender, EventArgs e)
+		{
+			this.txtNome.Text = Pet?.Nome;
+			this.cbCor.Text = Pet?.Cor.ToString();
+			this.cbTipo.Text = Pet?.Tipo.ToString();
+			this.cbSexo.Text = Pet?.Sexo.ToString();
+			this.dtpNascimento.Value = Pet is null ? DateTime.Now : Pet.DataDeNascimento;
+		}
+
+		void PegarDados(Pet pet)
+		{
+			pet.Nome = txtNome.Text;
+			pet.Cor = (CorPet)Enum.Parse(typeof(CorPet), cbCor.SelectedItem.ToString());
+			pet.Tipo = (TipoPet)Enum.Parse(typeof(TipoPet), cbTipo.SelectedItem.ToString());
+			pet.Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo.SelectedItem.ToString());
+			pet.DataDeNascimento = dtpNascimento.Value;
+		}
+
+		Pet PegarPetPeloId(int id)
+		{
+			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
+
+			if (pet == null)
+			{
+				return null;
+			}
+
+			return pet;
+		}
+
+		void AdicionarPet()
+		{
+			Pet novoPet = new Pet();
+
+			int idGerado = AutoIncrementoDeId();
+			DateTime dataDeCadastro = DateTime.Now;
+
+			PegarDados(novoPet);
+			novoPet.Id = idGerado;
+			novoPet.DataDeCadastro = dataDeCadastro;
+
+			ValidarForm.ValidacaoDosCampos(novoPet);
+			Pets.Add(novoPet);
+		}
+
+		void EditarPet()
+		{
+			Pet petParaEditar = new Pet();
+			Pet petAtual = PegarPetPeloId(Pet.Id);
+
+			petParaEditar.Id = petAtual.Id;
+			petParaEditar.DataDeCadastro = petAtual.DataDeCadastro;
+
+			PegarDados(petParaEditar);
+			ValidarForm.ValidacaoDosCampos(petParaEditar);
+			int indiceDoPet = Pets.IndexOf(petAtual);
+			Pets[indiceDoPet] = petParaEditar;
+		}
+
+		int AutoIncrementoDeId()
+		{
+			if (Pets.Count > 0)
+			{
+				return Pets.Max(pet => pet.Id) + 1;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+	}
+}
