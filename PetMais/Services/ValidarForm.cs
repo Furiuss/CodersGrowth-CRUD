@@ -50,7 +50,7 @@ namespace PetMais.Services
 
 		private static bool CampoNaoPodeEstarVazio(string cb)
 		{
-			if (cb == "SELECIONAR")
+			if (cb == "SELECIONAR" || cb == null)
 			{
 				return true;
 			}

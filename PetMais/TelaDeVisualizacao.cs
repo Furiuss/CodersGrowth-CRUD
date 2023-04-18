@@ -1,12 +1,13 @@
 using PetMais.Enums;
 using PetMais.Services;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PetMais
 {
 	public partial class TelaDeVisualizacao : Form
 	{
-		private ListaDePets ListaDePets = new ListaDePets();
+		private List<Pet> Pets = new List<Pet>();
 
 		public TelaDeVisualizacao()
 		{
@@ -15,7 +16,7 @@ namespace PetMais
 
 		private void AoClicarBotaoCadastrar(object sender, EventArgs e)
 		{
-			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(ListaDePets);
+			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Pets);
 
 			if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 			{
@@ -32,8 +33,8 @@ namespace PetMais
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				DataGridViewRow row = dgvListaDePets.SelectedRows[0];
 				int id = int.Parse(dgvListaDePets.SelectedRows[0].Cells["ID"].Value.ToString());
-				Pet petParaEditar = ListaDePets.PegarPetPeloId(id);
-				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(ListaDePets, petParaEditar);
+				Pet petParaEditar = PegarPetPeloId(id);
+				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Pets, petParaEditar);
 
 				if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 				{
@@ -49,13 +50,25 @@ namespace PetMais
 		void PopularDados()
 		{
 			dgvListaDePets.DataSource = null;
-			dgvListaDePets.DataSource = ListaDePets.MostrarPets();
+			dgvListaDePets.DataSource = Pets;
 		}
 
 		void AtualizarDados()
 		{
 			dgvListaDePets.Update();
 			dgvListaDePets.Refresh();
+		}
+
+		public Pet PegarPetPeloId(int id)
+		{
+			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
+
+			if (pet == null)
+			{
+				return null;
+			}
+
+			return pet;
 		}
 
 		void VerificarLinhasSelecionada(int linhaSelecionada)

@@ -17,14 +17,15 @@ namespace PetMais
 	public partial class TelaDeCadastro : Form
 	{
 
-		private ListaDePets ListaDePets;
+		private List<Pet> Pets;
 		private Pet PetASerEditado;
 
 
-		public TelaDeCadastro(ListaDePets listaDePets, Pet petASerEditado = null)
+		public TelaDeCadastro(List<Pet> pets, Pet petASerEditado = null)
 		{
 			InitializeComponent();
-			ListaDePets = listaDePets;
+			ConfigurarComboBoxesComEnums();
+			Pets = pets;
 			PetASerEditado = petASerEditado;
 		}
 
@@ -37,7 +38,7 @@ namespace PetMais
 
 				if (PetASerEditado != null)
 				{
-					pet = ListaDePets.PegarPetPeloId(PetASerEditado.Id);
+					pet = PegarPetPeloId(PetASerEditado.Id);
 					isUpdate = true;
 				}
 				else
@@ -54,11 +55,11 @@ namespace PetMais
 
 				if (isUpdate)
 				{
-					ListaDePets.EditarPet(pet);
+					EditarPet(pet);
 				}
 				else
 				{
-					ListaDePets.AdicionarPet(pet);
+					AdicionarPet(pet);
 				}
 
 				this.DialogResult = DialogResult.OK;
@@ -79,12 +80,51 @@ namespace PetMais
 
 		private void TelaDeCadastro_Load(object sender, EventArgs e)
 		{
-			ConfigurarComboBoxesComEnums();
 			this.txtNome.Text = PetASerEditado?.Nome;
 			this.cbCor.Text = PetASerEditado?.Cor.ToString();
 			this.cbTipo.Text = PetASerEditado?.Tipo.ToString();
 			this.cbSexo.Text = PetASerEditado?.Sexo.ToString();
 			this.dtpNascimento.Value = PetASerEditado is null ? DateTime.Now : PetASerEditado.DataDeNascimento;
+		}
+
+		Pet PegarPetPeloId(int id)
+		{
+			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
+
+			if (pet == null)
+			{
+				return null;
+			}
+
+			return pet;
+		}
+
+		void AdicionarPet(Pet pet)
+		{
+			int idGerado = AutoIncrementoDeId();
+			DateTime dataDeCadastro = DateTime.Now;
+
+			pet.Id = idGerado;
+			pet.DataDeCadastro = dataDeCadastro;
+			Pets.Add(pet);
+		}
+
+		void EditarPet(Pet pet)
+		{
+			Pet PetASerEditado = PegarPetPeloId(pet.Id);
+			PetASerEditado = pet;
+		}
+
+		int AutoIncrementoDeId()
+		{
+			if (Pets.Count > 0)
+			{
+				return Pets.Max(pet => pet.Id) + 1;
+			}
+			else
+			{
+				return 1;
+			}
 		}
 	}
 }
