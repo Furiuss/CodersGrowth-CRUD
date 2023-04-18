@@ -16,16 +16,16 @@ namespace PetMais
 {
 	public partial class TelaDeCadastro : Form
 	{
+		private List<Pet> Pets;
+		private Pet Pet;
 
-		private ListaDePets ListaDePets;
-		private Pet PetASerEditado;
 
-
-		public TelaDeCadastro(ListaDePets listaDePets, Pet petASerEditado = null)
+		public TelaDeCadastro(List<Pet> pets, Pet petASerEditado = null)
 		{
 			InitializeComponent();
-			ListaDePets = listaDePets;
-			PetASerEditado = petASerEditado;
+			ConfigurarComboBoxesComEnums();
+			Pets = pets;
+			Pet = petASerEditado;
 		}
 
 		private void AoClicarBotaoAdicionar(object sender, EventArgs e)
@@ -33,32 +33,14 @@ namespace PetMais
 			try
 			{
 				Pet pet;
-				bool isUpdate = false;
 
-				if (PetASerEditado != null)
+				if (Pet != null)
 				{
-					pet = ListaDePets.PegarPetPeloId(PetASerEditado.Id);
-					isUpdate = true;
+					EditarPet();
 				}
 				else
 				{
-					pet = new();
-				}
-
-				pet.Nome = txtNome.Text;
-				pet.Cor = (CorPet)Enum.Parse(typeof(CorPet), cbCor.SelectedItem.ToString());
-				pet.Tipo = (TipoPet)Enum.Parse(typeof(TipoPet), cbTipo.SelectedItem.ToString());
-				pet.Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo.SelectedItem.ToString());
-				pet.DataDeNascimento = dtpNascimento.Value;
-				ValidarForm.ValidacaoDosCampos(pet);
-
-				if (isUpdate)
-				{
-					ListaDePets.EditarPet(pet);
-				}
-				else
-				{
-					ListaDePets.AdicionarPet(pet);
+					AdicionarPet();
 				}
 
 				this.DialogResult = DialogResult.OK;
@@ -79,12 +61,73 @@ namespace PetMais
 
 		private void TelaDeCadastro_Load(object sender, EventArgs e)
 		{
-			ConfigurarComboBoxesComEnums();
-			this.txtNome.Text = PetASerEditado?.Nome;
-			this.cbCor.Text = PetASerEditado?.Cor.ToString();
-			this.cbTipo.Text = PetASerEditado?.Tipo.ToString();
-			this.cbSexo.Text = PetASerEditado?.Sexo.ToString();
-			this.dtpNascimento.Value = PetASerEditado is null ? DateTime.Now : PetASerEditado.DataDeNascimento;
+			this.txtNome.Text = Pet?.Nome;
+			this.cbCor.Text = Pet?.Cor.ToString();
+			this.cbTipo.Text = Pet?.Tipo.ToString();
+			this.cbSexo.Text = Pet?.Sexo.ToString();
+			this.dtpNascimento.Value = Pet is null ? DateTime.Now : Pet.DataDeNascimento;
+		}
+
+		void PegarDados(Pet pet)
+		{
+			pet.Nome = txtNome.Text;
+			pet.Cor = (CorPet)Enum.Parse(typeof(CorPet), cbCor.SelectedItem.ToString());
+			pet.Tipo = (TipoPet)Enum.Parse(typeof(TipoPet), cbTipo.SelectedItem.ToString());
+			pet.Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo.SelectedItem.ToString());
+			pet.DataDeNascimento = dtpNascimento.Value;
+		}
+
+		Pet PegarPetPeloId(int id)
+		{
+			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
+
+			if (pet == null)
+			{
+				return null;
+			}
+
+			return pet;
+		}
+
+		void AdicionarPet()
+		{
+			Pet novoPet = new Pet();
+
+			int idGerado = AutoIncrementoDeId();
+			DateTime dataDeCadastro = DateTime.Now;
+
+			PegarDados(novoPet);
+			novoPet.Id = idGerado;
+			novoPet.DataDeCadastro = dataDeCadastro;
+
+			ValidarForm.ValidacaoDosCampos(novoPet);
+			Pets.Add(novoPet);
+		}
+
+		void EditarPet()
+		{
+			Pet petParaEditar = new Pet();
+			Pet petAtual = PegarPetPeloId(Pet.Id);
+
+			petParaEditar.Id = petAtual.Id;
+			petParaEditar.DataDeCadastro = petAtual.DataDeCadastro;
+
+			PegarDados(petParaEditar);
+			ValidarForm.ValidacaoDosCampos(petParaEditar);
+			int indiceDoPet = Pets.IndexOf(petAtual);
+			Pets[indiceDoPet] = petParaEditar;
+		}
+
+		int AutoIncrementoDeId()
+		{
+			if (Pets.Count > 0)
+			{
+				return Pets.Max(pet => pet.Id) + 1;
+			}
+			else
+			{
+				return 1;
+			}
 		}
 	}
 }

@@ -1,12 +1,14 @@
 using PetMais.Enums;
 using PetMais.Services;
+using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PetMais
 {
 	public partial class TelaDeVisualizacao : Form
 	{
-		private ListaDePets ListaDePets = new ListaDePets();
+		private List<Pet> Pets = new List<Pet>();
 
 		public TelaDeVisualizacao()
 		{
@@ -15,7 +17,7 @@ namespace PetMais
 
 		private void AoClicarBotaoCadastrar(object sender, EventArgs e)
 		{
-			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(ListaDePets);
+			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Pets);
 
 			if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 			{
@@ -30,14 +32,13 @@ namespace PetMais
 			try
 			{
 				VerificarLinhasSelecionada(linhasSelecionadas);
-				DataGridViewRow row = dgvListaDePets.SelectedRows[0];
-				int id = int.Parse(dgvListaDePets.SelectedRows[0].Cells["ID"].Value.ToString());
-				Pet petParaEditar = ListaDePets.PegarPetPeloId(id);
-				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(ListaDePets, petParaEditar);
+				int id = PegarIdDaLinhaSelecionada();
+				Pet petParaEditar = PegarPetPeloId(id);
+				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Pets, petParaEditar);
 
 				if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 				{
-					AtualizarDados();
+					PopularDados();
 				}
 			}
 			catch (MensagensDeErros ex)
@@ -46,16 +47,52 @@ namespace PetMais
 			}
 		}
 
+
+		private void AoClicarNoBotaoRemover(object sender, EventArgs e)
+		{
+			int linhasSelecionadas = dgvListaDePets.SelectedRows.Count;
+
+			try
+			{
+				VerificarLinhasSelecionada(linhasSelecionadas);
+				int indiceDaLinha = dgvListaDePets.CurrentRow.Index;
+				int id = PegarIdDaLinhaSelecionada();
+				Pet petParaRemover = PegarPetPeloId(id);
+				RemoverPet(petParaRemover);
+				PopularDados();
+			}
+			catch (MensagensDeErros ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+		}
+
+		int PegarIdDaLinhaSelecionada()
+		{
+			return int.Parse(dgvListaDePets.SelectedRows[0].Cells[0].Value.ToString());
+		}
+
 		void PopularDados()
 		{
 			dgvListaDePets.DataSource = null;
-			dgvListaDePets.DataSource = ListaDePets.MostrarPets();
+			dgvListaDePets.DataSource = Pets;
 		}
 
-		void AtualizarDados()
+		void RemoverPet(Pet pet)
 		{
-			dgvListaDePets.Update();
-			dgvListaDePets.Refresh();
+			Pets.Remove(pet);
+		}
+
+		public Pet PegarPetPeloId(int id)
+		{
+			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
+
+			if (pet == null)
+			{
+				return null;
+			}
+
+			return pet;
 		}
 
 		void VerificarLinhasSelecionada(int linhaSelecionada)
