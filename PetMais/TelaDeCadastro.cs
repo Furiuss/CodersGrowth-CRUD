@@ -15,33 +15,33 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 namespace PetMais
 {
 	public partial class TelaDeCadastro : Form
-	{
+	{		
+		private List<Pet> Pets;
+		private Pet Pet;
 
-		private ListaDePets ListaDePets;
 
-
-		public TelaDeCadastro(ListaDePets listaDePets)
+		public TelaDeCadastro(List<Pet> pets, Pet petASerEditado = null)
 		{
 			InitializeComponent();
-			ListaDePets = listaDePets;
+			ConfigurarComboBoxesComEnums();
+			Pets = pets;
+			Pet = petASerEditado;
 		}
 
 		private void AoClicarBotaoAdicionar(object sender, EventArgs e)
 		{
 			try
 			{
+				Pet pet;
 
-				var novoPet = new Pet()
+				if (Pet != null)
 				{
-					Nome = txtNome.Text,
-					Cor = (CorPet)Enum.Parse(typeof(CorPet), cbCor?.SelectedValue?.ToString()),
-					Tipo = (TipoPet)Enum.Parse(typeof(TipoPet), cbTipo?.SelectedValue?.ToString()),
-					Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo?.SelectedValue?.ToString()),
-					DataDeNascimento = dtpNascimento.Value
-				};
-
-				ValidarForm.ValidacaoDosCampos(novoPet);
-				ListaDePets.AdicionarPet(novoPet);
+					EditarPet();
+				}
+				else
+				{
+					AdicionarPet();
+				}
 
 				this.DialogResult = DialogResult.OK;
 
@@ -61,7 +61,73 @@ namespace PetMais
 
 		private void TelaDeCadastro_Load(object sender, EventArgs e)
 		{
-			ConfigurarComboBoxesComEnums();
+			this.txtNome.Text = Pet?.Nome;
+			this.cbCor.Text = Pet?.Cor.ToString();
+			this.cbTipo.Text = Pet?.Tipo.ToString();
+			this.cbSexo.Text = Pet?.Sexo.ToString();
+			this.dtpNascimento.Value = Pet is null ? DateTime.Now : Pet.DataDeNascimento;
+		}
+
+		void PegarDados(Pet pet)
+		{
+			pet.Nome = txtNome.Text;
+			pet.Cor = (CorPet)Enum.Parse(typeof(CorPet), cbCor.SelectedItem.ToString());
+			pet.Tipo = (TipoPet)Enum.Parse(typeof(TipoPet), cbTipo.SelectedItem.ToString());
+			pet.Sexo = (SexoPet)Enum.Parse(typeof(SexoPet), cbSexo.SelectedItem.ToString());
+			pet.DataDeNascimento = dtpNascimento.Value;
+		}
+
+		Pet PegarPetPeloId(int id)
+		{
+			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
+
+			if (pet == null)
+			{
+				return null;
+			}
+
+			return pet;
+		}
+
+		void AdicionarPet()
+		{
+			Pet novoPet = new Pet();		
+			
+			int idGerado = AutoIncrementoDeId();
+			DateTime dataDeCadastro = DateTime.Now;
+
+			PegarDados(novoPet);
+			novoPet.Id = idGerado;
+			novoPet.DataDeCadastro = dataDeCadastro;
+
+			ValidarForm.ValidacaoDosCampos(novoPet);
+			Pets.Add(novoPet);
+		}
+
+		void EditarPet()
+		{
+			Pet petParaEditar = new Pet();
+			Pet petAtual = PegarPetPeloId(Pet.Id);
+
+			petParaEditar.Id = petAtual.Id;
+			petParaEditar.DataDeCadastro = petAtual.DataDeCadastro;
+
+			PegarDados(petParaEditar);
+			ValidarForm.ValidacaoDosCampos(petParaEditar);
+			int indiceDoPet = Pets.IndexOf(petAtual);
+			Pets[indiceDoPet] = petParaEditar;
+		}
+
+		int AutoIncrementoDeId()
+		{
+			if (Pets.Count > 0)
+			{
+				return Pets.Max(pet => pet.Id) + 1;
+			}
+			else
+			{
+				return 1;
+			}
 		}
 	}
 }
