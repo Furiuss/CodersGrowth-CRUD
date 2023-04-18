@@ -99,6 +99,7 @@
 			btnRemover.TabIndex = 3;
 			btnRemover.Text = "Remover";
 			btnRemover.UseVisualStyleBackColor = false;
+			btnRemover.Click += AoClicarNoBotaoRemover;
 			// 
 			// TelaDeVisualizacao
 			// 

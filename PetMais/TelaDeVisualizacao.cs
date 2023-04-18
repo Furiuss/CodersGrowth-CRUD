@@ -31,14 +31,13 @@ namespace PetMais
 			try
 			{
 				VerificarLinhasSelecionada(linhasSelecionadas);
-				DataGridViewRow row = dgvListaDePets.SelectedRows[0];
-				int id = int.Parse(dgvListaDePets.SelectedRows[0].Cells["ID"].Value.ToString());
+				int id = PegarIdDaLinhaSelecionada();
 				Pet petParaEditar = PegarPetPeloId(id);
 				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Pets, petParaEditar);
 
 				if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 				{
-					AtualizarDados();
+					PopularDados();
 				}
 			}
 			catch (MensagensDeErros ex)
@@ -47,16 +46,52 @@ namespace PetMais
 			}
 		}
 
+
+		private void AoClicarNoBotaoRemover(object sender, EventArgs e)
+		{
+			int linhasSelecionadas = dgvListaDePets.SelectedRows.Count;
+
+			try
+			{
+				VerificarLinhasSelecionada(linhasSelecionadas);
+				int indiceDaLinha = dgvListaDePets.CurrentRow.Index;
+				int id = PegarIdDaLinhaSelecionada();
+				Pet petParaRemover = PegarPetPeloId(id);
+				RemoverPet(petParaRemover);
+				PopularDados();
+			}
+			catch (MensagensDeErros ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+		}
+
+		int PegarIdDaLinhaSelecionada()
+		{
+			return int.Parse(dgvListaDePets.SelectedRows[0].Cells[0].Value.ToString());
+		}
+
 		void PopularDados()
 		{
 			dgvListaDePets.DataSource = null;
 			dgvListaDePets.DataSource = Pets;
 		}
 
-		void AtualizarDados()
+		void RemoverPet(Pet pet)
 		{
-			dgvListaDePets.Update();
-			dgvListaDePets.Refresh();
+			Pets.Remove(pet);
+		}
+
+		public Pet PegarPetPeloId(int id)
+		{
+			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
+
+			if (pet == null)
+			{
+				return null;
+			}
+
+			return pet;
 		}
 
 		public Pet PegarPetPeloId(int id)
@@ -75,12 +110,12 @@ namespace PetMais
 		{
 			if (linhaSelecionada > 1)
 			{
-				throw new MensagensDeErros("Selecione apenas uma linha para efetuar a edição");
+				throw new MensagensDeErros("Selecione apenas uma linha para efetuar a ediï¿½ï¿½o");
 			}
 
 			if (linhaSelecionada < 1)
 			{
-				throw new MensagensDeErros("Selecione pelo menos uma linha para efetuar a edição");
+				throw new MensagensDeErros("Selecione pelo menos uma linha para efetuar a ediï¿½ï¿½o");
 			}
 		}		
 	}
