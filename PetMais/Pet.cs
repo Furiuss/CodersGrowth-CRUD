@@ -10,7 +10,7 @@ namespace PetMais
 {
 	public class Pet
 	{
-		public int Id { get; set; }		
+		public int Id { get; set; }
 		public string Nome { get; set; }
 		public TipoPet Tipo { get; set; }
 		public CorPet Cor { get; set;}

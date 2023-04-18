@@ -1,6 +1,5 @@
 using PetMais.Enums;
 using PetMais.Services;
-using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -95,17 +94,29 @@ namespace PetMais
 			return pet;
 		}
 
+		public Pet PegarPetPeloId(int id)
+		{
+			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
+
+			if (pet == null)
+			{
+				return null;
+			}
+
+			return pet;
+		}
+
 		void VerificarLinhasSelecionada(int linhaSelecionada)
 		{
 			if (linhaSelecionada > 1)
 			{
-				throw new MensagensDeErros("Selecione apenas uma linha para efetuar a edição");
+				throw new MensagensDeErros("Selecione apenas uma linha para efetuar a ediï¿½ï¿½o");
 			}
 
 			if (linhaSelecionada < 1)
 			{
-				throw new MensagensDeErros("Selecione pelo menos uma linha para efetuar a edição");
+				throw new MensagensDeErros("Selecione pelo menos uma linha para efetuar a ediï¿½ï¿½o");
 			}
-		}
+		}		
 	}
 }
