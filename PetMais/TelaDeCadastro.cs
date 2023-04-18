@@ -15,8 +15,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 namespace PetMais
 {
 	public partial class TelaDeCadastro : Form
-	{
-
+	{		
 		private List<Pet> Pets;
 		private Pet Pet;
 
