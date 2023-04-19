@@ -16,16 +16,15 @@ namespace PetMais
 {
 	public partial class TelaDeCadastro : Form
 	{
-		private List<Pet> Pets;
 		private Pet Pet;
+		private List<Pet> Pets;
 
-
-		public TelaDeCadastro(List<Pet> pets, Pet petASerEditado = null)
+		public TelaDeCadastro(Pet pet = null)
 		{
 			InitializeComponent();
 			ConfigurarComboBoxesComEnums();
-			Pets = pets;
-			Pet = petASerEditado;
+			Pets = ListaDePets.GetInstancia();
+			Pet = pet;
 		}
 
 		private void AoClicarBotaoAdicionar(object sender, EventArgs e)
@@ -77,57 +76,23 @@ namespace PetMais
 			pet.DataDeNascimento = dtpNascimento.Value;
 		}
 
-		Pet PegarPetPeloId(int id)
-		{
-			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
-
-			if (pet == null)
-			{
-				return null;
-			}
-
-			return pet;
-		}
-
 		void AdicionarPet()
 		{
 			Pet novoPet = new Pet();
-
-			int idGerado = AutoIncrementoDeId();
-			DateTime dataDeCadastro = DateTime.Now;
-
 			PegarDados(novoPet);
-			novoPet.Id = idGerado;
-			novoPet.DataDeCadastro = dataDeCadastro;
-
 			ValidarForm.ValidacaoDosCampos(novoPet);
-			Pets.Add(novoPet);
+			ListaDePets.AdicionarPet(novoPet);
 		}
 
 		void EditarPet()
 		{
 			Pet petParaEditar = new Pet();
-			Pet petAtual = PegarPetPeloId(Pet.Id);
-
+			Pet petAtual = Pet;
 			petParaEditar.Id = petAtual.Id;
 			petParaEditar.DataDeCadastro = petAtual.DataDeCadastro;
-
 			PegarDados(petParaEditar);
 			ValidarForm.ValidacaoDosCampos(petParaEditar);
-			int indiceDoPet = Pets.IndexOf(petAtual);
-			Pets[indiceDoPet] = petParaEditar;
-		}
-
-		int AutoIncrementoDeId()
-		{
-			if (Pets.Count > 0)
-			{
-				return Pets.Max(pet => pet.Id) + 1;
-			}
-			else
-			{
-				return 1;
-			}
+			ListaDePets.EditarPet(petParaEditar);
 		}
 	}
 }

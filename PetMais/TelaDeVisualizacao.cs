@@ -7,16 +7,17 @@ namespace PetMais
 {
 	public partial class TelaDeVisualizacao : Form
 	{
-		private List<Pet> Pets = new List<Pet>();
+		private List<Pet> Pets;
 
 		public TelaDeVisualizacao()
 		{
 			InitializeComponent();
+			Pets = ListaDePets.GetInstancia();
 		}
 
 		private void AoClicarBotaoCadastrar(object sender, EventArgs e)
 		{
-			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Pets);
+			TelaDeCadastro telaDeCadastro = new TelaDeCadastro();
 
 			if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 			{
@@ -32,8 +33,8 @@ namespace PetMais
 			{
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int id = PegarIdDaLinhaSelecionada();
-				Pet petParaEditar = PegarPetPeloId(id);
-				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Pets, petParaEditar);
+				Pet petParaEditar = ListaDePets.PegarPetPeloId(id);
+				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(petParaEditar);
 
 				if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 				{
@@ -56,7 +57,7 @@ namespace PetMais
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int indiceDaLinha = dgvListaDePets.CurrentRow.Index;
 				int id = PegarIdDaLinhaSelecionada();
-				Pet petParaRemover = PegarPetPeloId(id);
+				Pet petParaRemover = ListaDePets.PegarPetPeloId(id);
 				RemoverPet(petParaRemover);
 				PopularDados();
 			}
@@ -74,36 +75,12 @@ namespace PetMais
 		void PopularDados()
 		{
 			dgvListaDePets.DataSource = null;
-			dgvListaDePets.DataSource = Pets;
+			dgvListaDePets.DataSource = ListaDePets.PegarListaDePets();
 		}
 
 		void RemoverPet(Pet pet)
 		{
-			Pets.Remove(pet);
-		}
-
-		public Pet PegarPetPeloId(int id)
-		{
-			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
-
-			if (pet == null)
-			{
-				return null;
-			}
-
-			return pet;
-		}
-
-		public Pet PegarPetPeloId(int id)
-		{
-			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
-
-			if (pet == null)
-			{
-				return null;
-			}
-
-			return pet;
+			ListaDePets.RemoverPet(pet);
 		}
 
 		void VerificarLinhasSelecionada(int linhaSelecionada)
