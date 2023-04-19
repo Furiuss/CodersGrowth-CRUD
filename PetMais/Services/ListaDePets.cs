@@ -13,7 +13,7 @@ namespace PetMais.Services
 
 		private ListaDePets() { }
 
-		public static ListaDePets GetInstance()
+		public static ListaDePets GetInstancia()
 		{
 			{
 				if (instancia == null)
@@ -54,10 +54,10 @@ namespace PetMais.Services
 			Pets.Remove(pet);
 		}
 
-		public void EditarPet(Pet pet)
+		public void EditarPet(Pet petAtual, Pet petEditado)
 		{
-			int indice = Pets.IndexOf(pet);
-			Pets[indice] = pet;
+			int indice = Pets.IndexOf(petAtual);
+			Pets[indice] = petEditado;
 		}
 
 		private int AutoIncrementoDeId()
