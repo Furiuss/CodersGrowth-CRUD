@@ -8,7 +8,7 @@ namespace PetMais
 {
 	public partial class TelaDeVisualizacao : Form
 	{
-		Repositorio repositorio = new Repositorio();
+		PetRepositorio repositorio = new PetRepositorio();
 
 		public TelaDeVisualizacao()
 		{

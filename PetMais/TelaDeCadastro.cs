@@ -18,7 +18,7 @@ namespace PetMais
 	public partial class TelaDeCadastro : Form
 	{
 		private Pet Pet;
-		private Repositorio repositorio = new Repositorio();
+		private PetRepositorio repositorio = new PetRepositorio();
 
 		public TelaDeCadastro(Pet pet = null)
 		{

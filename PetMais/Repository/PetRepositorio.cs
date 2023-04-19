@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PetMais.Repository
 {
-	class Repositorio : IRepository
+	class PetRepositorio : IRepository
 	{
 		protected List<Pet> Pets = ListaDePets.GetInstancia();
 
