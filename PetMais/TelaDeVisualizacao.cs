@@ -7,7 +7,7 @@ namespace PetMais
 {
 	public partial class TelaDeVisualizacao : Form
 	{
-		private ListaDePets Pets;
+		private List<Pet> Pets;
 
 		public TelaDeVisualizacao()
 		{
@@ -33,7 +33,7 @@ namespace PetMais
 			{
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int id = PegarIdDaLinhaSelecionada();
-				Pet petParaEditar = Pets.PegarPetPeloId(id);
+				Pet petParaEditar = ListaDePets.PegarPetPeloId(id);
 				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(petParaEditar);
 
 				if (telaDeCadastro.ShowDialog() == DialogResult.OK)
@@ -57,7 +57,7 @@ namespace PetMais
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int indiceDaLinha = dgvListaDePets.CurrentRow.Index;
 				int id = PegarIdDaLinhaSelecionada();
-				Pet petParaRemover = Pets.PegarPetPeloId(id);
+				Pet petParaRemover = ListaDePets.PegarPetPeloId(id);
 				RemoverPet(petParaRemover);
 				PopularDados();
 			}
@@ -75,12 +75,12 @@ namespace PetMais
 		void PopularDados()
 		{
 			dgvListaDePets.DataSource = null;
-			dgvListaDePets.DataSource = Pets.PegarListaDePets();
+			dgvListaDePets.DataSource = ListaDePets.PegarListaDePets();
 		}
 
 		void RemoverPet(Pet pet)
 		{
-			Pets.RemoverPet(pet);
+			ListaDePets.RemoverPet(pet);
 		}
 
 		void VerificarLinhasSelecionada(int linhaSelecionada)

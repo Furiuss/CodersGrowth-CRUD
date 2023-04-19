@@ -8,29 +8,28 @@ namespace PetMais.Services
 {
 	public sealed class ListaDePets
 	{
-		private static ListaDePets instancia = new ListaDePets();
-		private List<Pet> Pets = new List<Pet>();
+		private static List<Pet> Pets;
 
 		private ListaDePets() { }
 
-		public static ListaDePets GetInstancia()
+		public static List<Pet> GetInstancia()
 		{
 			{
-				if (instancia == null)
+				if (Pets == null)
 				{
-					instancia = new ListaDePets();
+					Pets = new List<Pet>();
 				}
 
-				return instancia;
+				return Pets;
 			}
 		}
 
-		public List<Pet> PegarListaDePets()
+		public static List<Pet> PegarListaDePets()
 		{
 			return Pets;
 		}
 
-		public Pet PegarPetPeloId(int id)
+		public static Pet PegarPetPeloId(int id)
 		{
 			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
 
@@ -42,25 +41,26 @@ namespace PetMais.Services
 			return pet;
 		}
 
-		public void AdicionarPet(Pet pet)
+		public static void AdicionarPet(Pet pet)
 		{
 			pet.Id = AutoIncrementoDeId();
 			pet.DataDeCadastro = DateTime.Now;
 			Pets.Add(pet);
 		}
 
-		public void RemoverPet(Pet pet)
+		public static void RemoverPet(Pet pet)
 		{
 			Pets.Remove(pet);
 		}
 
-		public void EditarPet(Pet petAtual, Pet petEditado)
+		public static void EditarPet(Pet petEditado)
 		{
+			Pet petAtual = PegarPetPeloId(petEditado.Id);
 			int indice = Pets.IndexOf(petAtual);
 			Pets[indice] = petEditado;
 		}
 
-		private int AutoIncrementoDeId()
+		private static int AutoIncrementoDeId()
 		{
 			if (Pets.Count > 0)
 			{
