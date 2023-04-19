@@ -1,4 +1,5 @@
 ﻿using PetMais.Enums;
+using PetMais.Repository;
 using PetMais.Services;
 using System;
 using System.Collections.Generic;
@@ -17,13 +18,12 @@ namespace PetMais
 	public partial class TelaDeCadastro : Form
 	{
 		private Pet Pet;
-		private List<Pet> Pets;
+		private Repositorio repositorio = new Repositorio();
 
 		public TelaDeCadastro(Pet pet = null)
 		{
 			InitializeComponent();
 			ConfigurarComboBoxesComEnums();
-			Pets = ListaDePets.GetInstancia();
 			Pet = pet;
 		}
 
@@ -81,7 +81,7 @@ namespace PetMais
 			Pet novoPet = new Pet();
 			PegarDados(novoPet);
 			ValidarForm.ValidacaoDosCampos(novoPet);
-			ListaDePets.AdicionarPet(novoPet);
+			repositorio.AdicionarPet(novoPet);
 		}
 
 		void EditarPet()
@@ -92,7 +92,7 @@ namespace PetMais
 			petParaEditar.DataDeCadastro = petAtual.DataDeCadastro;
 			PegarDados(petParaEditar);
 			ValidarForm.ValidacaoDosCampos(petParaEditar);
-			ListaDePets.EditarPet(petParaEditar);
+			repositorio.EditarPet(petParaEditar);
 		}
 	}
 }
