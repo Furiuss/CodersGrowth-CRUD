@@ -24,42 +24,6 @@ namespace PetMais.Services
 			}
 		}
 
-		//public static List<Pet> PegarListaDePets()
-		//{
-		//	return Pets;
-		//}
-
-		//public static Pet PegarPetPeloId(int id)
-		//{
-		//	Pet pet = Pets.FirstOrDefault(i => i.Id == id);
-
-		//	if (pet == null)
-		//	{
-		//		return null;
-		//	}
-
-		//	return pet;
-		//}
-
-		//public static void AdicionarPet(Pet pet)
-		//{
-		//	pet.Id = AutoIncrementoDeId();
-		//	pet.DataDeCadastro = DateTime.Now;
-		//	Pets.Add(pet);
-		//}
-
-		//public static void RemoverPet(Pet pet)
-		//{
-		//	Pets.Remove(pet);
-		//}
-
-		//public static void EditarPet(Pet petEditado)
-		//{
-		//	Pet petAtual = PegarPetPeloId(petEditado.Id);
-		//	int indice = Pets.IndexOf(petAtual);
-		//	Pets[indice] = petEditado;
-		//}
-
 		public static int AutoIncrementoDeId()
 		{
 			if (Pets.Count > 0)
