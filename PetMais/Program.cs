@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Linq;
 
 using FluentMigrator.Runner;
@@ -11,9 +12,12 @@ namespace PetMais
 {
 	internal static class Program
 	{
+		private static string connectionString = ConfigurationManager.ConnectionStrings["PetMais"].ConnectionString;
+
 		[STAThread]
 		static void Main()
 		{
+
 			ApplicationConfiguration.Initialize();
 			Application.Run(new TelaDeVisualizacao());
 
@@ -30,7 +34,7 @@ namespace PetMais
 				.AddFluentMigratorCore()
 				.ConfigureRunner(rb => rb
 					.AddSqlServer()
-					.WithGlobalConnectionString("Data Source=DESKTOP-GMPDDMC")
+					.WithGlobalConnectionString(connectionString)
 					.ScanIn(typeof(CriacaoDePets).Assembly).For.Migrations())
 				.AddLogging(lb => lb.AddFluentMigratorConsole())
 				.BuildServiceProvider(false);
