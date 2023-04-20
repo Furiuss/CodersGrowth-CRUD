@@ -59,7 +59,7 @@ namespace PetMais
 				int indiceDaLinha = dgvListaDePets.CurrentRow.Index;
 				int id = PegarIdDaLinhaSelecionada();
 				Pet petParaRemover = bdRepositorio.PegarPetPeloId(id);
-				RemoverPet(petParaRemover);
+				RemoverPet(petParaRemover.Id);
 				PopularDados();
 			}
 			catch (MensagensDeErros ex)
@@ -79,9 +79,9 @@ namespace PetMais
 			dgvListaDePets.DataSource = bdRepositorio.PegarListaDePets();
 		}
 
-		void RemoverPet(Pet pet)
+		void RemoverPet(int id)
 		{
-			bdRepositorio.RemoverPet(pet);
+			bdRepositorio.RemoverPet(id);
 		}
 
 		void VerificarLinhasSelecionada(int linhaSelecionada)

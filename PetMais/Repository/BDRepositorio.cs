@@ -5,6 +5,7 @@ using PetMais.Services;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,11 +15,11 @@ namespace PetMais.Repository
 	public class BDRepositorio : IRepository
 	{
 		private static string connectionString = ConfigurationManager.ConnectionStrings["PetMais"].ConnectionString;
+		private SqlConnection con;
 
 		public List<Pet> PegarListaDePets()
 		{
-			SqlConnection con = new SqlConnection(connectionString);
-			con.Open();
+			CriarConexao();
 
 			List<Pet> pets = new List<Pet>();
 
@@ -59,8 +60,7 @@ namespace PetMais.Repository
 
 		public Pet PegarPetPeloId(int id)
 		{
-			SqlConnection con = new SqlConnection(connectionString);
-			con.Open();
+			CriarConexao();
 
 			var sql = $"SELECT * FROM PET WHERE Id = {id}";
 
@@ -103,8 +103,7 @@ namespace PetMais.Repository
 
 		public void AdicionarPet(Pet pet)
 		{
-			SqlConnection con = new SqlConnection(connectionString);
-			con.Open();
+			var con = CriarConexao();
 
 
 			var sql = "INSERT INTO Pet (Nome, Tipo, Sexo, Cor, DataDeNascimento, DataDeCadastro) " +
@@ -134,21 +133,20 @@ namespace PetMais.Repository
 			}
 		}
 
-		public void EditarPet(Pet petEditado)
+		public void EditarPet(Pet pet)
 		{
-			SqlConnection con = new SqlConnection(connectionString);
-			con.Open();
+			var con = CriarConexao();
 
 			var sql = "UPDATE Pet SET Nome=@Nome, Tipo=@Tipo, Sexo=@Sexo, Cor=@Cor, DataDeNascimento=@DataNascimento " +
-					  $"WHERE ID={petEditado.Id}";
+					  $"WHERE ID={pet.Id}";
 
 			SqlCommand cmd = new SqlCommand(sql, con);
 
-			cmd.Parameters.AddWithValue("@Nome", petEditado.Nome);
-			cmd.Parameters.AddWithValue("@Tipo", petEditado.Tipo.ToString());
-			cmd.Parameters.AddWithValue("@Sexo", petEditado.Sexo.ToString());
-			cmd.Parameters.AddWithValue("@Cor", petEditado.Cor.ToString());
-			cmd.Parameters.AddWithValue("@DataNascimento", petEditado.DataDeNascimento);
+			cmd.Parameters.AddWithValue("@Nome", pet.Nome);
+			cmd.Parameters.AddWithValue("@Tipo", pet.Tipo.ToString());
+			cmd.Parameters.AddWithValue("@Sexo", pet.Sexo.ToString());
+			cmd.Parameters.AddWithValue("@Cor", pet.Cor.ToString());
+			cmd.Parameters.AddWithValue("@DataNascimento", pet.DataDeNascimento);
 
 			try
 			{
@@ -164,10 +162,10 @@ namespace PetMais.Repository
 			}
 		}
 
-		public void RemoverPet(Pet pet)
+		public void RemoverPet(int id)
 		{
-			SqlConnection con = new SqlConnection(connectionString);
-			con.Open();
+			var con = CriarConexao();
+			Pet pet = PegarPetPeloId(id);
 
 			var sql = $"DELETE FROM Pet WHERE Id = {pet.Id}";
 
@@ -185,6 +183,13 @@ namespace PetMais.Repository
 			{
 				con.Close();
 			}
+		}
+
+		private SqlConnection CriarConexao()
+		{
+			con = new SqlConnection(connectionString);
+			con.Open();
+			return con;
 		}
 	}
 }

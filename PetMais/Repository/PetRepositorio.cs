@@ -43,8 +43,9 @@ namespace PetMais.Repository
 			return pet;
 		}
 
-		public void RemoverPet(Pet pet)
+		public void RemoverPet(int id)
 		{
+			Pet pet = PegarPetPeloId(id);
 			Pets.Remove(pet);
 		}
 	}
