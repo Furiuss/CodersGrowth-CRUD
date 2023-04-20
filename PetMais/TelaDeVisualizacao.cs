@@ -20,7 +20,7 @@ namespace PetMais
 
 		private void AoClicarBotaoCadastrar(object sender, EventArgs e)
 		{
-			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(new BDRepositorio());
+			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Repositorio);
 
 			if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 			{
@@ -37,7 +37,7 @@ namespace PetMais
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int id = PegarIdDaLinhaSelecionada();
 				Pet petParaEditar = Repositorio.PegarPetPeloId(id);
-				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(new BDRepositorio(), petParaEditar);
+				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Repositorio, petParaEditar);
 
 				if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 				{
