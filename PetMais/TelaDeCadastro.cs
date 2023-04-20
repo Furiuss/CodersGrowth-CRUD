@@ -18,7 +18,7 @@ namespace PetMais
 	public partial class TelaDeCadastro : Form
 	{
 		private Pet Pet;
-		private PetRepositorio repositorio = new PetRepositorio();
+		BDRepositorio bdRepositorio = new BDRepositorio();
 
 		public TelaDeCadastro(Pet pet = null)
 		{
@@ -81,7 +81,7 @@ namespace PetMais
 			Pet novoPet = new Pet();
 			PegarDados(novoPet);
 			ValidarForm.ValidacaoDosCampos(novoPet);
-			repositorio.AdicionarPet(novoPet);
+			bdRepositorio.AdicionarPet(novoPet);
 		}
 
 		void EditarPet()
@@ -92,7 +92,7 @@ namespace PetMais
 			petParaEditar.DataDeCadastro = petAtual.DataDeCadastro;
 			PegarDados(petParaEditar);
 			ValidarForm.ValidacaoDosCampos(petParaEditar);
-			repositorio.EditarPet(petParaEditar);
+			bdRepositorio.EditarPet(petParaEditar);
 		}
 	}
 }

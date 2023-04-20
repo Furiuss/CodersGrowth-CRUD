@@ -8,11 +8,12 @@ namespace PetMais
 {
 	public partial class TelaDeVisualizacao : Form
 	{
-		PetRepositorio repositorio = new PetRepositorio();
+		BDRepositorio bdRepositorio = new BDRepositorio();
 
 		public TelaDeVisualizacao()
 		{
 			InitializeComponent();
+			PopularDados();
 		}
 
 		private void AoClicarBotaoCadastrar(object sender, EventArgs e)
@@ -33,7 +34,7 @@ namespace PetMais
 			{
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int id = PegarIdDaLinhaSelecionada();
-				Pet petParaEditar = repositorio.PegarPetPeloId(id);
+				Pet petParaEditar = bdRepositorio.PegarPetPeloId(id);
 				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(petParaEditar);
 
 				if (telaDeCadastro.ShowDialog() == DialogResult.OK)
@@ -57,7 +58,7 @@ namespace PetMais
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int indiceDaLinha = dgvListaDePets.CurrentRow.Index;
 				int id = PegarIdDaLinhaSelecionada();
-				Pet petParaRemover = repositorio.PegarPetPeloId(id);
+				Pet petParaRemover = bdRepositorio.PegarPetPeloId(id);
 				RemoverPet(petParaRemover);
 				PopularDados();
 			}
@@ -75,12 +76,12 @@ namespace PetMais
 		void PopularDados()
 		{
 			dgvListaDePets.DataSource = null;
-			dgvListaDePets.DataSource = repositorio.PegarListaDePets();
+			dgvListaDePets.DataSource = bdRepositorio.PegarListaDePets();
 		}
 
 		void RemoverPet(Pet pet)
 		{
-			repositorio.RemoverPet(pet);
+			bdRepositorio.RemoverPet(pet);
 		}
 
 		void VerificarLinhasSelecionada(int linhaSelecionada)
