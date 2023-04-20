@@ -7,6 +7,8 @@ using FluentMigrator.Runner.Initialization;
 
 using Microsoft.Extensions.DependencyInjection;
 using PetMais.Migrations;
+using PetMais.Repository;
+using PetMais.Repository.Interfaces;
 
 namespace PetMais
 {
@@ -17,15 +19,14 @@ namespace PetMais
 		[STAThread]
 		static void Main()
 		{
-
-			ApplicationConfiguration.Initialize();
-			Application.Run(new TelaDeVisualizacao());
-
 			using (var serviceProvider = CreateServices())
 			using (var scope = serviceProvider.CreateScope())
 			{
 				UpdateDatabase(scope.ServiceProvider);
 			}
+
+			ApplicationConfiguration.Initialize();
+			Application.Run(new TelaDeVisualizacao(new BDRepositorio()));			
 		}
 
 		private static ServiceProvider CreateServices()

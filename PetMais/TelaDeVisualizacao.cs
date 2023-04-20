@@ -1,5 +1,6 @@
 using PetMais.Enums;
 using PetMais.Repository;
+using PetMais.Repository.Interfaces;
 using PetMais.Services;
 using System.Drawing;
 using System.Windows.Forms;
@@ -8,17 +9,18 @@ namespace PetMais
 {
 	public partial class TelaDeVisualizacao : Form
 	{
-		BDRepositorio bdRepositorio = new BDRepositorio();
+		IRepository Repositorio;
 
-		public TelaDeVisualizacao()
+		public TelaDeVisualizacao(IRepository repositorio)
 		{
 			InitializeComponent();
+			Repositorio = repositorio;
 			PopularDados();
 		}
 
 		private void AoClicarBotaoCadastrar(object sender, EventArgs e)
 		{
-			TelaDeCadastro telaDeCadastro = new TelaDeCadastro();
+			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(new BDRepositorio());
 
 			if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 			{
@@ -34,8 +36,8 @@ namespace PetMais
 			{
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int id = PegarIdDaLinhaSelecionada();
-				Pet petParaEditar = bdRepositorio.PegarPetPeloId(id);
-				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(petParaEditar);
+				Pet petParaEditar = Repositorio.PegarPetPeloId(id);
+				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(new BDRepositorio(), petParaEditar);
 
 				if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 				{
@@ -58,7 +60,7 @@ namespace PetMais
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int indiceDaLinha = dgvListaDePets.CurrentRow.Index;
 				int id = PegarIdDaLinhaSelecionada();
-				Pet petParaRemover = bdRepositorio.PegarPetPeloId(id);
+				Pet petParaRemover = Repositorio.PegarPetPeloId(id);
 				RemoverPet(petParaRemover.Id);
 				PopularDados();
 			}
@@ -76,12 +78,12 @@ namespace PetMais
 		void PopularDados()
 		{
 			dgvListaDePets.DataSource = null;
-			dgvListaDePets.DataSource = bdRepositorio.PegarListaDePets();
+			dgvListaDePets.DataSource = Repositorio.PegarListaDePets();
 		}
 
 		void RemoverPet(int id)
 		{
-			bdRepositorio.RemoverPet(id);
+			Repositorio.RemoverPet(id);
 		}
 
 		void VerificarLinhasSelecionada(int linhaSelecionada)

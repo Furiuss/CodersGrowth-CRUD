@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PetMais.Repository.Interfaces
 {
-	interface IRepository
+	public interface IRepository
 	{
 		public List<Pet> PegarListaDePets();
 		public Pet PegarPetPeloId(int id);
