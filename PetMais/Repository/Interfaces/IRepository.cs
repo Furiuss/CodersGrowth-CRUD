@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace PetMais.Repository.Interfaces
 {
-	interface IRepository
+	public interface IRepository
 	{
 		public List<Pet> PegarListaDePets();
 		public Pet PegarPetPeloId(int id);
 		public void AdicionarPet(Pet pet);
-		public void RemoverPet(Pet pet);
+		public void RemoverPet(int id);
 		public void EditarPet(Pet petEditado);
 	}
 }

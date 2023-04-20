@@ -1,5 +1,6 @@
 using PetMais.Enums;
 using PetMais.Repository;
+using PetMais.Repository.Interfaces;
 using PetMais.Services;
 using System.Drawing;
 using System.Windows.Forms;
@@ -8,16 +9,18 @@ namespace PetMais
 {
 	public partial class TelaDeVisualizacao : Form
 	{
-		PetRepositorio repositorio = new PetRepositorio();
+		IRepository Repositorio;
 
-		public TelaDeVisualizacao()
+		public TelaDeVisualizacao(IRepository repositorio)
 		{
 			InitializeComponent();
+			Repositorio = repositorio;
+			PopularDados();
 		}
 
 		private void AoClicarBotaoCadastrar(object sender, EventArgs e)
 		{
-			TelaDeCadastro telaDeCadastro = new TelaDeCadastro();
+			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Repositorio);
 
 			if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 			{
@@ -33,8 +36,8 @@ namespace PetMais
 			{
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int id = PegarIdDaLinhaSelecionada();
-				Pet petParaEditar = repositorio.PegarPetPeloId(id);
-				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(petParaEditar);
+				Pet petParaEditar = Repositorio.PegarPetPeloId(id);
+				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Repositorio, petParaEditar);
 
 				if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 				{
@@ -57,8 +60,8 @@ namespace PetMais
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int indiceDaLinha = dgvListaDePets.CurrentRow.Index;
 				int id = PegarIdDaLinhaSelecionada();
-				Pet petParaRemover = repositorio.PegarPetPeloId(id);
-				RemoverPet(petParaRemover);
+				Pet petParaRemover = Repositorio.PegarPetPeloId(id);
+				RemoverPet(petParaRemover.Id);
 				PopularDados();
 			}
 			catch (MensagensDeErros ex)
@@ -75,12 +78,12 @@ namespace PetMais
 		void PopularDados()
 		{
 			dgvListaDePets.DataSource = null;
-			dgvListaDePets.DataSource = repositorio.PegarListaDePets();
+			dgvListaDePets.DataSource = Repositorio.PegarListaDePets();
 		}
 
-		void RemoverPet(Pet pet)
+		void RemoverPet(int id)
 		{
-			repositorio.RemoverPet(pet);
+			Repositorio.RemoverPet(id);
 		}
 
 		void VerificarLinhasSelecionada(int linhaSelecionada)

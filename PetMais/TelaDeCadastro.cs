@@ -1,5 +1,6 @@
 ﻿using PetMais.Enums;
 using PetMais.Repository;
+using PetMais.Repository.Interfaces;
 using PetMais.Services;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,14 @@ namespace PetMais
 	public partial class TelaDeCadastro : Form
 	{
 		private Pet Pet;
-		private PetRepositorio repositorio = new PetRepositorio();
+		IRepository Repositorio;
 
-		public TelaDeCadastro(Pet pet = null)
+		public TelaDeCadastro(IRepository repositorio, Pet pet = null)
 		{
 			InitializeComponent();
 			ConfigurarComboBoxesComEnums();
 			Pet = pet;
+			Repositorio = repositorio;
 		}
 
 		private void AoClicarBotaoAdicionar(object sender, EventArgs e)
@@ -81,7 +83,7 @@ namespace PetMais
 			Pet novoPet = new Pet();
 			PegarDados(novoPet);
 			ValidarForm.ValidacaoDosCampos(novoPet);
-			repositorio.AdicionarPet(novoPet);
+			Repositorio.AdicionarPet(novoPet);
 		}
 
 		void EditarPet()
@@ -92,7 +94,7 @@ namespace PetMais
 			petParaEditar.DataDeCadastro = petAtual.DataDeCadastro;
 			PegarDados(petParaEditar);
 			ValidarForm.ValidacaoDosCampos(petParaEditar);
-			repositorio.EditarPet(petParaEditar);
+			Repositorio.EditarPet(petParaEditar);
 		}
 	}
 }
