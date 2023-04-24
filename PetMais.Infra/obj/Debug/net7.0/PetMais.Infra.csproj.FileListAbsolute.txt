@@ -1,0 +1,15 @@
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\obj\Debug\net7.0\PetMais.Infra.csproj.AssemblyReference.cache
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\obj\Debug\net7.0\PetMais.Infra.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\obj\Debug\net7.0\PetMais.Infra.AssemblyInfoInputs.cache
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\obj\Debug\net7.0\PetMais.Infra.AssemblyInfo.cs
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\obj\Debug\net7.0\PetMais.Infra.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\bin\Debug\net7.0\PetMais.Infra.deps.json
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\bin\Debug\net7.0\PetMais.Infra.dll
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\bin\Debug\net7.0\PetMais.Infra.pdb
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\bin\Debug\net7.0\PetMais.Dominio.dll
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\bin\Debug\net7.0\PetMais.Dominio.pdb
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\obj\Debug\net7.0\PetMais.Infra.csproj.CopyComplete
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\obj\Debug\net7.0\PetMais.Infra.dll
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\obj\Debug\net7.0\refint\PetMais.Infra.dll
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\obj\Debug\net7.0\PetMais.Infra.pdb
+C:\Users\Usuario\source\repos\PetMais\PetMais.Infra\obj\Debug\net7.0\ref\PetMais.Infra.dll

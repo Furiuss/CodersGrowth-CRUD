@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using PetMais.Enums;
+using PetMais.Infra.Services;
 using PetMais.Repository.Interfaces;
 using PetMais.Services;
 using System;
@@ -9,12 +10,14 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PetMais.Dominio.Notifications;
+using PetMais.Dominio.Notificacoes;
 
 namespace PetMais.Repository
 {
-	public class BDRepositorio : IRepository
+    public class BDRepositorio : IRepository
 	{
-		private static string connectionString = ConfigurationManager.ConnectionStrings["PetMais"].ConnectionString;
+		private static string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
 		private SqlConnection con;
 
 		public List<Pet> PegarListaDePets()
@@ -50,7 +53,7 @@ namespace PetMais.Repository
 			}
 			catch (MensagensDeErros ex)
 			{
-				throw new MensagensDeErros("Falha ao pegar lista de pets");
+				throw new MensagensDeErros(MensagensDeExcecoes.FALHA_PEGAR_PETS_DB);
 			}
 			finally
 			{
@@ -93,7 +96,7 @@ namespace PetMais.Repository
 			}
 			catch (MensagensDeErros ex)
 			{
-				throw new MensagensDeErros("Falha ao pegar lista de pets");
+				throw new Exception(MensagensDeExcecoes.FALHA_AO_PEGAR_PET_PELO_ID);
 			}
 			finally
 			{
@@ -125,7 +128,7 @@ namespace PetMais.Repository
 			}
 			catch (MensagensDeErros ex)
 			{
-				throw new MensagensDeErros("Falha ao cadastrar pet");
+				throw new Exception(MensagensDeExcecoes.FALHA_AO_CRIAR_NOVO_PET);
 			}
 			finally
 			{
@@ -154,7 +157,7 @@ namespace PetMais.Repository
 			}
 			catch (MensagensDeErros ex)
 			{
-				throw new MensagensDeErros("Falha ao editar pet");
+				throw new Exception(MensagensDeExcecoes.FALHA_AO_EDITAR_PET);
 			}
 			finally
 			{
@@ -177,7 +180,7 @@ namespace PetMais.Repository
 			}
 			catch (MensagensDeErros ex)
 			{
-				throw new MensagensDeErros("Falha ao remover pet");
+				throw new Exception(MensagensDeExcecoes.FALHA_AO_REMOVER_PET);
 			}
 			finally
 			{

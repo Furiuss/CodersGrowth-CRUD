@@ -1,4 +1,5 @@
-﻿using PetMais.Repository.Interfaces;
+﻿using PetMais.Dominio.Persistencia;
+using PetMais.Repository.Interfaces;
 using PetMais.Services;
 using System;
 using System.Collections.Generic;
@@ -8,32 +9,32 @@ using System.Threading.Tasks;
 
 namespace PetMais.Repository
 {
-	class PetRepositorio : IRepository
+	public class PetRepositorio : IRepository
 	{
-		protected List<Pet> Pets = ListaDePets.GetInstancia();
+		protected List<Pet> _pets = ListaDePets.GetInstancia();
 
 		public void AdicionarPet(Pet pet)
 		{
 			pet.Id = ListaDePets.AutoIncrementoDeId();
 			pet.DataDeCadastro = DateTime.Now;
-			Pets.Add(pet);
+			_pets.Add(pet);
 		}
 
 		public void EditarPet(Pet petEditado)
 		{
 			Pet petAtual = PegarPetPeloId(petEditado.Id);
-			int indice = Pets.IndexOf(petAtual);
-			Pets[indice] = petEditado;
+			int indice = _pets.IndexOf(petAtual);
+			_pets[indice] = petEditado;
 		}
 
 		public List<Pet> PegarListaDePets()
 		{
-			return Pets;
+			return _pets;
 		}
 
 		public Pet PegarPetPeloId(int id)
 		{
-			Pet pet = Pets.FirstOrDefault(i => i.Id == id);
+			Pet pet = _pets.FirstOrDefault(i => i.Id == id);
 
 			if (pet == null)
 			{
@@ -46,7 +47,7 @@ namespace PetMais.Repository
 		public void RemoverPet(int id)
 		{
 			Pet pet = PegarPetPeloId(id);
-			Pets.Remove(pet);
+			_pets.Remove(pet);
 		}
 	}
 }

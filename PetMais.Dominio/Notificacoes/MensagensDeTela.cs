@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PetMais.Services
+namespace PetMais.Dominio.Notifications
 {
-	class MensagensDeErros : Exception
+	public class MensagensDeErros : Exception
 	{
 		public MensagensDeErros(string message) : base(message)
 		{
