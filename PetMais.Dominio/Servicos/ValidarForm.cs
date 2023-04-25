@@ -1,4 +1,5 @@
-﻿using PetMais.Dominio.Notificacoes;
+﻿using PetMais.Dominio.Enums;
+using PetMais.Dominio.Notificacoes;
 using PetMais.Dominio.Notifications;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,15 @@ namespace PetMais.Services
 
 			if (CampoNaoPodeEstarVazio(pet.Sexo.ToString()))
 			{
-				erros += MensagensDeExcecoes.CampoNaoPodeEstarVazioMensagem("sexo") + "\n";
+				erros += MensagensDeExcecoes.CampoNaoPodeEstarVazioMensagem(CamposEnum.sexo.ToString()) + "\n";
 			}
 			if (CampoNaoPodeEstarVazio(pet.Cor.ToString()))
 			{
-				erros += MensagensDeExcecoes.CampoNaoPodeEstarVazioMensagem("cor") + "\n";
+				erros += MensagensDeExcecoes.CampoNaoPodeEstarVazioMensagem(CamposEnum.cor.ToString()) + "\n";
 			}
 			if (CampoNaoPodeEstarVazio(pet.Tipo.ToString()))
 			{
-				erros += MensagensDeExcecoes.CampoNaoPodeEstarVazioMensagem("tipo") + "\n";
+				erros += MensagensDeExcecoes.CampoNaoPodeEstarVazioMensagem(CamposEnum.tipo.ToString()) + "\n";
 			}
 			if (Minimo2LetrasEMAximo20Letras(pet.Nome))
 			{

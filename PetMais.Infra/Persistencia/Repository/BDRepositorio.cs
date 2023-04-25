@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PetMais.Dominio.Notifications;
 using PetMais.Dominio.Notificacoes;
+using PetMais.Infra.Servicos;
 
 namespace PetMais.Repository
 {
@@ -26,7 +27,7 @@ namespace PetMais.Repository
 
 			List<Pet> pets = new List<Pet>();
 
-			var sql = "SELECT * FROM Pet";
+			var sql = ComandosSql.PegarTodosPets;
 
 			SqlCommand cmd = new SqlCommand(sql, con);
 
@@ -65,7 +66,7 @@ namespace PetMais.Repository
 		{
 			CriarConexao();
 
-			var sql = $"SELECT * FROM PET WHERE Id = {id}";
+			var sql = ComandosSql.PegarPetPeloIdSql(id);
 
 			SqlCommand cmd = new SqlCommand(sql, con);
 
@@ -109,8 +110,7 @@ namespace PetMais.Repository
 			var con = CriarConexao();
 
 
-			var sql = "INSERT INTO Pet (Nome, Tipo, Sexo, Cor, DataDeNascimento, DataDeCadastro) " +
-				   "VALUES (@Nome, @Tipo, @Sexo, @Cor, @DataDeNascimento, @DataDeCadastro)";
+			var sql = ComandosSql.AdicionarNovoPet;
 
 			SqlCommand cmd = new SqlCommand(sql, con);
 
@@ -140,8 +140,7 @@ namespace PetMais.Repository
 		{
 			var con = CriarConexao();
 
-			var sql = "UPDATE Pet SET Nome=@Nome, Tipo=@Tipo, Sexo=@Sexo, Cor=@Cor, DataDeNascimento=@DataNascimento " +
-					  $"WHERE ID={pet.Id}";
+			var sql = ComandosSql.EditarPet(pet.Id);
 
 			SqlCommand cmd = new SqlCommand(sql, con);
 
@@ -170,7 +169,7 @@ namespace PetMais.Repository
 			var con = CriarConexao();
 			Pet pet = PegarPetPeloId(id);
 
-			var sql = $"DELETE FROM Pet WHERE Id = {pet.Id}";
+			var sql = ComandosSql.RemoverPet(pet.Id);
 
 			SqlCommand cmd = new SqlCommand(sql, con);
 
