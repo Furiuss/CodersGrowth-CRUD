@@ -1,6 +1,7 @@
 ﻿using LinqToDB;
 using PetMais.Dominio.Notificacoes;
 using PetMais.Dominio.Notifications;
+using PetMais.Infra.Servicos;
 using PetMais.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace PetMais.Infra.Persistencia.Repositorio
 {
 	public class LINQ2DBRepositorio : LinqToDB.Data.DataConnection, IRepository
 	{
-		public LINQ2DBRepositorio() : base("ConnectionString") { }
+		public LINQ2DBRepositorio() { }
 
 		public ITable<Pet> _pet => this.GetTable<Pet>();
 
@@ -23,6 +24,7 @@ namespace PetMais.Infra.Persistencia.Repositorio
 
 			try
 			{
+				pet.DataDeCadastro = DateTime.Now;
 				conexaoLinq2db.Insert(pet);
 			}
 			catch (MensagensDeErros ex)
@@ -49,9 +51,8 @@ namespace PetMais.Infra.Persistencia.Repositorio
 		{
 			using var conexaoLinq2db = CriarConexao();
 			try
-			{
-				var pets = from p in conexaoLinq2db._pet select p;
-				return pets.ToList();
+			{				
+				return _pet.ToList();
 			}
 			catch (MensagensDeErros ex)
 			{

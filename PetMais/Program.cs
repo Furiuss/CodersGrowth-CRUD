@@ -4,8 +4,10 @@ using System.Linq;
 
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Initialization;
-
+using LinqToDB.Data;
 using Microsoft.Extensions.DependencyInjection;
+using PetMais.Infra.Configuracoes;
+using PetMais.Infra.Persistencia.Repositorio;
 using PetMais.Infra.Services;
 using PetMais.Repository;
 using PetMais.Repository.Interfaces;
@@ -17,6 +19,8 @@ namespace PetMais
 		[STAThread]
 		static void Main()
 		{
+			DataConnection.DefaultSettings = new MinhasConfiguracoes();
+
 			using (var serviceProvider = ConfiguracaoDeMigracoes.CriarServicos())
 			using (var scope = serviceProvider.CreateScope())
 			{
@@ -24,7 +28,7 @@ namespace PetMais
 			}
 
 			ApplicationConfiguration.Initialize();
-			Application.Run(new TelaDeVisualizacao(new BDRepositorio()));			
+			Application.Run(new TelaDeVisualizacao(new LINQ2DBRepositorio()));
 		}
 	}
 }
