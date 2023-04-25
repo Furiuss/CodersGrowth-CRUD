@@ -1,4 +1,4 @@
-﻿using PetMais.Dominio.Persistencia;
+﻿using PetMais.Dominio.Entidades;
 using PetMais.Repository.Interfaces;
 using PetMais.Services;
 using System;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PetMais.Repository
 {
-	public class PetRepositorio : IRepository
+    public class PetRepositorio : IRepository
 	{
 		protected List<Pet> _pets = ListaDePets.GetInstancia();
 

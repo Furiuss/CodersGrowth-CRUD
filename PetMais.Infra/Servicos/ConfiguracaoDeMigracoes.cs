@@ -10,25 +10,25 @@ using System.Threading.Tasks;
 
 namespace PetMais.Infra.Services
 {
-	public class MigrationsConfig
+	public class ConfiguracaoDeMigracoes
 	{
 		private static string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
 
-		public static ServiceProvider CreateServices()
+		public static ServiceProvider CriarServicos()
 		{
 			return new ServiceCollection()
 				.AddFluentMigratorCore()
 				.ConfigureRunner(rb => rb
 					.AddSqlServer()
 					.WithGlobalConnectionString(connectionString)
-					.ScanIn(typeof(CriacaoDePets).Assembly).For.Migrations())
+					.ScanIn(typeof(_20230419131240_CriacaoDePets).Assembly).For.Migrations())
 				.AddLogging(lb => lb.AddFluentMigratorConsole())
 				.BuildServiceProvider(false);
 		}
 
-		public static void UpdateDatabase(IServiceProvider serviceProvider)
+		public static void AtualizarBancoDeDados(IServiceProvider provedorDeServico)
 		{
-			var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+			var runner = provedorDeServico.GetRequiredService<IMigrationRunner>();
 			runner.MigrateUp();
 		}
 	}

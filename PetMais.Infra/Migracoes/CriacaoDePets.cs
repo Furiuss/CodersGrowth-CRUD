@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace PetMais.Migrations
 {
 	[Migration(20230419131240)]
-	public class CriacaoDePets : Migration
+	public class _20230419131240_CriacaoDePets : Migration
 	{
 
 		public override void Up()

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PetMais.Dominio.Persistencia
+namespace PetMais.Dominio.Entidades
 {
     public sealed class ListaDePets
     {

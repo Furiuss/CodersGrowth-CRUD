@@ -17,10 +17,10 @@ namespace PetMais
 		[STAThread]
 		static void Main()
 		{
-			using (var serviceProvider = MigrationsConfig.CreateServices())
+			using (var serviceProvider = ConfiguracaoDeMigracoes.CriarServicos())
 			using (var scope = serviceProvider.CreateScope())
 			{
-				MigrationsConfig.UpdateDatabase(scope.ServiceProvider);
+				ConfiguracaoDeMigracoes.AtualizarBancoDeDados(scope.ServiceProvider);
 			}
 
 			ApplicationConfiguration.Initialize();
