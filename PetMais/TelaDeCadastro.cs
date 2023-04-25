@@ -18,15 +18,15 @@ namespace PetMais
 {
 	public partial class TelaDeCadastro : Form
 	{
-		private Pet Pet;
-		IRepository Repositorio;
+		private Pet _pet;
+		IRepository _repositorio;
 
 		public TelaDeCadastro(IRepository repositorio, Pet pet = null)
 		{
 			InitializeComponent();
 			ConfigurarComboBoxesComEnums();
-			Pet = pet;
-			Repositorio = repositorio;
+			_pet = pet;
+			_repositorio = repositorio;
 		}
 
 		private void AoClicarBotaoAdicionar(object sender, EventArgs e)
@@ -35,7 +35,7 @@ namespace PetMais
 			{
 				Pet pet;
 
-				if (Pet != null)
+				if (_pet != null)
 				{
 					EditarPet();
 				}
@@ -47,7 +47,7 @@ namespace PetMais
 				this.DialogResult = DialogResult.OK;
 
 			}
-			catch (MensagensDeErros ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message);
 			}
@@ -62,11 +62,11 @@ namespace PetMais
 
 		private void TelaDeCadastro_Load(object sender, EventArgs e)
 		{
-			this.txtNome.Text = Pet?.Nome;
-			this.cbCor.Text = Pet?.Cor.ToString();
-			this.cbTipo.Text = Pet?.Tipo.ToString();
-			this.cbSexo.Text = Pet?.Sexo.ToString();
-			this.dtpNascimento.Value = Pet is null ? DateTime.Now : Pet.DataDeNascimento;
+			this.txtNome.Text = _pet?.Nome;
+			this.cbCor.Text = _pet?.Cor.ToString();
+			this.cbTipo.Text = _pet?.Tipo.ToString();
+			this.cbSexo.Text = _pet?.Sexo.ToString();
+			this.dtpNascimento.Value = _pet is null ? DateTime.Now : _pet.DataDeNascimento;
 		}
 
 		void PegarDados(Pet pet)
@@ -83,18 +83,18 @@ namespace PetMais
 			Pet novoPet = new Pet();
 			PegarDados(novoPet);
 			ValidarForm.ValidacaoDosCampos(novoPet);
-			Repositorio.AdicionarPet(novoPet);
+			_repositorio.AdicionarPet(novoPet);
 		}
 
 		void EditarPet()
 		{
 			Pet petParaEditar = new Pet();
-			Pet petAtual = Pet;
+			Pet petAtual = _pet;
 			petParaEditar.Id = petAtual.Id;
 			petParaEditar.DataDeCadastro = petAtual.DataDeCadastro;
 			PegarDados(petParaEditar);
 			ValidarForm.ValidacaoDosCampos(petParaEditar);
-			Repositorio.EditarPet(petParaEditar);
+			_repositorio.EditarPet(petParaEditar);
 		}
 	}
 }

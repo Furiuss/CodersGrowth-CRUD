@@ -4,23 +4,24 @@ using PetMais.Repository.Interfaces;
 using PetMais.Services;
 using System.Drawing;
 using System.Windows.Forms;
+using PetMais.Dominio.Notifications;
 
 namespace PetMais
 {
 	public partial class TelaDeVisualizacao : Form
 	{
-		IRepository Repositorio;
+		IRepository _repositorio;
 
 		public TelaDeVisualizacao(IRepository repositorio)
 		{
 			InitializeComponent();
-			Repositorio = repositorio;
+			_repositorio = repositorio;
 			PopularDados();
 		}
 
 		private void AoClicarBotaoCadastrar(object sender, EventArgs e)
 		{
-			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Repositorio);
+			TelaDeCadastro telaDeCadastro = new TelaDeCadastro(_repositorio);
 
 			if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 			{
@@ -36,8 +37,8 @@ namespace PetMais
 			{
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int id = PegarIdDaLinhaSelecionada();
-				Pet petParaEditar = Repositorio.PegarPetPeloId(id);
-				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(Repositorio, petParaEditar);
+				Pet petParaEditar = _repositorio.PegarPetPeloId(id);
+				TelaDeCadastro telaDeCadastro = new TelaDeCadastro(_repositorio, petParaEditar);
 
 				if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 				{
@@ -60,7 +61,7 @@ namespace PetMais
 				VerificarLinhasSelecionada(linhasSelecionadas);
 				int indiceDaLinha = dgvListaDePets.CurrentRow.Index;
 				int id = PegarIdDaLinhaSelecionada();
-				Pet petParaRemover = Repositorio.PegarPetPeloId(id);
+				Pet petParaRemover = _repositorio.PegarPetPeloId(id);
 				RemoverPet(petParaRemover.Id);
 				PopularDados();
 			}
@@ -78,24 +79,25 @@ namespace PetMais
 		void PopularDados()
 		{
 			dgvListaDePets.DataSource = null;
-			dgvListaDePets.DataSource = Repositorio.PegarListaDePets();
+			dgvListaDePets.DataSource = _repositorio.PegarListaDePets().ToList();
 		}
 
 		void RemoverPet(int id)
 		{
-			Repositorio.RemoverPet(id);
+			_repositorio.RemoverPet(id);
 		}
 
 		void VerificarLinhasSelecionada(int linhaSelecionada)
 		{
-			if (linhaSelecionada > 1)
+			const int unicaLinhaSelecionada = 1;
+			if (linhaSelecionada > unicaLinhaSelecionada)
 			{
-				throw new MensagensDeErros("Selecione apenas uma linha para efetuar a edi��o");
+				throw new MensagensDeErros("Selecione apenas uma linha para efetuar a edição");
 			}
 
-			if (linhaSelecionada < 1)
+			if (linhaSelecionada < unicaLinhaSelecionada)
 			{
-				throw new MensagensDeErros("Selecione pelo menos uma linha para efetuar a edi��o");
+				throw new MensagensDeErros("Selecione pelo menos uma linha para efetuar a edição");
 			}
 		}		
 	}

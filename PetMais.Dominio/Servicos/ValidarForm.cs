@@ -1,4 +1,7 @@
-﻿using System;
+﻿using PetMais.Dominio.Enums;
+using PetMais.Dominio.Notificacoes;
+using PetMais.Dominio.Notifications;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,31 +18,31 @@ namespace PetMais.Services
 
 			if (CampoNaoPodeEstarVazio(pet.Sexo.ToString()))
 			{
-				erros += "O campo sexo precisa ser selecionado\n";
+				erros += MensagensDeExcecoes.CampoNaoPodeEstarVazioMensagem(CamposEnum.sexo.ToString()) + "\n";
 			}
 			if (CampoNaoPodeEstarVazio(pet.Cor.ToString()))
 			{
-				erros += "O campo cor precisa ser selecionado\n";
+				erros += MensagensDeExcecoes.CampoNaoPodeEstarVazioMensagem(CamposEnum.cor.ToString()) + "\n";
 			}
 			if (CampoNaoPodeEstarVazio(pet.Tipo.ToString()))
 			{
-				erros += "O campo tipo precisa ser selecionado\n";
+				erros += MensagensDeExcecoes.CampoNaoPodeEstarVazioMensagem(CamposEnum.tipo.ToString()) + "\n";
 			}
 			if (Minimo2LetrasEMAximo20Letras(pet.Nome))
 			{
-				erros += "O nome tem que ter entre 2 e 20 letras\n";
+				erros += MensagensDeExcecoes.MINIMO_2_LETRAS_MAXIMO_20 + "\n";
 			}
 			if (NomeNaoPodeConterNumeroOuCaractereEspecial(pet.Nome))
 			{
-				erros += "O nome não pode conter números ou caracteres especiais\n";
+				erros += MensagensDeExcecoes.O_NOME_NAO_PODE_TER_NUMEROS_E_ESPECIAIS + "\n";
 			}
 			if (DataDeNascimentoNaoPodeSerFuturaADataAtual(pet.DataDeNascimento))
 			{
-				erros += "Data de nascimento não pode ser futura\n";
+				erros += MensagensDeExcecoes.DATA_DE_NASCIMENTO_NAO_PODE_SER_FUTURA + "\n";
 			}
 			if (IdadeNaoPodeUltrapassar150Anos(pet.DataDeNascimento))
 			{
-				erros += "Idade do pet não pode ultrapassar 150 anos\n";
+				erros += MensagensDeExcecoes.IDADE_NAO_ULTRAPASSA_150_ANOS + "\n";
 			}
 
 			if (erros.Length > 1)
