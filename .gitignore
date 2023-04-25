@@ -1,4 +1,8 @@
 PetMais/bin/
 **/Properties/
 PetMais/obj/
+PetMais.Infra/bin/
+PetMais.Infra/obj/
+PetMais.Dominio/bin/
+PetMais.Dominio/obj/
 .vs/
