@@ -65,8 +65,8 @@ namespace PetMais.Infra.Persistencia.Repositorio
 			using var conexaoLinq2db = CriarConexao();
 			try
 			{
-				var pet = from p in conexaoLinq2db._pet where p.Id == id select p;
-				return (Pet)pet;
+				var pet = conexaoLinq2db._pet.SingleOrDefault(p => p.Id == id);
+				return pet;
 			}
 			catch (MensagensDeErros ex)
 			{

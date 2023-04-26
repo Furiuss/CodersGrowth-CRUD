@@ -25,7 +25,7 @@ namespace PetMais
 
 			if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 			{
-				//PopularDados();
+				PopularDados();
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace PetMais
 
 				if (telaDeCadastro.ShowDialog() == DialogResult.OK)
 				{
-					//PopularDados();
+					PopularDados();
 				}
 			}
 			catch (MensagensDeErros ex)
@@ -63,7 +63,7 @@ namespace PetMais
 				int id = PegarIdDaLinhaSelecionada();
 				Pet petParaRemover = _repositorio.PegarPetPeloId(id);
 				RemoverPet(petParaRemover.Id);
-				//PopularDados();
+				PopularDados();
 			}
 			catch (MensagensDeErros ex)
 			{

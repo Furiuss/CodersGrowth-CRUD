@@ -9,9 +9,7 @@ namespace PetMais.Enums
 	public enum SexoPet
 	{
 		SELECIONAR,
-		[LinqToDB.Mapping.MapValue(Value = "MASCULINO")]
 		MASCULINO,
-		[LinqToDB.Mapping.MapValue(Value = "FEMININO")]
 		FEMININO
 	}
 }
