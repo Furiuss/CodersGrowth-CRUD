@@ -11,8 +11,8 @@ namespace PetMais.Enums
 		SELECIONAR,
 		GATO,
 		CACHORRO,
-		PEIXE,
 		TARTARUGA,
+		PEIXE,
 		COELHO,
 		PATO,
 		PASSARO

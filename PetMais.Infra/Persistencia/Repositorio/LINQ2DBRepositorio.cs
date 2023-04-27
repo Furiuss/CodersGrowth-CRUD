@@ -1,21 +1,22 @@
 ﻿using LinqToDB;
+using LinqToDB.Data;
 using PetMais.Dominio.Notificacoes;
 using PetMais.Dominio.Notifications;
+using PetMais.Infra.Servicos;
 using PetMais.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
+using LinqToDB.DataProvider.SqlServer;
+using System.Data.SqlClient;
 
 namespace PetMais.Infra.Persistencia.Repositorio
 {
-	public class LINQ2DBRepositorio : LinqToDB.Data.DataConnection, IRepository
+	public class LINQ2DBRepositorio : IRepository
 	{
-		public LINQ2DBRepositorio() : base("ConnectionString") { }
+		public LINQ2DBRepositorio() { }
 
-		public ITable<Pet> _pet => this.GetTable<Pet>();
+		private DataConnection conexao;
+
+		public ITable<Pet> _pet;
 
 		public void AdicionarPet(Pet pet)
 		{
@@ -23,6 +24,7 @@ namespace PetMais.Infra.Persistencia.Repositorio
 
 			try
 			{
+				pet.DataDeCadastro = DateTime.Now;
 				conexaoLinq2db.Insert(pet);
 			}
 			catch (MensagensDeErros ex)
@@ -50,8 +52,7 @@ namespace PetMais.Infra.Persistencia.Repositorio
 			using var conexaoLinq2db = CriarConexao();
 			try
 			{
-				var pets = from p in conexaoLinq2db._pet select p;
-				return pets.ToList();
+				return conexaoLinq2db.GetTable<Pet>().ToList();
 			}
 			catch (MensagensDeErros ex)
 			{
@@ -64,7 +65,7 @@ namespace PetMais.Infra.Persistencia.Repositorio
 			using var conexaoLinq2db = CriarConexao();
 			try
 			{
-				var pet = from p in conexaoLinq2db._pet where p.Id == id select p;
+				var pet = conexaoLinq2db.GetTable<Pet>().FirstOrDefault(p => p.Id == id);
 				return (Pet)pet;
 			}
 			catch (MensagensDeErros ex)
@@ -87,9 +88,11 @@ namespace PetMais.Infra.Persistencia.Repositorio
 			}
 		}
 
-		private LINQ2DBRepositorio CriarConexao()
+		private DataConnection CriarConexao()
 		{
-			return new LINQ2DBRepositorio();
+			string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;			
+			conexao = SqlServerTools.CreateDataConnection(connectionString);
+			return conexao;
 		}
 	}
 }

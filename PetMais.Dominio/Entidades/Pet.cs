@@ -13,16 +13,22 @@ namespace PetMais
 	{
 		[PrimaryKey, Identity]
 		public int Id { get; set; }
+
 		[NotNull]
 		public string Nome { get; set; }
+
 		[NotNull]
 		public TipoPet Tipo { get; set; }
+
 		[NotNull]
 		public CorPet Cor { get; set;}
+
 		[NotNull]
 		public SexoPet Sexo { get; set; }
+
 		[NotNull]
 		public DateTime DataDeNascimento { get; set; }
+
 		[NotNull]
 		public DateTime DataDeCadastro { get; set; }
 
