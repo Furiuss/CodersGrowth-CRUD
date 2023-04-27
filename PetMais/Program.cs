@@ -6,7 +6,6 @@ using FluentMigrator.Runner;
 using FluentMigrator.Runner.Initialization;
 using LinqToDB.Data;
 using Microsoft.Extensions.DependencyInjection;
-using PetMais.Infra.Configuracoes;
 using PetMais.Infra.Persistencia.Repositorio;
 using PetMais.Infra.Services;
 using PetMais.Repository;
@@ -19,7 +18,6 @@ namespace PetMais
 		[STAThread]
 		static void Main()
 		{
-			DataConnection.DefaultSettings = new MinhasConfiguracoes();
 
 			using (var serviceProvider = ConfiguracaoDeMigracoes.CriarServicos())
 			using (var scope = serviceProvider.CreateScope())
