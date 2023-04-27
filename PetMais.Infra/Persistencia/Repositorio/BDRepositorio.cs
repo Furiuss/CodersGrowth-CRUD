@@ -116,9 +116,9 @@ namespace PetMais.Repository
 
 
 			cmd.Parameters.AddWithValue("@Nome", pet.Nome);
-			cmd.Parameters.AddWithValue("@Tipo", pet.Tipo.ToString());
-			cmd.Parameters.AddWithValue("@Sexo", pet.Sexo.ToString());
-			cmd.Parameters.AddWithValue("@Cor", pet.Cor.ToString());
+			cmd.Parameters.AddWithValue("@Tipo", ((int)pet.Tipo).ToString());
+			cmd.Parameters.AddWithValue("@Sexo", ((int)pet.Sexo).ToString());
+			cmd.Parameters.AddWithValue("@Cor", ((int)pet.Cor).ToString());
 			cmd.Parameters.AddWithValue("@DataDeNascimento", pet.DataDeNascimento);
 			cmd.Parameters.AddWithValue("@DataDeCadastro", DateTime.Now);
 
@@ -145,9 +145,9 @@ namespace PetMais.Repository
 			SqlCommand cmd = new SqlCommand(sql, con);
 
 			cmd.Parameters.AddWithValue("@Nome", pet.Nome);
-			cmd.Parameters.AddWithValue("@Tipo", pet.Tipo.ToString());
-			cmd.Parameters.AddWithValue("@Sexo", pet.Sexo.ToString());
-			cmd.Parameters.AddWithValue("@Cor", pet.Cor.ToString());
+			cmd.Parameters.AddWithValue("@Tipo", ((int)pet.Tipo).ToString());
+			cmd.Parameters.AddWithValue("@Sexo", ((int)pet.Sexo).ToString());
+			cmd.Parameters.AddWithValue("@Cor", ((int)pet.Cor).ToString());
 			cmd.Parameters.AddWithValue("@DataNascimento", pet.DataDeNascimento);
 
 			try
