@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.StaticFiles;
+using PetMais;
 using PetMais.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<Pet>();
 
 var app = builder.Build();
 
