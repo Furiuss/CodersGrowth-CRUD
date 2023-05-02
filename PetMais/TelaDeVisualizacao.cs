@@ -73,7 +73,8 @@ namespace PetMais
 
 		int PegarIdDaLinhaSelecionada()
 		{
-			return int.Parse(dgvListaDePets.SelectedRows[0].Cells[0].Value.ToString());
+			const int posicaoInicial = 0;
+			return int.Parse(dgvListaDePets.SelectedRows[posicaoInicial].Cells[posicaoInicial].Value.ToString());
 		}
 
 		void PopularDados()
