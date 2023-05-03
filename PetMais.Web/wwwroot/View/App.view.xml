@@ -1,16 +1,12 @@
 ﻿<mvc:View controllerName="sap.ui.petmais.controller.App"
-  xmlns="sap.m"
-  xmlns:mvc="sap.ui.core.mvc" displayBlock="true">
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc" displayBlock="true">
 	<Shell>
 		<App class="myAppDemoWT">
 			<pages>
-				<Page title="{i18n>homePageTitle}">
+				<Page title="{i18n>tituloPaginaInicial}">
 					<content>
-						<Panel headerText="{i18n>homePanelTitle}" class="sapUiResponsiveMargin" width="auto">
-							<content>
-								<FormattedText htmlText="Hello {i18n>homePageTitle}" class="sapUiSmallMargin sapThemeHighlight-asColor" />
-							</content>
-						</Panel>
+						<mvc:XMLView viewName="sap.ui.petmais.view.TabelaDePets"/>
 					</content>
 				</Page>
 			</pages>

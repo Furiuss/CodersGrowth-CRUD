@@ -1,0 +1,53 @@
+<mvc:View controllerName="sap.ui.petmais.controller.TabelaDePets"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc">
+	<Table 
+		id="petsTable" 
+		items="{/pets}" 
+		paste="onPaste" 
+		ariaLabelledBy="title"
+		>
+		<columns>
+			<Column width="6rem">
+				<m:Label text="{i18n>lblId}" />
+				<m:Text text="{id}" wrapping="false" />
+			</Column>
+			<Column width="11rem">
+				<m:Label text="{i18n>lblNome}" />
+					<m:Text text="{nome}" wrapping="false" />
+			</Column>
+			<Column width="11rem">
+				<m:Label text="{i18n>lblTipo}" />
+					<m:Text text="{tipo}" wrapping="false" />
+			</Column>
+			<Column width="11rem">
+				<m:Label text="{i18n>lblCor}" />
+					<m:Text text="{cor}" wrapping="false" />
+			</Column>
+			<Column width="11rem">
+				<m:Label text="{i18n>lblSexo}" />
+					<m:Text text="{sexo}" wrapping="false" />
+			</Column>
+			<!-- <Column width="11rem" hAlign="Center">
+						<m:Label text="Delivery Date" />
+						<template>
+							<m:DatePicker value="{
+								path: 'DeliveryDate',
+								type: 'sap.ui.model.type.Date',
+								formatOptions: {source: {pattern: 'timestamp'}}
+							}"/>
+						</template>
+					</Column>
+               <Column width="11rem" hAlign="Center">
+						<m:Label text="Delivery Date" />
+						<template>
+							<m:DatePicker value="{
+								path: 'DeliveryDate',
+								type: 'sap.ui.model.type.Date',
+								formatOptions: {source: {pattern: 'timestamp'}}
+							}"/>
+						</template>
+					</Column> -->
+		</columns>
+	</Table>
+</mvc:View>
