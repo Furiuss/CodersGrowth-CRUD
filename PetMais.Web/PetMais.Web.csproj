@@ -18,7 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\PetMais.Dominio\PetMais.Dominio.csproj" />
     <ProjectReference Include="..\PetMais.Infra\PetMais.Infra.csproj" />
-    <ProjectReference Include="..\PetMais\PetMais.UI.csproj" />
   </ItemGroup>
 
 </Project>

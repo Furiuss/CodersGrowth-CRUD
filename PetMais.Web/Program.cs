@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.StaticFiles;
 using PetMais;
+using PetMais.Infra.Persistencia.Repositorio;
+using PetMais.Repository.Interfaces;
 using PetMais.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddTransient<Pet>();
+builder.Services.AddScoped<IRepository, LINQ2DBRepositorio>();
 
 var app = builder.Build();
 
@@ -38,5 +40,7 @@ app.UseEndpoints(endpoints =>
 app.UseAuthorization();
 
 app.MapControllers();
+
+
 
 app.Run();
