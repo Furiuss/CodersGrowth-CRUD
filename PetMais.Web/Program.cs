@@ -3,12 +3,18 @@ using PetMais;
 using PetMais.Infra.Persistencia.Repositorio;
 using PetMais.Repository.Interfaces;
 using PetMais.Web;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepository, LINQ2DBRepositorio>();
+
+builder.Services.AddControllers().AddJsonOptions(x =>
+{
+	x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 var app = builder.Build();
 
