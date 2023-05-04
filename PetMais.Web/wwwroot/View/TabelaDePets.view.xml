@@ -1,53 +1,80 @@
 <mvc:View controllerName="sap.ui.petmais.controller.TabelaDePets"
 	xmlns="sap.m"
-	xmlns:mvc="sap.ui.core.mvc">
-	<Table 
-		id="petsTable" 
-		items="{/pets}" 
-		paste="onPaste" 
-		ariaLabelledBy="title"
-		>
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	>	
+	<Table id="petsTable" items="{/pets}">
+		<headerToolbar>
+			<Toolbar>
+				<content>
+					<Button icon="sap-icon://add" text="Adicionar Pet" press=".aoClicarBotaoAdicionar"/>
+					<SearchField width="80%" placeholder="pesquisar" search=".aoPesquisar"/>
+				</content>
+			</Toolbar>
+		</headerToolbar>
 		<columns>
-			<Column width="6rem">
-				<m:Label text="{i18n>lblId}" />
-				<m:Text text="{id}" wrapping="false" />
+			<Column width="4rem">
+				<Label text="Id"/>
 			</Column>
-			<Column width="11rem">
-				<m:Label text="{i18n>lblNome}" />
-					<m:Text text="{nome}" wrapping="false" />
+			<Column>
+				<Label text="Nome"/>
 			</Column>
-			<Column width="11rem">
-				<m:Label text="{i18n>lblTipo}" />
-					<m:Text text="{tipo}" wrapping="false" />
+			<Column>
+				<Label text="Tipo"/>
 			</Column>
-			<Column width="11rem">
-				<m:Label text="{i18n>lblCor}" />
-					<m:Text text="{cor}" wrapping="false" />
+			<Column>
+				<Label text="Cor"/>
 			</Column>
-			<Column width="11rem">
-				<m:Label text="{i18n>lblSexo}" />
-					<m:Text text="{sexo}" wrapping="false" />
+			<Column>
+				<Label text="Sexo"/>
 			</Column>
-			<!-- <Column width="11rem" hAlign="Center">
-						<m:Label text="Delivery Date" />
-						<template>
-							<m:DatePicker value="{
-								path: 'DeliveryDate',
-								type: 'sap.ui.model.type.Date',
-								formatOptions: {source: {pattern: 'timestamp'}}
-							}"/>
-						</template>
-					</Column>
-               <Column width="11rem" hAlign="Center">
-						<m:Label text="Delivery Date" />
-						<template>
-							<m:DatePicker value="{
-								path: 'DeliveryDate',
-								type: 'sap.ui.model.type.Date',
-								formatOptions: {source: {pattern: 'timestamp'}}
-							}"/>
-						</template>
-					</Column> -->
+			<Column>
+				<Label text="Data de Nascimento"/>
+			</Column>
+			<Column>
+				<Label text="Data de Cadastro"/>
+			</Column>
 		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<Text text="{id}"/>
+					<Text text="{nome}"/>
+					<Image 
+					src="{
+							path: 'tipo',
+							formatter: '.formatter.iconesTipo'
+						}
+					"/>
+					<Text text="{cor}"/>
+					<Image 
+					src="{
+							path: 'sexo',
+							formatter: '.formatter.iconesSexo'
+						}
+					"/>
+					<Text
+							text="{path: 'dataDeNascimento',
+												type: 'sap.ui.model.type.Date',
+												 formatOptions: {
+												 style: 'short',
+												 source: {
+												 	pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
+												 }
+											}
+							}"/>
+					<Text 
+							text="{path: 'dataDeNascimento',
+												 type: 'sap.ui.model.type.Date',
+													formatOptions: {
+													style: 'short',
+													source: {
+														pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
+												}
+						}
+					}"/>
+				</cells>
+			</ColumnListItem>
+		</items>
 	</Table>
 </mvc:View>
