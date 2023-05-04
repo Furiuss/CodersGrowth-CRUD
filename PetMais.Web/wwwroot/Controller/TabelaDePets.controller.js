@@ -12,15 +12,14 @@ sap.ui.define(
     return Controller.extend("sap.ui.petmais.controller.TabelaDePets", {
       formatter: formatter,
       onInit: function () {
-        var modelo = this.pegarDadosDaApi();
-        this.getView().setModel(modelo)
+        this.pegarDadosDaApi();        
       },
       pegarDadosDaApi: function () {
         var petsModelo = new JSONModel();
         fetch("/api/pets")
           .then(dados => dados.json())
           .then(dados => petsModelo.setData({ pets: dados }))  
-        return petsModelo;        
+        this.getView().setModel(petsModelo)
       },
       aoPesquisar: function (oEvent) {
         var aFiltro = [];
