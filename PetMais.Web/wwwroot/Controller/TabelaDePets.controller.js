@@ -12,27 +12,28 @@ sap.ui.define(
     return Controller.extend("sap.ui.petmais.controller.TabelaDePets", {
       formatter: formatter,
       onInit: function () {
-        var oModel = new JSONModel();
+        var modelo = this.pegarDadosDaApi();
+        this.getView().setModel(modelo)
+      },
+      pegarDadosDaApi: function () {
+        var petsModelo = new JSONModel();
         fetch("/api/pets")
-          .then(data => data.json())
-          .then(data => oModel.setData({ pets: data }))
-
-        console.log(oModel)
-        this.getView().setModel(oModel)
-
+          .then(dados => dados.json())
+          .then(dados => petsModelo.setData({ pets: dados }))  
+        return petsModelo;        
       },
       aoPesquisar: function (oEvent) {
-        var aFilter = [];
+        var aFiltro = [];
         var sQuery = oEvent.getParameter("query");
         if (sQuery) {
-          aFilter.push(
+          aFiltro.push(
             new Filter("nome", FilterOperator.Contains, sQuery)
           );
         }
 
-        var oList = this.byId("petsTable");
-        var oBinding = oList.getBinding("items");
-        oBinding.filter(aFilter);
+        var oTabela = this.byId("petsTable");
+        var oBinding = oTabela.getBinding("items");
+        oBinding.filter(aFiltro);
       },
       // onPress: function (oEvent) {
       //   var oItem = oEvent.getSource();

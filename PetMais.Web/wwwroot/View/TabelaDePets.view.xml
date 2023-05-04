@@ -14,25 +14,25 @@
 		</headerToolbar>
 		<columns>
 			<Column width="4rem">
-				<Label text="Id"/>
+				<Label text="{i18n>lblId}"/>
 			</Column>
 			<Column>
-				<Label text="Nome"/>
+				<Label text="{i18n>lblNome}"/>
 			</Column>
 			<Column>
-				<Label text="Tipo"/>
+				<Label text="{i18n>lblTipo}"/>
 			</Column>
 			<Column>
-				<Label text="Cor"/>
+				<Label text="{i18n>lblCor}"/>
 			</Column>
 			<Column>
-				<Label text="Sexo"/>
+				<Label text="{i18n>lblSexo}"/>
 			</Column>
 			<Column>
-				<Label text="Data de Nascimento"/>
+				<Label text="{i18n>lblDataNascimento}"/>
 			</Column>
 			<Column>
-				<Label text="Data de Cadastro"/>
+				<Label text="{i18n>lblDataCadastro}"/>
 			</Column>
 		</columns>
 		<items>
@@ -64,7 +64,7 @@
 											}
 							}"/>
 					<Text 
-							text="{path: 'dataDeNascimento',
+							text="{path: 'dataDeCadastro',
 												 type: 'sap.ui.model.type.Date',
 													formatOptions: {
 													style: 'short',
