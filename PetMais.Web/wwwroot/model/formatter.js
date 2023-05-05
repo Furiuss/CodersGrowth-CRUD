@@ -3,8 +3,8 @@ sap.ui.define([], function () {
 
 	return {
 
-		iconesTipo: function (sStatus) {
-			switch (sStatus) {
+		iconesTipo: function (tipo) {
+			switch (tipo) {
 				case "GATO":
 					return "../assets/icons-images/gato.png";
 				case "CACHORRO":
@@ -20,19 +20,35 @@ sap.ui.define([], function () {
 				case "PASSARO":
 					return "../assets/icons-images/passaro.png";
 				default:
-					return sStatus;
+					return tipo;
 			}
 		},
 
-		iconesSexo: function (sStatus) {
-			switch (sStatus) {
+		iconesSexo: function (sexo) {
+			switch (sexo) {
 				case "MASCULINO":
 					return "../assets/icons-images/macho.png";
 				case "FEMININO":
 					return "../assets/icons-images/femea.png";
 				default:
-					return sStatus;
+					return sexo;
 			}
-		}
+		},
+
+		paraMinusculo: function (valor) {
+			return valor?.toLowerCase()
+		},
+
+		idadeEmAnos: function(nascimento) {
+			var anoNascimento = new Date(nascimento).getFullYear();
+			var anoAtual = new Date().getFullYear();
+			return anoAtual - anoNascimento;
+		},
+
+		idadeEmMeses: function(nascimento) {
+			var mesNascimento = new Date(nascimento).getMonth();
+			var mesAtual = new Date().getMonth();
+			return mesAtual - mesNascimento;
+		},
 	};
 });

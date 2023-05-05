@@ -6,6 +6,15 @@
     "i18n": "i18n/i18n.properties",
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
+    "dataSources": {
+      "default": {
+        "uri": "https://services.odata.org/TripPinRESTierService/(S(id))/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    },
     "applicationVersion": {
       "version": "1.0.0"
     }
@@ -41,6 +50,42 @@
           ],
           "fallbackLocale": ""
         }
+      },
+      "invoice": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "localService/mockdata/Invoices.json"
+      }
+    },
+    "routing": {
+      "config": {
+      "routerClass": "sap.m.routing.Router",
+      "type": "View",
+      "viewType": "XML",
+      "path": "sap.ui.petmais.view",
+      "controlId": "app",
+      "controlAggregation": "pages"
+      },
+      "routes": [
+      {
+        "pattern": "",
+        "name": "tabelaDePets",
+        "target": "tabelaDePets"
+      },
+      {
+        "pattern": "detalhes/{id}",
+        "name": "detalhes",
+        "target": "detalhes"
+      }
+      ],
+      "targets": {
+      "tabelaDePets": {
+        "id": "tabelaDePets",
+        "name": "TabelaDePets"
+      },
+      "detalhes": {
+        "id": "detalhes",
+        "name": "Detalhes"
+      }
       }
     },
     "resources": {
@@ -49,6 +94,6 @@
           "uri": "css/style.css"
         }
       ]
-    }    
+    }
   }
 }

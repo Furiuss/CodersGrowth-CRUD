@@ -1,80 +1,80 @@
 <mvc:View controllerName="sap.ui.petmais.controller.TabelaDePets"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:core="sap.ui.core"
-	>	
-	<Table id="petsTable" items="{/pets}">
-		<headerToolbar>
-			<Toolbar>
-				<content>
-					<Button icon="sap-icon://add" text="Adicionar Pet" press=".aoClicarBotaoAdicionar"/>
-					<SearchField width="80%" placeholder="pesquisar" search=".aoPesquisar"/>
-				</content>
-			</Toolbar>
-		</headerToolbar>
-		<columns>
-			<Column width="4rem">
-				<Label text="{i18n>lblId}"/>
-			</Column>
-			<Column>
-				<Label text="{i18n>lblNome}"/>
-			</Column>
-			<Column>
-				<Label text="{i18n>lblTipo}"/>
-			</Column>
-			<Column>
-				<Label text="{i18n>lblCor}"/>
-			</Column>
-			<Column>
-				<Label text="{i18n>lblSexo}"/>
-			</Column>
-			<Column>
-				<Label text="{i18n>lblDataNascimento}"/>
-			</Column>
-			<Column>
-				<Label text="{i18n>lblDataCadastro}"/>
-			</Column>
-		</columns>
-		<items>
-			<ColumnListItem>
-				<cells>
-					<Text text="{id}"/>
-					<Text text="{nome}"/>
-					<Image 
-					src="{
-							path: 'tipo',
-							formatter: '.formatter.iconesTipo'
-						}
-					"/>
-					<Text text="{cor}"/>
-					<Image 
-					src="{
-							path: 'sexo',
-							formatter: '.formatter.iconesSexo'
-						}
-					"/>
-					<Text
-							text="{path: 'dataDeNascimento',
-												type: 'sap.ui.model.type.Date',
-												 formatOptions: {
-												 style: 'short',
-												 source: {
-												 	pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
-												 }
-											}
-							}"/>
-					<Text 
-							text="{path: 'dataDeCadastro',
-												 type: 'sap.ui.model.type.Date',
-													formatOptions: {
-													style: 'short',
-													source: {
-														pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
+	xmlns:core="sap.ui.core">
+	<Page title="{i18n>tituloPaginaInicial}">
+		<content>
+			<Table id="petsTable" items="{/pets}">
+				<headerToolbar>
+					<Toolbar>
+						<content>
+							<Button icon="sap-icon://add" text="Adicionar Pet" press=".aoClicarBotaoAdicionar"/>
+							<ToolbarSpacer/>
+							<SearchField width="60%" placeholder="pesquisar" search=".aoPesquisar"/>
+						</content>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column width="4rem">
+						<Label text="{i18n>campoId}"/>
+					</Column>
+					<Column>
+						<Label text="{i18n>campoNome}"/>
+					</Column>
+					<Column>
+						<Label text="{i18n>campoTipo}"/>
+					</Column>
+					<Column>
+						<Label text="{i18n>campoCor}"/>
+					</Column>
+					<Column>
+						<Label text="{i18n>campoSexo}"/>
+					</Column>
+					<Column>
+						<Label text="{i18n>campoDataNascimento}"/>
+					</Column>
+					<Column>
+						<Label text="{i18n>campoDataCadastro}"/>
+					</Column>
+				</columns>
+				<items >
+					<ColumnListItem type="Navigation" press=".aoClicarNoItem">
+						<cells>
+							<Text text="{id}"/>
+							<Text text="{nome}"/>
+							<Image src="{
+													path: 'tipo',
+													formatter: '.formatter.iconesTipo'
 												}
-						}
-					}"/>
-				</cells>
-			</ColumnListItem>
-		</items>
-	</Table>
+											"/>
+							<Text text="{cor}"/>
+							<Image src="{
+													path: 'sexo',
+													formatter: '.formatter.iconesSexo'
+												}
+											"/>
+							<Text text="{path: 'dataDeNascimento',
+																		type: 'sap.ui.model.type.Date',
+																		 formatOptions: {
+																		 style: 'short',
+																		 source: {
+																			 pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
+																		 }
+																	}
+													}"/>
+							<Text text="{path: 'dataDeCadastro',
+																		 type: 'sap.ui.model.type.DateTime',
+																			formatOptions: {
+																			style: 'short',
+																			source: {
+																				pattern: 'yyyy-MM-ddTHH:mm:ss.mmm'
+																		}
+												}
+											}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+	</Page>
 </mvc:View>

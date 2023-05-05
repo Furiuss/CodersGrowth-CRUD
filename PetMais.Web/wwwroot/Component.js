@@ -1,10 +1,8 @@
 sap.ui.define(
     [
         "sap/ui/core/UIComponent",
-        "sap/ui/model/resource/ResourceModel",
-        "sap/ui/model/json/JSONModel"
     ],
-    function (UIComponent, ResourceModel, JSONModel) {
+    function (UIComponent) {
         "use strict";
         return UIComponent.extend("sap.ui.petmais.Component", {
             metadata: {
@@ -13,6 +11,8 @@ sap.ui.define(
             },
             init: function () {
                 UIComponent.prototype.init.apply(this, arguments);
+
+                this.getRouter().initialize();
             },
         });
     }
