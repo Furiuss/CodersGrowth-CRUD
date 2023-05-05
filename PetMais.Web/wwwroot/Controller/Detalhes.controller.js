@@ -10,9 +10,9 @@ sap.ui.define([
     formatter: formatter,
     onInit: function () {
       var rota = this.getOwnerComponent().getRouter();
-      rota.getRoute("detalhes").attachMatched(this._onRouteMatched, this);
+      rota.getRoute("detalhes").attachMatched(this._aoCoincidirRota, this);
     },
-    _onRouteMatched: function (oEvent) {
+    _aoCoincidirRota: function (oEvent) {
       var parametros = oEvent.getParameters();
       var idDoPet = parametros.arguments.id;
       this.pegarDadosDaApi(idDoPet)

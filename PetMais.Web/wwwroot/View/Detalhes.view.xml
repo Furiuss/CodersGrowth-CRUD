@@ -21,8 +21,8 @@
 		<ObjectHeader
 		title="{nome}" >
 		<ObjectAttribute
-			text="Um(a) {path: 'tipo', formatter: '.formatter.toLowerCase'}(a)
-						{path: 'sexo', formatter: '.formatter.toLowerCase'}" />
+			text="Um(a) {path: 'tipo', formatter: '.formatter.paraMinusculo'}(a)
+						{path: 'sexo', formatter: '.formatter.paraMinusculo'}" />
 		<ObjectAttribute
 			text="Com a idade de 
 						{path: 'dataDeNascimento', formatter: '.formatter.idadeEmAnos'} 
@@ -30,7 +30,7 @@
 						{path: 'dataDeNascimento', formatter: '.formatter.idadeEmMeses'}
 						mes(es) " />
 		<ObjectAttribute
-			text="Da cor {path: 'cor', formatter: '.formatter.toLowerCase'}"/>
+			text="Da cor {path: 'cor', formatter: '.formatter.paraMinusculo'}"/>
 
 	</ObjectHeader>
 	</Page>

@@ -16,25 +16,25 @@
 				</headerToolbar>
 				<columns>
 					<Column width="4rem">
-						<Label text="{i18n>lblId}"/>
+						<Label text="{i18n>campoId}"/>
 					</Column>
 					<Column>
-						<Label text="{i18n>lblNome}"/>
+						<Label text="{i18n>campoNome}"/>
 					</Column>
 					<Column>
-						<Label text="{i18n>lblTipo}"/>
+						<Label text="{i18n>campoTipo}"/>
 					</Column>
 					<Column>
-						<Label text="{i18n>lblCor}"/>
+						<Label text="{i18n>campoCor}"/>
 					</Column>
 					<Column>
-						<Label text="{i18n>lblSexo}"/>
+						<Label text="{i18n>campoSexo}"/>
 					</Column>
 					<Column>
-						<Label text="{i18n>lblDataNascimento}"/>
+						<Label text="{i18n>campoDataNascimento}"/>
 					</Column>
 					<Column>
-						<Label text="{i18n>lblDataCadastro}"/>
+						<Label text="{i18n>campoDataCadastro}"/>
 					</Column>
 				</columns>
 				<items >

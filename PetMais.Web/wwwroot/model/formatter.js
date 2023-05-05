@@ -35,7 +35,7 @@ sap.ui.define([], function () {
 			}
 		},
 
-		toLowerCase: function (valor) {
+		paraMinusculo: function (valor) {
 			return valor?.toLowerCase()
 		},
 
