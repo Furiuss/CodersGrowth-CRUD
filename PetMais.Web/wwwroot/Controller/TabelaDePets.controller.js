@@ -34,15 +34,11 @@ sap.ui.define(
         var oBinding = oTabela.getBinding("items");
         oBinding.filter(aFiltro);
       },
-      // onPress: function (oEvent) {
-      //   var oItem = oEvent.getSource();
-      //   var oRouter = this.getOwnerComponent().getRouter();
-      //   oRouter.navTo("detail", {
-      //     invoicePath: window.encodeURIComponent(
-      //       oItem.getBindingContext("invoice").getPath().substring(1)
-      //     ),
-      //   });
-      // },
+      aoClicarNoItem: function (oEvent) {
+        var idDoItem = oEvent.getSource().getBindingContext().getProperty("id");
+        var oRota = this.getOwnerComponent().getRouter();
+        oRota.navTo("detalhes", {id : idDoItem});
+      },
     });
   }
 );
