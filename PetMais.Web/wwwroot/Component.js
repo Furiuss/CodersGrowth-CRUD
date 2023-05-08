@@ -1,9 +1,8 @@
 sap.ui.define(
     [
         "sap/ui/core/UIComponent",
-        "sap/ui/model/json/JSONModel"
     ],
-    function (UIComponent, JSONModel) {
+    function (UIComponent) {
         "use strict";
         return UIComponent.extend("sap.ui.petmais.Component", {
             metadata: {
@@ -14,17 +13,6 @@ sap.ui.define(
                 UIComponent.prototype.init.apply(this, arguments);
   
                 this.getRouter().initialize()
-  
-              var dados =  {
-                  "nome": "",
-                  "tipo": "",
-                  "cor": "",
-                  "sexo": "",
-                  "dataNascimento": "",
-              };
-  
-              var modelo = new JSONModel(dados);
-              this.setModel(modelo, "dados");
             },
         });
     }

@@ -69,7 +69,7 @@
 						</items>
 					</Select>
 					<Label text="{i18n>campoDataNascimento}"/>
-					<DatePicker value="{dados>/dataNascimento}" placeholder="Dia/Mês/Ano" displayFormat="dd/MM/yyyy" />
+					<DatePicker id="dataNascimento" value="{dados>/dataNascimento}" placeholder="Dia/Mês/Ano" valueFormat="yyyy-MM-ddTHH:mm:ss.mmm'" displayFormat="dd/MM/yyyy" />
 				</f:content>
 		</f:SimpleForm>
 	</Page>

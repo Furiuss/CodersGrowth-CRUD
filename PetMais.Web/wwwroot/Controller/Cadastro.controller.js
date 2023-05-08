@@ -10,7 +10,19 @@ sap.ui.define(
 
     return Controller.extend("sap.ui.petmais.controller.Cadastro", {
       formatter: formatter,
-      onInit: function () {},
+      onInit: function () {
+
+        var objetoDadosPet = {
+          "nome": "",
+          "tipo": "",
+          "cor": "",
+          "sexo": "",
+          "dataNascimento": "",
+        };
+
+        var objetoModeloPet = new JSONModel(objetoDadosPet);
+        this.getView().setModel(objetoModeloPet, "dados");
+      },
       aoClicarEmVoltar: function () {
         var historico = History.getInstance();
         var hashAnterior = historico.getPreviousHash();
@@ -22,23 +34,23 @@ sap.ui.define(
         }
       },
       aoClicarBotaoSalvar: function () {
-        var modelo = this.getView().getModel("dados");
-        var dadosPet = modelo.getData();
+        var modeloPet = this.getView().getModel("dados");
+        var dadosNovoPet = modeloPet.getData();
 
-        var pet = {
-          nome: dadosPet.nome,
-          tipo: dadosPet.tipo,
-          cor: dadosPet.cor,
-          sexo: dadosPet.sexo,
-          dataDeNascimento: this.formatarData(dadosPet.dataNascimento),
+        var novoPet = {
+          nome: dadosNovoPet.nome,
+          tipo: dadosNovoPet.tipo,
+          cor: dadosNovoPet.cor,
+          sexo: dadosNovoPet.sexo,
+          dataDeNascimento: dadosNovoPet.dataNascimento
         };
-
+        console.log(novoPet);
         fetch("/api/pets", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(pet),
+          body: JSON.stringify(novoPet),
         })
           .then((resposta) => {
             if (!resposta.ok) {
@@ -48,12 +60,12 @@ sap.ui.define(
           })
           .then((dados) => {
             sap.m.MessageToast.show("Pet cadastrado com sucesso!");
+            this.voltarParaHome();
           })
           .catch((erro) => {
             sap.m.MessageToast.show(erro.message);
           });
 
-        this.voltarParaHome();
         this.limparFormulario();
       },
       aoClicarBotaoCancelar: function () {
@@ -76,12 +88,7 @@ sap.ui.define(
       voltarParaHome: function () {
         var rota = this.getOwnerComponent().getRouter();
         rota.navTo("tabelaDePets", {}, true);
-      },
-      formatarData: function (data) {
-        var dataMoment = moment(data, "DD/MM/YY");
-        var dataHoraFormatada = dataMoment.format("YYYY-MM-DDTHH:mm:ss.MM");
-        return dataHoraFormatada;
-      },
+      }
     });
   }
 );
