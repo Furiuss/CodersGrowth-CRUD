@@ -1,37 +1,25 @@
-<mvc:View
-	controllerName="sap.ui.petmais.controller.Detalhes"
+<mvc:View controllerName="sap.ui.petmais.controller.Detalhes"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
-	<Page
-		binding="{/pet}"
-		showNavButton="true"
-		navButtonPress=".aoClicarEmVoltar"
-		showHeader="true"
-		>
-		<content>
-			<Toolbar >
-				<content>
-					<Title text="{i18n>tituloPaginaDetalhes}"/> 
-					<ToolbarSpacer />
-					<Button icon="sap-icon://edit" text="Editar" />
-					<Button icon="sap-icon://delete" text="Remover" />
-				</content>
-			</Toolbar>
-		</content>
-		<ObjectHeader
-		title="{nome}" >
-		<ObjectAttribute
-			text="Um(a) {path: 'tipo', formatter: '.formatter.paraMinusculo'}(a)
+	<Page binding="{/pet}">
+		<headerContent>
+			<Button icon="sap-icon://nav-back" press=".aoClicarEmVoltar" />
+			<ToolbarSpacer />
+			<Title text="{i18n>tituloPaginaDetalhes}"/>
+			<ToolbarSpacer />
+			<Button icon="sap-icon://edit" text="Editar" type="Attention"/>
+			<Button icon="sap-icon://delete" text="Remover" type="Reject" />
+		</headerContent>
+		<ObjectHeader title="{nome}">
+			<ObjectAttribute text="Um(a) {path: 'tipo', formatter: '.formatter.paraMinusculo'}(a)
 						{path: 'sexo', formatter: '.formatter.paraMinusculo'}" />
-		<ObjectAttribute
-			text="Com a idade de 
+			<ObjectAttribute text="Com a idade de 
 						{path: 'dataDeNascimento', formatter: '.formatter.idadeEmAnos'} 
 						ano(s) e
 						{path: 'dataDeNascimento', formatter: '.formatter.idadeEmMeses'}
 						mes(es) " />
-		<ObjectAttribute
-			text="Da cor {path: 'cor', formatter: '.formatter.paraMinusculo'}"/>
+			<ObjectAttribute text="Da cor {path: 'cor', formatter: '.formatter.paraMinusculo'}"/>
 
-	</ObjectHeader>
+		</ObjectHeader>
 	</Page>
 </mvc:View>

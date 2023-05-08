@@ -1,0 +1,76 @@
+<mvc:View
+	height="100%"
+	controllerName="sap.ui.petmais.controller.Cadastro"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	>
+	<Page>
+		<headerContent>
+			<Button icon="sap-icon://nav-back" press=".aoClicarEmVoltar" />
+			<ToolbarSpacer />
+			<Title text="{i18n>tituloPaginaCadastro}"/> 
+			<ToolbarSpacer />
+			<Button id="save" text="Salvar" type="Success" press=".aoClicarBotaoSalvar" />
+			<Button id="cancel" text="Cancelar" type="Negative" press=".aoClicarBotaoCancelar" />
+		</headerContent>
+		<f:SimpleForm id="SimpleFormChange354"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+			<f:content>
+				<Label text="{i18n>campoNome}" />
+				<Input id="nome" value="{dados>/nome}" placeholder="{i18n>textoInicialNome}"/>				
+				<Label text="{i18n>campoTipo}" />
+					<Select id="tipo" selectedKey="{dados>/tipo}">
+						<items>
+							<core:Item text="" key=""/>
+							<core:Item text="Cachorro" key="CACHORRO"/>
+							<core:Item text="Gato" key="GATO"/>
+							<core:Item text="Pato" key="PATO"/>
+							<core:Item text="Passaro" key="PASSARO"/>
+							<core:Item text="Peixe" key="PEIXE"/>
+							<core:Item text="Coelho" key="COELHO"/>
+							<core:Item text="Tartaruga" key="TARTARUGA"/>
+						</items>
+					</Select>
+					<Label text="{i18n>campoCor}" />
+					<Select id="cor" selectedKey="{dados>/cor}">
+						<items>
+							<core:Item text="" key=""/>
+							<core:Item text="Branco" key="BRANCO"/>
+							<core:Item text="Preto" key="PRETO"/>
+							<core:Item text="Cinza" key="CINZA"/>
+							<core:Item text="Crema" key="CREME"/>
+							<core:Item text="Chocolate" key="CHOCOLATE"/>
+							<core:Item text="Amarelo" key="AMARELO"/>
+							<core:Item text="Caramelo" key="CARAMELO"/>
+						</items>
+					</Select>
+					<Label text="{i18n>campoSexo}" />
+					<Select id="sexo" selectedKey="{dados>/sexo}">
+						<items>
+							<core:Item text="" key=""/>
+							<core:Item text="Macho" key="MASCULINO"/>
+							<core:Item text="Fêmea" key="FEMININO"/>
+						</items>
+					</Select>
+					<Label text="{i18n>campoDataNascimento}"/>
+					<DatePicker value="{dados>/dataNascimento}" placeholder="Dia/Mês/Ano" displayFormat="dd/MM/yyyy" />
+				</f:content>
+		</f:SimpleForm>
+	</Page>
+</mvc:View>

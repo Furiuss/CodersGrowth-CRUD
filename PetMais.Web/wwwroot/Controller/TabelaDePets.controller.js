@@ -21,6 +21,10 @@ sap.ui.define(
           .then(dados => petsModelo.setData({ pets: dados }))  
         this.getView().setModel(petsModelo)
       },
+      aoClicarBotaoAdicionar: function () {
+        var oRota = this.getOwnerComponent().getRouter();
+        oRota.navTo("cadastro");
+      },
       aoPesquisar: function (oEvent) {
         var aFiltro = [];
         var sQuery = oEvent.getParameter("query");

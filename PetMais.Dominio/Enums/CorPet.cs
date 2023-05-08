@@ -16,5 +16,6 @@ namespace PetMais.Enums
 		CINZENTO,
 		DOURADO,
 		CREME,
+		CARAMELO
 	}
 }
