@@ -38,34 +38,34 @@
 					<Select id="tipo" selectedKey="{dados>/tipo}">
 						<items>
 							<core:Item text="" key=""/>
-							<core:Item text="Cachorro" key="CACHORRO"/>
-							<core:Item text="Gato" key="GATO"/>
-							<core:Item text="Pato" key="PATO"/>
-							<core:Item text="Passaro" key="PASSARO"/>
-							<core:Item text="Peixe" key="PEIXE"/>
-							<core:Item text="Coelho" key="COELHO"/>
-							<core:Item text="Tartaruga" key="TARTARUGA"/>
+							<core:Item text="{i18n>textoSelectCachorro}" key="CACHORRO"/>
+							<core:Item text="{i18n>textoSelectGato}" key="GATO"/>
+							<core:Item text="{i18n>textoSelectPato}" key="PATO"/>
+							<core:Item text="{i18n>textoSelectPassaro}" key="PASSARO"/>
+							<core:Item text="{i18n>textoSelectPeixe}" key="PEIXE"/>
+							<core:Item text="{i18n>textoSelectCoelho}" key="COELHO"/>
+							<core:Item text="{i18n>textoSelectTartaruga}" key="TARTARUGA"/>
 						</items>
 					</Select>
 					<Label text="{i18n>campoCor}" />
 					<Select id="cor" selectedKey="{dados>/cor}">
 						<items>
 							<core:Item text="" key=""/>
-							<core:Item text="Branco" key="BRANCO"/>
-							<core:Item text="Preto" key="PRETO"/>
-							<core:Item text="Cinza" key="CINZA"/>
-							<core:Item text="Crema" key="CREME"/>
-							<core:Item text="Chocolate" key="CHOCOLATE"/>
-							<core:Item text="Amarelo" key="AMARELO"/>
-							<core:Item text="Caramelo" key="CARAMELO"/>
+							<core:Item text="{i18n>textoSelectBranco}" key="BRANCO"/>
+							<core:Item text="{i18n>textoSelectPreto}" key="PRETO"/>
+							<core:Item text="{i18n>textoSelectCinzento}" key="CINZENTO"/>
+							<core:Item text="{i18n>textoSelectCreme}" key="CREME"/>
+							<core:Item text="{i18n>textoSelectChocolate}" key="CHOCOLATE"/>
+							<core:Item text="{i18n>textoSelectAmarelo}" key="AMARELO"/>
+							<core:Item text="{i18n>textoSelectCaramelo}" key="CARAMELO"/>
 						</items>
 					</Select>
 					<Label text="{i18n>campoSexo}" />
 					<Select id="sexo" selectedKey="{dados>/sexo}">
 						<items>
 							<core:Item text="" key=""/>
-							<core:Item text="Macho" key="MASCULINO"/>
-							<core:Item text="Fêmea" key="FEMININO"/>
+							<core:Item text="{i18n>textoSelectMacho}" key="MASCULINO"/>
+							<core:Item text="{i18n>textoSelectFemea}" key="FEMININO"/>
 						</items>
 					</Select>
 					<Label text="{i18n>campoDataNascimento}"/>
