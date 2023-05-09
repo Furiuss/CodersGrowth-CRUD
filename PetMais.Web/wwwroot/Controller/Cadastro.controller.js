@@ -11,7 +11,10 @@ sap.ui.define(
     return Controller.extend("sap.ui.petmais.controller.Cadastro", {
       formatter: formatter,
       onInit: function () {
-
+        var rota = this.getOwnerComponent().getRouter();
+        rota.getRoute("cadastro").attachMatched(this._aoCoincidirRota, this);
+      },
+      _aoCoincidirRota: function (oEvent) {
         var objetoDadosPet = {
           "nome": "",
           "tipo": "",
