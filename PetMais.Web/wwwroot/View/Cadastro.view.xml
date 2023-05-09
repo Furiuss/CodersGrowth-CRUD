@@ -33,7 +33,12 @@
 			singleContainerFullSize="false" >
 			<f:content>
 				<Label text="{i18n>campoNome}" />
-				<Input id="nome" value="{dados>/nome}" placeholder="{i18n>textoInicialNome}"/>				
+				<Input 
+					id="nome" 
+					value="{dados>/nome}"
+					valueState="None"
+					valueStateText=""
+					placeholder="{i18n>textoInicialNome}"/>				
 				<Label text="{i18n>campoTipo}" />
 					<Select id="tipo" selectedKey="{dados>/tipo}">
 						<items>
@@ -69,7 +74,14 @@
 						</items>
 					</Select>
 					<Label text="{i18n>campoDataNascimento}"/>
-					<DatePicker id="dataNascimento" value="{dados>/dataNascimento}" placeholder="Dia/Mês/Ano" valueFormat="yyyy-MM-ddTHH:mm:ss.mmm'" displayFormat="dd/MM/yyyy" />
+					<DatePicker 
+						id="dataNascimento"
+						valueState="None"
+						valueStateText=""
+						value="{dados>/dataNascimento}" 
+						placeholder="Dia/Mês/Ano" 
+						valueFormat="yyyy-MM-ddTHH:mm:ss.mmm'" 
+						displayFormat="dd/MM/yyyy" />
 				</f:content>
 		</f:SimpleForm>
 	</Page>

@@ -94,5 +94,5 @@ namespace PetMais.Infra.Persistencia.Repositorio
 			conexao = SqlServerTools.CreateDataConnection(connectionString);
 			return conexao;
 		}
-	} 
+	}
 }

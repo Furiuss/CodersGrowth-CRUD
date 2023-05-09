@@ -3,9 +3,11 @@ sap.ui.define(
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "../model/formatter",
+    "../services/Validacoes",
+    "sap/m/MessageToast",
     "sap/ui/core/routing/History",
   ],
-  function (Controller, JSONModel, formatter, History) {
+  function (Controller, JSONModel, formatter, Validacoes, MessageToast, History) {
     "use strict";
 
     return Controller.extend("sap.ui.petmais.controller.Cadastro", {
@@ -14,16 +16,8 @@ sap.ui.define(
         var rota = this.getOwnerComponent().getRouter();
         rota.getRoute("cadastro").attachMatched(this._aoCoincidirRota, this);
       },
-      _aoCoincidirRota: function (oEvent) {
-        var objetoDadosPet = {
-          "nome": "",
-          "tipo": "",
-          "cor": "",
-          "sexo": "",
-          "dataNascimento": "",
-        };
-
-        var objetoModeloPet = new JSONModel(objetoDadosPet);
+      _aoCoincidirRota: function () {
+        var objetoModeloPet = new JSONModel({});
         this.getView().setModel(objetoModeloPet, "dados");
       },
       aoClicarEmVoltar: function () {
@@ -47,7 +41,17 @@ sap.ui.define(
           sexo: dadosNovoPet.sexo,
           dataDeNascimento: dadosNovoPet.dataNascimento
         };
-        console.log(novoPet);
+
+        var oInputNome = this.getView().byId("nome")
+        var oSelectTipo = this.getView().byId("tipo")
+        var oSelectCor = this.getView().byId("cor")
+        var oSelectSexo = this.getView().byId("sexo")
+        var oDatePickerNascimento = this.getView().byId("dataNascimento")
+
+        var arrayDeObjetosSelect = [oSelectTipo, oSelectCor, oSelectSexo]
+
+        Validacoes.validarForm(oInputNome, arrayDeObjetosSelect, oDatePickerNascimento)
+
         fetch("/api/pets", {
           method: "POST",
           headers: {
@@ -70,6 +74,7 @@ sap.ui.define(
           });
 
         this.limparFormulario();
+
       },
       aoClicarBotaoCancelar: function () {
         this.voltarParaHome();
