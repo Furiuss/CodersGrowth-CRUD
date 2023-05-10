@@ -12,7 +12,7 @@
 			<ToolbarSpacer />
 			<Title text="{i18n>tituloPaginaCadastro}"/> 
 			<ToolbarSpacer />
-			<Button id="save" text="Salvar" type="Success" press=".aoClicarBotaoSalvar" />
+			<Button id="salvar" text="Salvar" type="Success" enabled="false" press=".aoClicarBotaoSalvar" />
 			<Button id="cancel" text="Cancelar" type="Negative" press=".aoClicarBotaoCancelar" />
 		</headerContent>
 		<f:SimpleForm id="SimpleFormChange354"
@@ -35,12 +35,14 @@
 				<Label text="{i18n>campoNome}" />
 				<Input 
 					id="nome" 
+					liveChange=".aoMudarValorInput"
 					value="{dados>/nome}"
 					valueState="None"
 					valueStateText=""
+					maxLength="20"
 					placeholder="{i18n>textoInicialNome}"/>				
 				<Label text="{i18n>campoTipo}" />
-					<Select id="tipo" selectedKey="{dados>/tipo}">
+					<Select change=".aoMudarValorSelectTipo" id="tipo" selectedKey="{dados>/tipo}">
 						<items>
 							<core:Item text="" key=""/>
 							<core:Item text="{i18n>textoSelectCachorro}" key="CACHORRO"/>
@@ -53,7 +55,7 @@
 						</items>
 					</Select>
 					<Label text="{i18n>campoCor}" />
-					<Select id="cor" selectedKey="{dados>/cor}">
+					<Select change=".aoMudarValorSelectCor" id="cor" selectedKey="{dados>/cor}">
 						<items>
 							<core:Item text="" key=""/>
 							<core:Item text="{i18n>textoSelectBranco}" key="BRANCO"/>
@@ -66,7 +68,7 @@
 						</items>
 					</Select>
 					<Label text="{i18n>campoSexo}" />
-					<Select id="sexo" selectedKey="{dados>/sexo}">
+					<Select change=".aoMudarValorSelectSexo" id="sexo" selectedKey="{dados>/sexo}">
 						<items>
 							<core:Item text="" key=""/>
 							<core:Item text="{i18n>textoSelectMacho}" key="MASCULINO"/>
@@ -74,10 +76,19 @@
 						</items>
 					</Select>
 					<Label text="{i18n>campoDataNascimento}"/>
+					<Button
+							ariaHasPopup="Dialog"
+							tooltip="Open Date Picker"
+							icon="sap-icon://appointment-2"
+							text=" {path: 'dados>/dataNascimento', formatter: '.formatter.formatarData'}"
+							press=".openDatePicker" />
 					<DatePicker 
 						id="dataNascimento"
+						change=".aoMudarValorDatePicker"
 						valueState="None"
+						hideInput="true"
 						valueStateText=""
+						maxDate=""
 						value="{dados>/dataNascimento}" 
 						placeholder="Dia/Mês/Ano" 
 						valueFormat="yyyy-MM-ddTHH:mm:ss.mmm'" 

@@ -4,10 +4,9 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "../model/formatter",
     "../services/Validacoes",
-    "sap/m/MessageToast",
     "sap/ui/core/routing/History",
   ],
-  function (Controller, JSONModel, formatter, Validacoes, MessageToast, History) {
+  function (Controller, JSONModel, formatter, Validacoes, History) {
     "use strict";
 
     return Controller.extend("sap.ui.petmais.controller.Cadastro", {
@@ -15,6 +14,7 @@ sap.ui.define(
       onInit: function () {
         var rota = this.getOwnerComponent().getRouter();
         rota.getRoute("cadastro").attachMatched(this._aoCoincidirRota, this);
+        this.zerarValidacoes()
       },
       _aoCoincidirRota: function () {
         var objetoModeloPet = new JSONModel({});
@@ -23,7 +23,6 @@ sap.ui.define(
       aoClicarEmVoltar: function () {
         var historico = History.getInstance();
         var hashAnterior = historico.getPreviousHash();
-
         if (hashAnterior !== undefined) {
           window.history.go(-1);
         } else {
@@ -39,18 +38,8 @@ sap.ui.define(
           tipo: dadosNovoPet.tipo,
           cor: dadosNovoPet.cor,
           sexo: dadosNovoPet.sexo,
-          dataDeNascimento: dadosNovoPet.dataNascimento
+          dataDeNascimento: dadosNovoPet.dataNascimento,
         };
-
-        var oInputNome = this.getView().byId("nome")
-        var oSelectTipo = this.getView().byId("tipo")
-        var oSelectCor = this.getView().byId("cor")
-        var oSelectSexo = this.getView().byId("sexo")
-        var oDatePickerNascimento = this.getView().byId("dataNascimento")
-
-        var arrayDeObjetosSelect = [oSelectTipo, oSelectCor, oSelectSexo]
-
-        Validacoes.validarForm(oInputNome, arrayDeObjetosSelect, oDatePickerNascimento)
 
         fetch("/api/pets", {
           method: "POST",
@@ -68,17 +57,75 @@ sap.ui.define(
           .then((dados) => {
             sap.m.MessageToast.show("Pet cadastrado com sucesso!");
             this.voltarParaHome();
+            this.zerarValidacoes();
           })
           .catch((erro) => {
             sap.m.MessageToast.show(erro.message);
           });
-
-        this.limparFormulario();
-
       },
       aoClicarBotaoCancelar: function () {
         this.voltarParaHome();
+        this.zerarValidacoes()
         this.limparFormulario();
+      },
+      aoMudarValorInput: function () {
+        var oInputNome = this.getView().byId("nome");
+        var resultadoValidacaoInput = Validacoes.validarInput(oInputNome);
+        this.validacaoResultado.nome = resultadoValidacaoInput;
+        this.aoValidarAtivarOuNaoBotaoSalvar();
+      },
+      aoMudarValorSelectTipo: function () {
+        var oSelectTipo = this.getView().byId("tipo");
+        var resultadoValidacaoSelect = Validacoes.validarSelect(oSelectTipo);
+        this.validacaoResultado.selectTipo = resultadoValidacaoSelect;
+        this.aoValidarAtivarOuNaoBotaoSalvar();
+      },
+      aoMudarValorSelectSexo: function () {
+        var oSelectSexo= this.getView().byId("sexo");
+        var resultadoValidacaoSelect = Validacoes.validarSelect(oSelectSexo);
+        this.validacaoResultado.selectSexo = resultadoValidacaoSelect;
+        this.aoValidarAtivarOuNaoBotaoSalvar();
+      },
+      aoMudarValorSelectCor: function () {
+        var oSelectCor = this.getView().byId("cor");
+        var resultadoValidacaoSelect = Validacoes.validarSelect(oSelectCor);
+        this.validacaoResultado.selectCor = resultadoValidacaoSelect;
+        this.aoValidarAtivarOuNaoBotaoSalvar();
+      },
+      aoMudarValorDatePicker: function () {
+        var oDatePickerNascimento = this.getView().byId("dataNascimento");
+        var resultadoValidacaoDatePicker = Validacoes.validarDatePicker(oDatePickerNascimento);
+        this.validacaoResultado.data = resultadoValidacaoDatePicker;
+        this.aoValidarAtivarOuNaoBotaoSalvar();
+      },
+      openDatePicker: function(oEvent) {
+        this.getView().byId("dataNascimento").openBy(oEvent.getSource().getDomRef());
+      },
+      aoValidarAtivarOuNaoBotaoSalvar: function () {
+        var botaoSalvar = this.byId("salvar");
+        console.log(this.validacaoResultado)
+        if (
+          this.validacaoResultado.nome &&
+          this.validacaoResultado.selectTipo &&
+          this.validacaoResultado.selectCor &&
+          this.validacaoResultado.selectSexo &&
+          this.validacaoResultado.data
+        ) {
+          botaoSalvar.setEnabled(true);
+        } else {
+          botaoSalvar.setEnabled(false);
+        }
+      },
+      zerarValidacoes: function () {
+        this.validacaoResultado = {
+          nome: false,
+          selectTipo: false,
+          selectSexo: false,
+          selectCor: false,
+          data: false,
+        };
+        var botaoSalvar = this.byId("salvar");
+        botaoSalvar.setEnabled(false);
       },
       limparFormulario: function () {
         var oNomeInput = this.byId("nome");
@@ -96,7 +143,7 @@ sap.ui.define(
       voltarParaHome: function () {
         var rota = this.getOwnerComponent().getRouter();
         rota.navTo("tabelaDePets", {}, true);
-      }
+      },
     });
   }
 );
