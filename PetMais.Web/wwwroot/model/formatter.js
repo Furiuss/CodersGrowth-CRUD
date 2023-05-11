@@ -58,6 +58,12 @@ sap.ui.define([], function () {
       var dataHoraFormatada = dataMoment.format("DD/MM/YYYY");
 			console.log(dataHoraFormatada)
       return dataHoraFormatada;
+		},
+		textoBotaoHabilitadoOuNao: function(booleanoHabilitado){
+			if (booleanoHabilitado) {
+				return "Salvar"
+			}
+			return "Preencha todos os campos"
 		}
 	};
 });

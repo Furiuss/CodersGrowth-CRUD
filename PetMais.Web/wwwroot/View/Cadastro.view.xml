@@ -12,7 +12,11 @@
 			<ToolbarSpacer />
 			<Title text="{i18n>tituloPaginaCadastro}"/> 
 			<ToolbarSpacer />
-			<Button id="botaoSalvar" tooltip="{i18n>textoTooltipBotaoCadastrar}" text="{i18n>textoBotaoCadastrar}" type="Success" enabled="false" press=".aoClicarBotaoSalvar" />
+			<Button 
+				id="botaoSalvar"
+				tooltip="{i18n>textoTooltipBotaoCadastrar}" 
+				type="Success" 
+				enabled="false" press=".aoClicarBotaoSalvar" />
 			<Button id="botaoCancelar" text="{i18n>textoBotaoCancelar}" type="Negative" press=".aoClicarBotaoCancelar" />
 		</headerContent>
 		<f:SimpleForm id="SimpleFormChange354"

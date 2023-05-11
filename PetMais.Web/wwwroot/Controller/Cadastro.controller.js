@@ -16,8 +16,12 @@ sap.ui.define(
         this.rota.getRoute("cadastro").attachMatched(this._aoCoincidirRota, this);
       },
       _aoCoincidirRota: function () {
+        var modeloBotao = new JSONModel({
+          isEnabled: false
+        })
         var objetoModeloPet = new JSONModel({});
         this.getView().setModel(objetoModeloPet, "dados");
+        this.getView().setModel(modeloBotao, "modeloBotao");
         this.configurarCampoData();
         this.zerarValidacoes();
         this.limparFormulario();
@@ -112,8 +116,10 @@ sap.ui.define(
           this.validacaoResultado.data
         ) {
           botaoSalvar.setEnabled(true);
+          botaoSalvar.setText("Salvar")
         } else {
           botaoSalvar.setEnabled(false);
+          botaoSalvar.setText("Preencha todos os campos")
         }
       },
       tratarIdElemento: function(idNaoTratado) {
@@ -137,6 +143,7 @@ sap.ui.define(
         };
         var botaoSalvar = this.byId("botaoSalvar");
         botaoSalvar.setEnabled(false);
+        botaoSalvar.setText("Preencha todos os campos")
       },
       limparFormulario: function () {
         var oNomeInput = this.byId("inputNome");
