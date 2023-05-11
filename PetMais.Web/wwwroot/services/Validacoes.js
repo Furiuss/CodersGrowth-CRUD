@@ -1,71 +1,69 @@
-sap.ui.define([], function () {
+sap.ui.define([
+  "sap/ui/model/resource/ResourceModel"
+], function (ResourceModel) {
   "use strict";
 
+  var i18nModel = new ResourceModel({
+    bundleName: "sap.ui.petmais.i18n.i18n",
+    bundleUrl: "../i18n/i18n.properties"
+  });
+  const i18n = i18nModel.getResourceBundle();
+
   return {
-    validarInput: function (objetoInput) {
-      if (this.campoNaoPoderSerVazio(objetoInput) && this.campoNomeNaoPodeConterNumerosOuCaracteresEspeciais(objetoInput)) {
-        return true
-      }
-
-      return false
-    },
-
-    validarSelect: function (objetoSelect) {
-      return this.campoSelectTemQueSerSelecionado(objetoSelect);
-    },
-
-    validarDatePicker: function (objetoDatePicker) {
-      if (this.campoNaoPoderSerVazio(objetoDatePicker)) {
-        return true
-      }
-
-      return false
-    },
-
-
-    campoNaoPoderSerVazio: function (objetoCampo) {
-      if (!objetoCampo.getValue()) {
-        this.mostrarMensagemDeErro(objetoCampo, "Campo obrigatório")
+    validarInput: function (input) {
+      const nome = input.getValue();
+      if (!nome) {
+        this.mostrarMensagemDeErro(input, i18n.getText("textoInputVazio"));
         return false;
       }
-      this.removerMensagemDeErro(objetoCampo)
+      if (!this.validarNome(nome)) {
+        this.mostrarMensagemDeErro(input, i18n.getText("textoValidacaoDoNome"));
+        return false;
+      }
+      if (!this.validarTamanhoMinimoNome(nome)) {
+        this.mostrarMensagemDeErro(input, i18n.getText("textoValidarTamanhoMinimo"));
+        return false;
+      }
+      this.removerMensagemDeErro(input);
       return true;
     },
 
-    campoSelectTemQueSerSelecionado: function (objetoSelect) {
-      if (!objetoSelect.getSelectedKey()) {
-        this.mostrarMensagemDeErro(objetoSelect, "Campo obrigatório")
+    validarSelect: function (select) {
+      const valorSelect = select.getSelectedKey();
+      if (!valorSelect) {
+        this.mostrarMensagemDeErro(select, i18n.getText("textoValidarSelect"));
         return false;
       }
-      this.removerMensagemDeErro(objetoSelect)
+      this.removerMensagemDeErro(select);
       return true;
     },
-    campoDatePickerNaoPodeTerMaisDe10Caracteres: function (objetoDatePicker) {
-      var valorData = objetoDatePicker.getValue()
-      if (valorData.length > 10) {
-        this.mostrarMensagemDeErro(objetoDatePicker, "Campo não pode conter mais de 8 números")
-        return false
+
+    validarDatePicker: function (datePicker) {
+      const valorDatePicker = datePicker.getValue();
+      if (!valorDatePicker) {
+        this.mostrarMensagemDeErro(datePicker, i18n.getText("textoValidarDatePicker"));
+        return false;
       }
-      this.removerMensagemDeErro(objetoDatePicker)
-      return true
-    },
-    campoNomeNaoPodeConterNumerosOuCaracteresEspeciais: function (objetoInput) {
-      var regex = /^[a-zA-Z\s]+$/;
-      var valorInput = objetoInput.getValue();
-      if (regex.test(valorInput) === false) {
-        this.mostrarMensagemDeErro(objetoInput, "Campo não pode conter números ou caracteres")
-        return false
-      }
-      this.removerMensagemDeErro(objetoInput)
-      return true
+      this.removerMensagemDeErro(datePicker);
+      return true;
     },
 
-    mostrarMensagemDeErro: function (objetoDoCampo, mensagemDeErro) {
-      objetoDoCampo.setValueState(sap.ui.core.ValueState.Error)
-      objetoDoCampo.setValueStateText(mensagemDeErro)
+    validarNome: function (nome) {
+      const regex = /^[a-zA-Z\s]+$/;
+      return regex.test(nome);
     },
-    removerMensagemDeErro: function (objetoDoCampo) {
-      objetoDoCampo.setValueState(sap.ui.core.ValueState.None)
-    }
-  }
+
+    validarTamanhoMinimoNome: function (nome) {
+      return nome.length >= 2;
+    },
+
+    mostrarMensagemDeErro: function (campo, mensagem) {
+      campo.setValueState(sap.ui.core.ValueState.Error);
+      campo.setValueStateText(mensagem);
+    },
+
+    removerMensagemDeErro: function (campo) {
+      campo.setValueState(sap.ui.core.ValueState.None);
+    },
+  };
 });

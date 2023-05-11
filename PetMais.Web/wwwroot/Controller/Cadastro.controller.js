@@ -14,7 +14,7 @@ sap.ui.define(
       onInit: function () {
         var rota = this.getOwnerComponent().getRouter();
         rota.getRoute("cadastro").attachMatched(this._aoCoincidirRota, this);
-        this.zerarValidacoes()
+        this.zerarValidacoes();
       },
       _aoCoincidirRota: function () {
         var objetoModeloPet = new JSONModel({});
@@ -98,12 +98,11 @@ sap.ui.define(
         this.validacaoResultado.data = resultadoValidacaoDatePicker;
         this.aoValidarAtivarOuNaoBotaoSalvar();
       },
-      openDatePicker: function(oEvent) {
+      abrirDatePicker: function(oEvent) {
         this.getView().byId("dataNascimento").openBy(oEvent.getSource().getDomRef());
       },
       aoValidarAtivarOuNaoBotaoSalvar: function () {
         var botaoSalvar = this.byId("salvar");
-        console.log(this.validacaoResultado)
         if (
           this.validacaoResultado.nome &&
           this.validacaoResultado.selectTipo &&
@@ -115,6 +114,13 @@ sap.ui.define(
         } else {
           botaoSalvar.setEnabled(false);
         }
+      },
+      configurarCampoData: function() {
+        var oDatePicker = this.getView().byId("dataNascimento");
+        var oDate = new Date();
+        oDate.setFullYear(oDate.getFullYear() - 150);
+        oDatePicker.setMinDate(oDate);
+        oDatePicker.setMaxDate(new Date());
       },
       zerarValidacoes: function () {
         this.validacaoResultado = {
@@ -139,6 +145,9 @@ sap.ui.define(
         oCorSelect.setSelectedKey("");
         oSexoSelect.setSelectedKey("");
         oDataNascimentoDatePicker.setValue("");
+
+        const arrayDeCampos = [oNomeInput, oTipoSelect, oCorSelect, oSexoSelect, oDataNascimentoDatePicker]
+        arrayDeCampos.forEach(elemento => Validacoes.removerMensagemDeErro(elemento));
       },
       voltarParaHome: function () {
         var rota = this.getOwnerComponent().getRouter();
