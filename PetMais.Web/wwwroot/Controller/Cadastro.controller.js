@@ -145,11 +145,11 @@ sap.ui.define(
         var oSexoSelect = this.byId("selectSexo");
         var oDataNascimentoDatePicker = this.byId("datePickerDataNascimeento");
 
-        oNomeInput.setValue("");
-        oTipoSelect.setSelectedKey("");
-        oCorSelect.setSelectedKey("");
-        oSexoSelect.setSelectedKey("");
-        oDataNascimentoDatePicker.setValue("");
+        oNomeInput?.setValue("");
+        oTipoSelect?.setSelectedKey("");
+        oCorSelect?.setSelectedKey("");
+        oSexoSelect?.setSelectedKey("");
+        oDataNascimentoDatePicker?.setValue("");
 
         const arrayDeCampos = [oNomeInput, oTipoSelect, oCorSelect, oSexoSelect, oDataNascimentoDatePicker]
         arrayDeCampos.forEach(elemento => Validacoes.removerMensagemDeErro(elemento));

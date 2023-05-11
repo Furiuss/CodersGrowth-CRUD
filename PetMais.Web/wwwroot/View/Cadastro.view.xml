@@ -12,8 +12,8 @@
 			<ToolbarSpacer />
 			<Title text="{i18n>tituloPaginaCadastro}"/> 
 			<ToolbarSpacer />
-			<Button id="botaoSalvar" text="Salvar" type="Success" enabled="false" press=".aoClicarBotaoSalvar" />
-			<Button id="botaoCancelar" text="Cancelar" type="Negative" press=".aoClicarBotaoCancelar" />
+			<Button id="botaoSalvar" tooltip="{i18n>textoTooltipBotaoCadastrar}" text="{i18n>textoBotaoCadastrar}" type="Success" enabled="false" press=".aoClicarBotaoSalvar" />
+			<Button id="botaoCancelar" text="{i18n>textoBotaoCancelar}" type="Negative" press=".aoClicarBotaoCancelar" />
 		</headerContent>
 		<f:SimpleForm id="SimpleFormChange354"
 			editable="true"
@@ -77,9 +77,9 @@
 					</Select>
 					<Label text="{i18n>campoDataNascimento}"/>
 					<Button
-					width="100%"
+							width="100%"
 							ariaHasPopup="Dialog"
-							tooltip="Open Date Picker"
+							tooltip="Clique para selecionar a data"
 							icon="sap-icon://appointment-2"
 							text=" {path: 'dados>/dataNascimento', formatter: '.formatter.formatarData'}"
 							press=".abrirDatePicker" />

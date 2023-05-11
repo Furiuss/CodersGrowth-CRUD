@@ -8,9 +8,9 @@
 				<headerToolbar>
 					<Toolbar>
 						<content>
-							<Button icon="sap-icon://add" text="Adicionar Pet" press=".aoClicarBotaoAdicionar"/>
+							<Button icon="sap-icon://add" text="{i18n>textoBotaoAdicionar}" press=".aoClicarBotaoAdicionar"/>
 							<ToolbarSpacer/>
-							<SearchField width="60%" placeholder="pesquisar" search=".aoPesquisar"/>
+							<SearchField width="60%" placeholder="{i18n>textoPlaceHolderPesquisar}" search=".aoPesquisar"/>
 						</content>
 					</Toolbar>
 				</headerToolbar>
