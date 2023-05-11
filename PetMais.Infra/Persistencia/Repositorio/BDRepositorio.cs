@@ -105,7 +105,7 @@ namespace PetMais.Repository
 			}
 		}
 
-		public void AdicionarPet(Pet pet)
+		public int AdicionarPet(Pet pet)
 		{
 			var con = CriarConexao();
 
@@ -134,6 +134,8 @@ namespace PetMais.Repository
 			{
 				con.Close();
 			}
+
+			return pet.Id;
 		}
 
 		public void EditarPet(Pet pet)

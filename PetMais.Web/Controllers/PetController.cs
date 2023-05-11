@@ -37,8 +37,9 @@ namespace PetMais.Web.Controllers
 		{
 			if (novoPet == null) { return BadRequest(); }
 			ValidarForm.ValidacaoDosCampos(novoPet);
-			_repository.AdicionarPet(novoPet);
-			return CreatedAtAction(nameof(PegarPetPeloId), new { id = novoPet.Id }, novoPet);
+			var idPet = _repository.AdicionarPet(novoPet);
+			novoPet.Id = idPet;
+			return CreatedAtAction(nameof(PegarPetPeloId), new { id = idPet }, novoPet);
 		}
 
 		[HttpPut("{id}")]

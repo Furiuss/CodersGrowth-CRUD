@@ -12,8 +12,8 @@
 			<ToolbarSpacer />
 			<Title text="{i18n>tituloPaginaCadastro}"/> 
 			<ToolbarSpacer />
-			<Button id="salvar" text="Salvar" type="Success" enabled="false" press=".aoClicarBotaoSalvar" />
-			<Button id="cancelar" text="Cancelar" type="Negative" press=".aoClicarBotaoCancelar" />
+			<Button id="botaoSalvar" text="Salvar" type="Success" enabled="false" press=".aoClicarBotaoSalvar" />
+			<Button id="botaoCancelar" text="Cancelar" type="Negative" press=".aoClicarBotaoCancelar" />
 		</headerContent>
 		<f:SimpleForm id="SimpleFormChange354"
 			editable="true"
@@ -34,7 +34,7 @@
 			<f:content>
 				<Label text="{i18n>campoNome}" />
 				<Input 
-					id="nome" 
+					id="inputNome" 
 					liveChange=".aoMudarValorInput"
 					value="{dados>/nome}"
 					valueState="None"
@@ -42,7 +42,7 @@
 					maxLength="20"
 					placeholder="{i18n>textoInicialNome}"/>				
 				<Label text="{i18n>campoTipo}" />
-					<Select change=".aoMudarValorSelectTipo" id="tipo" selectedKey="{dados>/tipo}">
+					<Select change=".aoMudarValorSelect" id="selectTipo" selectedKey="{dados>/tipo}">
 						<items>
 							<core:Item text="" key=""/>
 							<core:Item text="{i18n>textoSelectCachorro}" key="CACHORRO"/>
@@ -55,7 +55,7 @@
 						</items>
 					</Select>
 					<Label text="{i18n>campoCor}" />
-					<Select change=".aoMudarValorSelectCor" id="cor" selectedKey="{dados>/cor}">
+					<Select change=".aoMudarValorSelect" id="selectCor" selectedKey="{dados>/cor}">
 						<items>
 							<core:Item text="" key=""/>
 							<core:Item text="{i18n>textoSelectBranco}" key="BRANCO"/>
@@ -68,7 +68,7 @@
 						</items>
 					</Select>
 					<Label text="{i18n>campoSexo}" />
-					<Select change=".aoMudarValorSelectSexo" id="sexo" selectedKey="{dados>/sexo}">
+					<Select change=".aoMudarValorSelect" id="selectSexo" selectedKey="{dados>/sexo}">
 						<items>
 							<core:Item text="" key=""/>
 							<core:Item text="{i18n>textoSelectMacho}" key="MASCULINO"/>
@@ -84,7 +84,7 @@
 							text=" {path: 'dados>/dataNascimento', formatter: '.formatter.formatarData'}"
 							press=".abrirDatePicker" />
 					<DatePicker
-						id="dataNascimento"
+						id="datePickerDataNascimento"
 						change=".aoMudarValorDatePicker"
 						valueState="None"
 						hideInput="true"

@@ -12,13 +12,15 @@ sap.ui.define(
     return Controller.extend("sap.ui.petmais.controller.Cadastro", {
       formatter: formatter,
       onInit: function () {
-        var rota = this.getOwnerComponent().getRouter();
-        rota.getRoute("cadastro").attachMatched(this._aoCoincidirRota, this);
-        this.zerarValidacoes();
+        this.rota = this.getOwnerComponent().getRouter();
+        this.rota.getRoute("cadastro").attachMatched(this._aoCoincidirRota, this);
       },
       _aoCoincidirRota: function () {
         var objetoModeloPet = new JSONModel({});
         this.getView().setModel(objetoModeloPet, "dados");
+        this.configurarCampoData();
+        this.zerarValidacoes();
+        this.limparFormulario();
       },
       aoClicarEmVoltar: function () {
         var historico = History.getInstance();
@@ -56,8 +58,7 @@ sap.ui.define(
           })
           .then((dados) => {
             sap.m.MessageToast.show("Pet cadastrado com sucesso!");
-            this.voltarParaHome();
-            this.zerarValidacoes();
+            this.irParaTelaDetalhes(dados.id);
           })
           .catch((erro) => {
             sap.m.MessageToast.show(erro.message);
@@ -65,44 +66,44 @@ sap.ui.define(
       },
       aoClicarBotaoCancelar: function () {
         this.voltarParaHome();
-        this.zerarValidacoes()
-        this.limparFormulario();
       },
       aoMudarValorInput: function () {
-        var oInputNome = this.getView().byId("nome");
+        var oInputNome = this.getView().byId("inputNome");
         var resultadoValidacaoInput = Validacoes.validarInput(oInputNome);
         this.validacaoResultado.nome = resultadoValidacaoInput;
         this.aoValidarAtivarOuNaoBotaoSalvar();
       },
-      aoMudarValorSelectTipo: function () {
-        var oSelectTipo = this.getView().byId("tipo");
-        var resultadoValidacaoSelect = Validacoes.validarSelect(oSelectTipo);
-        this.validacaoResultado.selectTipo = resultadoValidacaoSelect;
-        this.aoValidarAtivarOuNaoBotaoSalvar();
-      },
-      aoMudarValorSelectSexo: function () {
-        var oSelectSexo= this.getView().byId("sexo");
-        var resultadoValidacaoSelect = Validacoes.validarSelect(oSelectSexo);
-        this.validacaoResultado.selectSexo = resultadoValidacaoSelect;
-        this.aoValidarAtivarOuNaoBotaoSalvar();
-      },
-      aoMudarValorSelectCor: function () {
-        var oSelectCor = this.getView().byId("cor");
-        var resultadoValidacaoSelect = Validacoes.validarSelect(oSelectCor);
-        this.validacaoResultado.selectCor = resultadoValidacaoSelect;
+      aoMudarValorSelect: function (evento) {
+        var campoSelect = evento.getSource();
+        var resultadoValidacaoSelect = Validacoes.validarSelect(campoSelect);
+        var idNaoTratado = campoSelect.getId();
+        var idTratado = this.tratarIdElemento(idNaoTratado);
+
+        switch (idTratado) {
+          case 'selectTipo': 
+            this.validacaoResultado.selectTipo = resultadoValidacaoSelect;
+            break;
+          case 'selectCor':
+            this.validacaoResultado.selectCor = resultadoValidacaoSelect;
+            break;
+          case 'selectSexo':
+            this.validacaoResultado.selectSexo = resultadoValidacaoSelect;
+            break;
+        }
+        console.log(this.validacaoResultado)
         this.aoValidarAtivarOuNaoBotaoSalvar();
       },
       aoMudarValorDatePicker: function () {
-        var oDatePickerNascimento = this.getView().byId("dataNascimento");
+        var oDatePickerNascimento = this.getView().byId("datePickerDataNascimento");
         var resultadoValidacaoDatePicker = Validacoes.validarDatePicker(oDatePickerNascimento);
         this.validacaoResultado.data = resultadoValidacaoDatePicker;
         this.aoValidarAtivarOuNaoBotaoSalvar();
       },
       abrirDatePicker: function(oEvent) {
-        this.getView().byId("dataNascimento").openBy(oEvent.getSource().getDomRef());
+        this.getView().byId("datePickerDataNascimento").openBy(oEvent.getSource().getDomRef());
       },
       aoValidarAtivarOuNaoBotaoSalvar: function () {
-        var botaoSalvar = this.byId("salvar");
+        var botaoSalvar = this.byId("botaoSalvar");
         if (
           this.validacaoResultado.nome &&
           this.validacaoResultado.selectTipo &&
@@ -115,8 +116,12 @@ sap.ui.define(
           botaoSalvar.setEnabled(false);
         }
       },
+      tratarIdElemento: function(idNaoTratado) {
+        var arrayDoIdNaoTratado = idNaoTratado.split("--")
+        return arrayDoIdNaoTratado[2]
+      },
       configurarCampoData: function() {
-        var oDatePicker = this.getView().byId("dataNascimento");
+        var oDatePicker = this.getView().byId("datePickerDataNascimento");
         var oDate = new Date();
         oDate.setFullYear(oDate.getFullYear() - 150);
         oDatePicker.setMinDate(oDate);
@@ -130,15 +135,15 @@ sap.ui.define(
           selectCor: false,
           data: false,
         };
-        var botaoSalvar = this.byId("salvar");
+        var botaoSalvar = this.byId("botaoSalvar");
         botaoSalvar.setEnabled(false);
       },
       limparFormulario: function () {
-        var oNomeInput = this.byId("nome");
-        var oTipoSelect = this.byId("tipo");
-        var oCorSelect = this.byId("cor");
-        var oSexoSelect = this.byId("sexo");
-        var oDataNascimentoDatePicker = this.byId("dataNascimento");
+        var oNomeInput = this.byId("inputNome");
+        var oTipoSelect = this.byId("selectTipo");
+        var oCorSelect = this.byId("selectCor");
+        var oSexoSelect = this.byId("selectSexo");
+        var oDataNascimentoDatePicker = this.byId("datePickerDataNascimeento");
 
         oNomeInput.setValue("");
         oTipoSelect.setSelectedKey("");
@@ -150,9 +155,11 @@ sap.ui.define(
         arrayDeCampos.forEach(elemento => Validacoes.removerMensagemDeErro(elemento));
       },
       voltarParaHome: function () {
-        var rota = this.getOwnerComponent().getRouter();
-        rota.navTo("tabelaDePets", {}, true);
+        this.rota.navTo("tabelaDePets", {}, true);
       },
+      irParaTelaDetalhes: function (idDoPetCriado) {
+        this.rota.navTo("detalhes", {id : idDoPetCriado});
+      }
     });
   }
 );
