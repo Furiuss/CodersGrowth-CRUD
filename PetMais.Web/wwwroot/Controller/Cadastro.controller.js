@@ -16,12 +16,8 @@ sap.ui.define(
         this.rota.getRoute("cadastro").attachMatched(this._aoCoincidirRota, this);
       },
       _aoCoincidirRota: function () {
-        var modeloBotao = new JSONModel({
-          isEnabled: false
-        })
         var objetoModeloPet = new JSONModel({});
         this.getView().setModel(objetoModeloPet, "dados");
-        this.getView().setModel(modeloBotao, "modeloBotao");
         this.configurarCampoData();
         this.zerarValidacoes();
         this.limparFormulario();
