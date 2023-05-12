@@ -63,7 +63,7 @@ sap.ui.define([
     },
 
     removerMensagemDeErro: function (campo) {
-      campo.setValueState(sap.ui.core.ValueState.None);
+      campo?.setValueState(sap.ui.core.ValueState.None);
     },
   };
 });

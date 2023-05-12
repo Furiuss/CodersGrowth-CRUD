@@ -9,8 +9,8 @@ sap.ui.define([
   return Controller.extend("sap.ui.petmais.controller.Detalhes", {
     formatter: formatter,
     onInit: function () {
-      var rota = this.getOwnerComponent().getRouter();
-      rota.getRoute("detalhes").attachMatched(this._aoCoincidirRota, this);
+      this.rota = this.getOwnerComponent().getRouter();
+      this.rota.getRoute("detalhes").attachMatched(this._aoCoincidirRota, this);
     },
     _aoCoincidirRota: function (oEvent) {
       var parametros = oEvent.getParameters();
@@ -23,6 +23,7 @@ sap.ui.define([
         .then(dados => dados.json())
         .then(dados => petsModelo.setData({ pet: dados }))  
       this.getView().setModel(petsModelo);
+      console.log(petsModelo)
     },
     aoClicarEmVoltar: function () {
 			var historico = History.getInstance();
@@ -34,6 +35,10 @@ sap.ui.define([
 				var rota = this.getOwnerComponent().getRouter();
 				rota.navTo("tabelaDePets", {}, true);
 			}
-		}
+		},
+    aoClicarBotaoEditar: function (oEvent) {
+      var idDoItem = oEvent.getSource().getBindingContext().getProperty("id");
+      this.rota.navTo("edicao", {id : idDoItem});
+    },
   });
 });

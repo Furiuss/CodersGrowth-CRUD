@@ -80,6 +80,11 @@
         "pattern": "cadastro",
         "name": "cadastro",
         "target": "cadastro"
+      },
+      {
+        "pattern": "edicao/{id}",
+        "name": "edicao",
+        "target": "edicao"
       }
       ],
       "targets": {
@@ -93,6 +98,10 @@
       },
       "cadastro": {
         "id": "cadastro",
+        "name": "Cadastro"
+      },
+      "edicao": {
+        "id": "edicao",
         "name": "Cadastro"
       }
       }

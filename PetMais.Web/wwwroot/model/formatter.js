@@ -1,5 +1,13 @@
-sap.ui.define([], function () {
-	"use strict";
+sap.ui.define([
+  "sap/ui/model/resource/ResourceModel"
+], function (ResourceModel) {
+  "use strict";
+
+	var i18nModel = new ResourceModel({
+    bundleName: "sap.ui.petmais.i18n.i18n",
+    bundleUrl: "../i18n/i18n.properties"
+  });
+  const i18n = i18nModel.getResourceBundle();
 
 	return {
 
@@ -52,18 +60,12 @@ sap.ui.define([], function () {
 		},
 		formatarData: function(data) {
 			if (!data) {
-				return "Escolha o dia do nascimento do pet"
+				return i18n.getText("textoDatePickerNaoEscolhido")
 			}
 			var dataMoment = moment(data,"YYYY-MM-DDTHH:mm:ss.MMM");
       var dataHoraFormatada = dataMoment.format("DD/MM/YYYY");
 			console.log(dataHoraFormatada)
       return dataHoraFormatada;
 		},
-		textoBotaoHabilitadoOuNao: function(booleanoHabilitado){
-			if (booleanoHabilitado) {
-				return "Salvar"
-			}
-			return "Preencha todos os campos"
-		}
 	};
 });
