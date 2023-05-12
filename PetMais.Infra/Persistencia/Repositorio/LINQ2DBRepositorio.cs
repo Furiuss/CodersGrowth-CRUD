@@ -18,14 +18,15 @@ namespace PetMais.Infra.Persistencia.Repositorio
 
 		public ITable<Pet> _pet;
 
-		public void AdicionarPet(Pet pet)
+		public int AdicionarPet(Pet pet)
 		{
 			using var conexaoLinq2db = CriarConexao();
 
 			try
 			{
 				pet.DataDeCadastro = DateTime.Now;
-				conexaoLinq2db.Insert(pet);
+				var id = conexaoLinq2db.InsertWithInt32Identity(pet);
+				return id;
 			}
 			catch (MensagensDeErros ex)
 			{
@@ -94,5 +95,5 @@ namespace PetMais.Infra.Persistencia.Repositorio
 			conexao = SqlServerTools.CreateDataConnection(connectionString);
 			return conexao;
 		}
-	} 
+	}
 }

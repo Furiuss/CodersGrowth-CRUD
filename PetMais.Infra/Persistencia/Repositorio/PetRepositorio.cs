@@ -13,11 +13,12 @@ namespace PetMais.Repository
 	{
 		protected List<Pet> _pets = ListaDePets.GetInstancia();
 
-		public void AdicionarPet(Pet pet)
+		public int AdicionarPet(Pet pet)
 		{
 			pet.Id = ListaDePets.AutoIncrementoDeId();
 			pet.DataDeCadastro = DateTime.Now;
 			_pets.Add(pet);
+			return pet.Id;
 		}
 
 		public void EditarPet(Pet petEditado)

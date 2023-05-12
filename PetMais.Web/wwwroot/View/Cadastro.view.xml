@@ -12,8 +12,11 @@
 			<ToolbarSpacer />
 			<Title text="{i18n>tituloPaginaCadastro}"/> 
 			<ToolbarSpacer />
-			<Button id="save" text="Salvar" type="Success" press=".aoClicarBotaoSalvar" />
-			<Button id="cancel" text="Cancelar" type="Negative" press=".aoClicarBotaoCancelar" />
+			<Button 
+				id="botaoSalvar"
+				tooltip="{i18n>textoTooltipBotaoCadastrar}" 
+				type="Success"  press=".aoClicarBotaoSalvar" />
+			<Button id="botaoCancelar" text="{i18n>textoBotaoCancelar}" type="Negative" press=".aoClicarBotaoCancelar" />
 		</headerContent>
 		<f:SimpleForm id="SimpleFormChange354"
 			editable="true"
@@ -33,9 +36,16 @@
 			singleContainerFullSize="false" >
 			<f:content>
 				<Label text="{i18n>campoNome}" />
-				<Input id="nome" value="{dados>/nome}" placeholder="{i18n>textoInicialNome}"/>				
+				<Input 
+					id="inputNome" 
+					liveChange=".aoMudarValorInput"
+					value="{dados>/nome}"
+					valueState="None"
+					valueStateText=""
+					maxLength="20"
+					placeholder="{i18n>textoInicialNome}"/>				
 				<Label text="{i18n>campoTipo}" />
-					<Select id="tipo" selectedKey="{dados>/tipo}">
+					<Select change=".aoMudarValorSelect" id="selectTipo" selectedKey="{dados>/tipo}">
 						<items>
 							<core:Item text="" key=""/>
 							<core:Item text="{i18n>textoSelectCachorro}" key="CACHORRO"/>
@@ -48,7 +58,7 @@
 						</items>
 					</Select>
 					<Label text="{i18n>campoCor}" />
-					<Select id="cor" selectedKey="{dados>/cor}">
+					<Select change=".aoMudarValorSelect" id="selectCor" selectedKey="{dados>/cor}">
 						<items>
 							<core:Item text="" key=""/>
 							<core:Item text="{i18n>textoSelectBranco}" key="BRANCO"/>
@@ -61,7 +71,7 @@
 						</items>
 					</Select>
 					<Label text="{i18n>campoSexo}" />
-					<Select id="sexo" selectedKey="{dados>/sexo}">
+					<Select change=".aoMudarValorSelect" id="selectSexo" selectedKey="{dados>/sexo}">
 						<items>
 							<core:Item text="" key=""/>
 							<core:Item text="{i18n>textoSelectMacho}" key="MASCULINO"/>
@@ -69,7 +79,23 @@
 						</items>
 					</Select>
 					<Label text="{i18n>campoDataNascimento}"/>
-					<DatePicker id="dataNascimento" value="{dados>/dataNascimento}" placeholder="Dia/Mês/Ano" valueFormat="yyyy-MM-ddTHH:mm:ss.mmm'" displayFormat="dd/MM/yyyy" />
+					<Button
+							width="100%"
+							ariaHasPopup="Dialog"
+							tooltip="Clique para selecionar a data"
+							icon="sap-icon://appointment-2"
+							text=" {path: 'dados>/dataNascimento', formatter: '.formatter.formatarData'}"
+							press=".abrirDatePicker" />
+					<DatePicker
+						id="datePickerDataNascimento"
+						change=".aoMudarValorDatePicker"
+						valueState="None"
+						hideInput="true"
+						valueStateText=""
+						value="{dados>/dataNascimento}" 
+						placeholder="Dia/Mês/Ano" 
+						valueFormat="yyyy-MM-ddTHH:mm:ss.mmm'" 
+						displayFormat="dd/MM/yyyy" />
 				</f:content>
 		</f:SimpleForm>
 	</Page>

@@ -50,5 +50,20 @@ sap.ui.define([], function () {
 			var mesAtual = new Date().getMonth();
 			return mesAtual - mesNascimento;
 		},
+		formatarData: function(data) {
+			if (!data) {
+				return "Escolha o dia do nascimento do pet"
+			}
+			var dataMoment = moment(data,"YYYY-MM-DDTHH:mm:ss.MMM");
+      var dataHoraFormatada = dataMoment.format("DD/MM/YYYY");
+			console.log(dataHoraFormatada)
+      return dataHoraFormatada;
+		},
+		textoBotaoHabilitadoOuNao: function(booleanoHabilitado){
+			if (booleanoHabilitado) {
+				return "Salvar"
+			}
+			return "Preencha todos os campos"
+		}
 	};
 });
