@@ -3,22 +3,17 @@ sap.ui.define(
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "../model/formatter",
-    "sap/ui/model/resource/ResourceModel",
     "../services/Validacoes",
     "sap/ui/core/routing/History",
   ],
-  function (Controller, JSONModel, formatter, ResourceModel, Validacoes, History) {
+  function (Controller, JSONModel, formatter, Validacoes, History) {
     "use strict";
-
-    var i18nModel = new ResourceModel({
-      bundleName: "sap.ui.petmais.i18n.i18n",
-      bundleUrl: "../i18n/i18n.properties"
-    });
-    const i18n = i18nModel.getResourceBundle();
 
     return Controller.extend("sap.ui.petmais.controller.Cadastro", {
       formatter: formatter,
       onInit: function () {
+        const i18nModel = this.getOwnerComponent().getModel("i18n").getResourceBundle()
+        Validacoes.criarModeloI18n(i18nModel);
         this.rota = this.getOwnerComponent().getRouter();
         this.rota
           .getRoute("cadastro")
@@ -155,6 +150,7 @@ sap.ui.define(
           .openBy(oEvent.getSource().getDomRef());
       },
       aoValidarAtivarOuNaoBotaoSalvar: function () {
+        var i18n = this.getView().getModel("i18n").getResourceBundle();
         var botaoSalvar = this.byId("botaoSalvar");
         if (
           this.validacaoResultado.nome &&
@@ -172,16 +168,19 @@ sap.ui.define(
       },
       tratarIdElemento: function (idNaoTratado) {
         var arrayDoIdNaoTratado = idNaoTratado.split("--");
-        return arrayDoIdNaoTratado[2];
+        const posicaoOndeIdSeEncontra = 2
+        return arrayDoIdNaoTratado[posicaoOndeIdSeEncontra];
       },
       configurarCampoData: function () {
         var oDatePicker = this.getView().byId("datePickerDataNascimento");
         var oDate = new Date();
-        oDate.setFullYear(oDate.getFullYear() - 150);
+        const idadeMaximoDoPet = 150;
+        oDate.setFullYear(oDate.getFullYear() - idadeMaximoDoPet);
         oDatePicker.setMinDate(oDate);
         oDatePicker.setMaxDate(new Date());
       },
       configuracaoInicialBotaoSalvar: function (estado) {
+        var i18n = this.getView().getModel("i18n").getResourceBundle();
         var botaoSalvar = this.byId("botaoSalvar");
         if (!estado) {
           botaoSalvar.setEnabled(false);

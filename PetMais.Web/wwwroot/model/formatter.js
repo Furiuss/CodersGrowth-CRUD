@@ -3,14 +3,13 @@ sap.ui.define([
 ], function (ResourceModel) {
   "use strict";
 
-	var i18nModel = new ResourceModel({
-    bundleName: "sap.ui.petmais.i18n.i18n",
-    bundleUrl: "../i18n/i18n.properties"
-  });
-  const i18n = i18nModel.getResourceBundle();
+	// var i18nModel = new ResourceModel({
+  //   bundleName: "sap.ui.petmais.i18n.i18n",
+  //   bundleUrl: "../i18n/i18n.properties"
+  // });
+  // const i18n = i18nModel.getResourceBundle();
 
 	return {
-
 		iconesTipo: function (tipo) {
 			switch (tipo) {
 				case "GATO":
@@ -60,6 +59,7 @@ sap.ui.define([
 		},
 		formatarData: function(data) {
 			if (!data) {
+				const i18n = this.getView().getModel("i18n").getResourceBundle();
 				return i18n.getText("textoDatePickerNaoEscolhido")
 			}
 			var dataMoment = moment(data,"YYYY-MM-DDTHH:mm:ss.MMM");
