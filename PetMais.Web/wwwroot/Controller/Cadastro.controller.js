@@ -12,15 +12,35 @@ sap.ui.define(
     return Controller.extend("sap.ui.petmais.controller.Cadastro", {
       formatter: formatter,
       onInit: function () {
-        this.rota = this.getOwnerComponent().getRouter();
-        this.rota.getRoute("cadastro").attachMatched(this._aoCoincidirRota, this);
+        const modeloi18n = this.getOwnerComponent().getModel("i18n").getResourceBundle()
+        Validacoes.criarModeloI18n(modeloi18n);
+        var rota = this.getOwnerComponent().getRouter();
+        rota
+          .getRoute("cadastro")
+          .attachMatched(this._aoCoincidirRotaCadastro, this);
+        rota
+          .getRoute("edicao")
+          .attachMatched(this._aoCoincidirRotaEdicao, this);
       },
-      _aoCoincidirRota: function () {
-        var objetoModeloPet = new JSONModel({});
-        this.getView().setModel(objetoModeloPet, "dados");
-        this.configurarCampoData();
-        this.zerarValidacoes();
+      _aoCoincidirRotaCadastro: function () {
+        this.zerarValidacoes(false);
         this.limparFormulario();
+        this.configurarCampoData();
+        var novoObjetoModeloPet = new JSONModel({});
+        this.getView().setModel(novoObjetoModeloPet, "dados");
+      },
+      _aoCoincidirRotaEdicao: function (evento) {
+        this.zerarValidacoes(true);
+        this.limparFormulario();
+        this.configurarCampoData();
+        var parametros = evento.getParameters();
+        var idDoPet = parametros.arguments.id;
+        this.pegarDadosDaApi(idDoPet);
+      },
+      pegarDadosDaApi: function (id) {
+        var modeloPet = new JSONModel();
+        modeloPet.loadData("/api/pets/" + id);
+        this.getView().setModel(modeloPet, "dados");
       },
       aoClicarEmVoltar: function () {
         var historico = History.getInstance();
@@ -33,32 +53,63 @@ sap.ui.define(
       },
       aoClicarBotaoSalvar: function () {
         var modeloPet = this.getView().getModel("dados");
-        var dadosNovoPet = modeloPet.getData();
+        var dadosPet = modeloPet.getData();
 
-        var novoPet = {
-          nome: dadosNovoPet.nome,
-          tipo: dadosNovoPet.tipo,
-          cor: dadosNovoPet.cor,
-          sexo: dadosNovoPet.sexo,
-          dataDeNascimento: dadosNovoPet.dataNascimento,
+        var pet = {
+          nome: dadosPet.nome,
+          tipo: dadosPet.tipo,
+          cor: dadosPet.cor,
+          sexo: dadosPet.sexo,
+          dataDeNascimento: dadosPet.dataDeNascimento,
         };
 
-        fetch("/api/pets", {
+        if (dadosPet.id) {
+          return this.editarPetExistente(pet, dadosPet.id)
+        } 
+
+        return this.cadastrarNovoPet(pet)
+      },
+      cadastrarNovoPet: function (objetoNovoPet) {
+        const i18n = this.getView().getModel("i18n").getResourceBundle();
+        const enderecoApi = "/api/pets";
+
+        fetch( enderecoApi, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(novoPet),
+          body: JSON.stringify(objetoNovoPet),
         })
           .then((resposta) => {
             if (!resposta.ok) {
-              throw new Error("Erro ao cadastrar o pet");
+              throw new Error(i18n.getText("textoErroAoCadastrar"));
             }
             return resposta.json();
           })
           .then((dados) => {
-            sap.m.MessageToast.show("Pet cadastrado com sucesso!");
+            sap.m.MessageToast.show(i18n.getText("textoPetCadastradoComExito"));
             this.irParaTelaDetalhes(dados.id);
+          })
+          .catch((erro) => {
+            sap.m.MessageToast.show(erro.message);
+          });
+      },
+      editarPetExistente: function(objetoPetExistente, idPetExistente) {
+        const i18n = this.getView().getModel("i18n").getResourceBundle();
+        const enderecoApi = "/api/pets/";
+        fetch(enderecoApi + idPetExistente, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(objetoPetExistente),
+        })
+          .then((resposta) => {
+            if (!resposta.ok) {
+              throw new Error(i18n.getText("textoErroAoEditar"));
+            }
+            sap.m.MessageToast.show(i18n.getText("textoPetEditadoComExito"));
+            this.irParaTelaDetalhes(idPetExistente);
           })
           .catch((erro) => {
             sap.m.MessageToast.show(erro.message);
@@ -80,29 +131,36 @@ sap.ui.define(
         var idTratado = this.tratarIdElemento(idNaoTratado);
 
         switch (idTratado) {
-          case 'selectTipo': 
+          case "selectTipo":
             this.validacaoResultado.selectTipo = resultadoValidacaoSelect;
             break;
-          case 'selectCor':
+          case "selectCor":
             this.validacaoResultado.selectCor = resultadoValidacaoSelect;
             break;
-          case 'selectSexo':
+          case "selectSexo":
             this.validacaoResultado.selectSexo = resultadoValidacaoSelect;
             break;
         }
-        console.log(this.validacaoResultado)
+        console.log(this.validacaoResultado);
         this.aoValidarAtivarOuNaoBotaoSalvar();
       },
       aoMudarValorDatePicker: function () {
-        var oDatePickerNascimento = this.getView().byId("datePickerDataNascimento");
-        var resultadoValidacaoDatePicker = Validacoes.validarDatePicker(oDatePickerNascimento);
+        var oDatePickerNascimento = this.getView().byId(
+          "datePickerDataNascimento"
+        );
+        var resultadoValidacaoDatePicker = Validacoes.validarDatePicker(
+          oDatePickerNascimento
+        );
         this.validacaoResultado.data = resultadoValidacaoDatePicker;
         this.aoValidarAtivarOuNaoBotaoSalvar();
       },
-      abrirDatePicker: function(oEvent) {
-        this.getView().byId("datePickerDataNascimento").openBy(oEvent.getSource().getDomRef());
+      abrirDatePicker: function (oEvent) {
+        this.getView()
+          .byId("datePickerDataNascimento")
+          .openBy(oEvent.getSource().getDomRef());
       },
       aoValidarAtivarOuNaoBotaoSalvar: function () {
+        var i18n = this.getView().getModel("i18n").getResourceBundle();
         var botaoSalvar = this.byId("botaoSalvar");
         if (
           this.validacaoResultado.nome &&
@@ -112,34 +170,46 @@ sap.ui.define(
           this.validacaoResultado.data
         ) {
           botaoSalvar.setEnabled(true);
-          botaoSalvar.setText("Salvar")
+          botaoSalvar.setText(i18n.getText("textoBotaoSalvarValidado"));
         } else {
           botaoSalvar.setEnabled(false);
-          botaoSalvar.setText("Preencha todos os campos")
+          botaoSalvar.setText(i18n.getText("textoBotaoSalvarNaoValidado"));
         }
       },
-      tratarIdElemento: function(idNaoTratado) {
-        var arrayDoIdNaoTratado = idNaoTratado.split("--")
-        return arrayDoIdNaoTratado[2]
+      tratarIdElemento: function (idNaoTratado) {
+        var arrayDoIdNaoTratado = idNaoTratado.split("--");
+        const posicaoOndeIdSeEncontra = 2
+        return arrayDoIdNaoTratado[posicaoOndeIdSeEncontra];
       },
-      configurarCampoData: function() {
+      configurarCampoData: function () {
         var oDatePicker = this.getView().byId("datePickerDataNascimento");
         var oDate = new Date();
-        oDate.setFullYear(oDate.getFullYear() - 150);
+        const idadeMaximoDoPet = 150;
+        oDate.setFullYear(oDate.getFullYear() - idadeMaximoDoPet);
         oDatePicker.setMinDate(oDate);
         oDatePicker.setMaxDate(new Date());
       },
-      zerarValidacoes: function () {
-        this.validacaoResultado = {
-          nome: false,
-          selectTipo: false,
-          selectSexo: false,
-          selectCor: false,
-          data: false,
-        };
+      configuracaoInicialBotaoSalvar: function (estado) {
+        var i18n = this.getView().getModel("i18n").getResourceBundle();
         var botaoSalvar = this.byId("botaoSalvar");
-        botaoSalvar.setEnabled(false);
-        botaoSalvar.setText("Preencha todos os campos")
+        if (!estado) {
+          botaoSalvar.setEnabled(false);
+          botaoSalvar.setText(i18n.getText("textoBotaoSalvarNaoValidado"));
+        } else {
+          botaoSalvar.setEnabled(true);
+          botaoSalvar.setText(i18n.getText("textoBotaoSalvarValidado"));
+        }
+      },
+      zerarValidacoes: function (estado) {
+        this.validacaoResultado = {
+          nome: estado,
+          selectTipo: estado,
+          selectSexo: estado,
+          selectCor: estado,
+          data: estado
+        };
+
+        this.configuracaoInicialBotaoSalvar(estado)
       },
       limparFormulario: function () {
         var oNomeInput = this.byId("inputNome");
@@ -154,15 +224,25 @@ sap.ui.define(
         oSexoSelect?.setSelectedKey("");
         oDataNascimentoDatePicker?.setValue("");
 
-        const arrayDeCampos = [oNomeInput, oTipoSelect, oCorSelect, oSexoSelect, oDataNascimentoDatePicker]
-        arrayDeCampos.forEach(elemento => Validacoes.removerMensagemDeErro(elemento));
+        const arrayDeCampos = [
+          oNomeInput,
+          oTipoSelect,
+          oCorSelect,
+          oSexoSelect,
+          oDataNascimentoDatePicker,
+        ];
+        arrayDeCampos.forEach((elemento) =>
+          Validacoes.removerMensagemDeErro(elemento)
+        );
       },
       voltarParaHome: function () {
-        this.rota.navTo("tabelaDePets", {}, true);
+        var rota = this.getOwnerComponent().getRouter();
+        rota.navTo("tabelaDePets", {}, true);
       },
       irParaTelaDetalhes: function (idDoPetCriado) {
-        this.rota.navTo("detalhes", {id : idDoPetCriado});
-      }
+        var rota = this.getOwnerComponent().getRouter();
+        rota.navTo("detalhes", { id: idDoPetCriado });
+      },
     });
   }
 );

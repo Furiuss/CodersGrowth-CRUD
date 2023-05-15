@@ -7,7 +7,7 @@
 			<ToolbarSpacer />
 			<Title text="{i18n>tituloPaginaDetalhes}"/>
 			<ToolbarSpacer />
-			<Button icon="sap-icon://edit" text="{i18n>textoBotaoEditar}" type="Attention"/>
+			<Button icon="sap-icon://edit" press=".aoClicarBotaoEditar" text="{i18n>textoBotaoEditar}" type="Attention"/>
 			<Button icon="sap-icon://delete" text="{i18n>textoBotaoRemover}" type="Reject" />
 		</headerContent>
 		<ObjectHeader title="{nome}">

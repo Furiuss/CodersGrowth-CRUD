@@ -1,27 +1,24 @@
 sap.ui.define([
-  "sap/ui/model/resource/ResourceModel"
-], function (ResourceModel) {
+], function () {
   "use strict";
 
-  var i18nModel = new ResourceModel({
-    bundleName: "sap.ui.petmais.i18n.i18n",
-    bundleUrl: "../i18n/i18n.properties"
-  });
-  const i18n = i18nModel.getResourceBundle();
-
   return {
+    _i18n: null,
+    criarModeloI18n: function (i18nModel) {
+      this._i18n = i18nModel;
+    },
     validarInput: function (input) {
       const nome = input.getValue();
       if (!nome) {
-        this.mostrarMensagemDeErro(input, i18n.getText("textoInputVazio"));
+        this.mostrarMensagemDeErro(input, this._i18n.getText("textoInputVazio"));
         return false;
       }
       if (!this.validarNome(nome)) {
-        this.mostrarMensagemDeErro(input, i18n.getText("textoValidacaoDoNome"));
+        this.mostrarMensagemDeErro(input, this._i18n.getText("textoValidacaoDoNome"));
         return false;
       }
       if (!this.validarTamanhoMinimoNome(nome)) {
-        this.mostrarMensagemDeErro(input, i18n.getText("textoValidarTamanhoMinimo"));
+        this.mostrarMensagemDeErro(input, this._i18n.getText("textoValidarTamanhoMinimo"));
         return false;
       }
       this.removerMensagemDeErro(input);
@@ -31,7 +28,7 @@ sap.ui.define([
     validarSelect: function (select) {
       const valorSelect = select.getSelectedKey();
       if (!valorSelect) {
-        this.mostrarMensagemDeErro(select, i18n.getText("textoValidarSelect"));
+        this.mostrarMensagemDeErro(select, this._i18n.getText("textoValidarSelect"));
         return false;
       }
       this.removerMensagemDeErro(select);
@@ -41,7 +38,7 @@ sap.ui.define([
     validarDatePicker: function (datePicker) {
       const valorDatePicker = datePicker.getValue();
       if (!valorDatePicker) {
-        this.mostrarMensagemDeErro(datePicker, i18n.getText("textoValidarDatePicker"));
+        this.mostrarMensagemDeErro(datePicker, this._i18n.getText("textoValidarDatePicker"));
         return false;
       }
       this.removerMensagemDeErro(datePicker);
@@ -63,7 +60,7 @@ sap.ui.define([
     },
 
     removerMensagemDeErro: function (campo) {
-      campo.setValueState(sap.ui.core.ValueState.None);
+      campo?.setValueState(sap.ui.core.ValueState.None);
     },
   };
 });

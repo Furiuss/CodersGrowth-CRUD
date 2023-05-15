@@ -84,7 +84,7 @@
 							ariaHasPopup="Dialog"
 							tooltip="Clique para selecionar a data"
 							icon="sap-icon://appointment-2"
-							text=" {path: 'dados>/dataNascimento', formatter: '.formatter.formatarData'}"
+							text=" {path: 'dados>/dataDeNascimento', formatter: '.formatter.formatarData'}"
 							press=".abrirDatePicker" />
 					<DatePicker
 						id="datePickerDataNascimento"
@@ -92,7 +92,7 @@
 						valueState="None"
 						hideInput="true"
 						valueStateText=""
-						value="{dados>/dataNascimento}" 
+						value="{dados>/dataDeNascimento}" 
 						placeholder="Dia/Mês/Ano" 
 						valueFormat="yyyy-MM-ddTHH:mm:ss.mmm'" 
 						displayFormat="dd/MM/yyyy" />
