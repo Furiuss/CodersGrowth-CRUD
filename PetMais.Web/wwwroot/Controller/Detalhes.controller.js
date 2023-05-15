@@ -3,9 +3,10 @@ sap.ui.define(
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "../model/formatter",
+    "sap/m/MessageBox",
     "sap/ui/core/routing/History",
   ],
-  function (Controller, JSONModel, formatter, History) {
+  function (Controller, JSONModel, formatter, MessageBox, History) {
     "use strict";
 
     return Controller.extend("sap.ui.petmais.controller.Detalhes", {
@@ -49,8 +50,21 @@ sap.ui.define(
         rota.navTo("edicao", { id: idDoPet });
       },
       aoClicarBotaoRemover: function (evento) {
-        const i18n = this.getView().getModel("i18n").getResourceBundle();
         const idDoPet = evento.getSource().getBindingContext().getProperty("id");
+        MessageBox.confirm("Tem certeza que deseja remover esse pet permanentemente?", {
+          actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+          onClose: function (acao) {
+            if (acao === MessageBox.Action.YES) {
+              return this.removerPet(idDoPet)
+            }
+            return
+          }.bind(this)
+        })
+      },
+      removerPet: function(idDoPet) {
+        console.log("oi")
+        const i18n = this.getView().getModel("i18n").getResourceBundle();
+        
         const enderecoApi = "/api/pets/";
         fetch(enderecoApi + idDoPet, {
           method: "DELETE",
@@ -66,7 +80,7 @@ sap.ui.define(
             sap.m.MessageToast.show(erro.message);
           });
       },
-      irParaTelaInicial: function () {
+       irParaTelaInicial: function () {
         var rota = this.getOwnerComponent().getRouter();
         rota.navTo("tabelaDePets", {}, true);
       },
