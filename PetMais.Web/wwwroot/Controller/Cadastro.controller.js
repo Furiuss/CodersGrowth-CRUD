@@ -8,11 +8,13 @@ sap.ui.define(
   ],
   function (Controller, JSONModel, formatter, Validacoes, History) {
     "use strict";
+    const stringModeloi18n = "i18n"
+    const stringNomeDoModelo = "dados";
 
     return Controller.extend("sap.ui.petmais.controller.Cadastro", {
       formatter: formatter,
       onInit: function () {
-        const modeloi18n = this.getOwnerComponent().getModel("i18n").getResourceBundle()
+        const modeloi18n = this.getOwnerComponent().getModel(stringModeloi18n).getResourceBundle()
         Validacoes.criarModeloI18n(modeloi18n);
         var rota = this.getOwnerComponent().getRouter();
         rota
@@ -27,7 +29,7 @@ sap.ui.define(
         this.limparFormulario();
         this.configurarCampoData();
         var novoObjetoModeloPet = new JSONModel({});
-        this.getView().setModel(novoObjetoModeloPet, "dados");
+        this.getView().setModel(novoObjetoModeloPet, stringNomeDoModelo);
       },
       _aoCoincidirRotaEdicao: function (evento) {
         this.zerarValidacoes(true);
@@ -40,7 +42,7 @@ sap.ui.define(
       pegarDadosDaApi: function (id) {
         var modeloPet = new JSONModel();
         modeloPet.loadData("/api/pets/" + id);
-        this.getView().setModel(modeloPet, "dados");
+        this.getView().setModel(modeloPet, stringNomeDoModelo);
       },
       aoClicarEmVoltar: function () {
         var historico = History.getInstance();
@@ -52,7 +54,7 @@ sap.ui.define(
         }
       },
       aoClicarBotaoSalvar: function () {
-        var modeloPet = this.getView().getModel("dados");
+        var modeloPet = this.getView().getModel(stringNomeDoModelo);
         var dadosPet = modeloPet.getData();
 
         var pet = {
@@ -70,7 +72,7 @@ sap.ui.define(
         return this.cadastrarNovoPet(pet)
       },
       cadastrarNovoPet: function (objetoNovoPet) {
-        const i18n = this.getView().getModel("i18n").getResourceBundle();
+        const i18n = this.getView().getModel(stringModeloi18n).getResourceBundle();
         const enderecoApi = "/api/pets";
 
         fetch( enderecoApi, {
@@ -95,7 +97,7 @@ sap.ui.define(
           });
       },
       editarPetExistente: function(objetoPetExistente, idPetExistente) {
-        const i18n = this.getView().getModel("i18n").getResourceBundle();
+        const i18n = this.getView().getModel(stringModeloi18n).getResourceBundle();
         const enderecoApi = "/api/pets/";
         fetch(enderecoApi + idPetExistente, {
           method: "PUT",
@@ -160,7 +162,7 @@ sap.ui.define(
           .openBy(oEvent.getSource().getDomRef());
       },
       aoValidarAtivarOuNaoBotaoSalvar: function () {
-        var i18n = this.getView().getModel("i18n").getResourceBundle();
+        var i18n = this.getView().getModel(stringModeloi18n).getResourceBundle();
         var botaoSalvar = this.byId("botaoSalvar");
         if (
           this.validacaoResultado.nome &&
@@ -190,7 +192,7 @@ sap.ui.define(
         oDatePicker.setMaxDate(new Date());
       },
       configuracaoInicialBotaoSalvar: function (estado) {
-        var i18n = this.getView().getModel("i18n").getResourceBundle();
+        var i18n = this.getView().getModel(stringModeloi18n).getResourceBundle();
         var botaoSalvar = this.byId("botaoSalvar");
         if (!estado) {
           botaoSalvar.setEnabled(false);
