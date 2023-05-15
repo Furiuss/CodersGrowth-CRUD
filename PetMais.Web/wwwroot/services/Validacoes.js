@@ -1,13 +1,6 @@
 sap.ui.define([
-  "sap/ui/model/resource/ResourceModel"
-], function (ResourceModel) {
+], function () {
   "use strict";
-
-  // var i18nModel = new ResourceModel({
-  //   bundleName: "sap.ui.petmais.i18n.i18n",
-  //   bundleUrl: "../i18n/i18n.properties"
-  // });
-  // const i18n = i18nModel.getResourceBundle();
 
   return {
     _i18n: null,

@@ -12,13 +12,13 @@ sap.ui.define(
     return Controller.extend("sap.ui.petmais.controller.Cadastro", {
       formatter: formatter,
       onInit: function () {
-        const i18nModel = this.getOwnerComponent().getModel("i18n").getResourceBundle()
-        Validacoes.criarModeloI18n(i18nModel);
-        this.rota = this.getOwnerComponent().getRouter();
-        this.rota
+        const modeloi18n = this.getOwnerComponent().getModel("i18n").getResourceBundle()
+        Validacoes.criarModeloI18n(modeloi18n);
+        var rota = this.getOwnerComponent().getRouter();
+        rota
           .getRoute("cadastro")
           .attachMatched(this._aoCoincidirRotaCadastro, this);
-        this.rota
+        rota
           .getRoute("edicao")
           .attachMatched(this._aoCoincidirRotaEdicao, this);
       },
@@ -38,10 +38,9 @@ sap.ui.define(
         this.pegarDadosDaApi(idDoPet);
       },
       pegarDadosDaApi: function (id) {
-        var oModel = new JSONModel();
-        oModel.loadData("/api/pets/" + id);
-        this.getView().setModel(oModel, "dados");
-        console.log(oModel);
+        var modeloPet = new JSONModel();
+        modeloPet.loadData("/api/pets/" + id);
+        this.getView().setModel(modeloPet, "dados");
       },
       aoClicarEmVoltar: function () {
         var historico = History.getInstance();
@@ -65,45 +64,56 @@ sap.ui.define(
         };
 
         if (dadosPet.id) {
-          fetch(`/api/pets/${dadosPet.id}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(pet),
+          return this.editarPetExistente(pet, dadosPet.id)
+        } 
+
+        return this.cadastrarNovoPet(pet)
+      },
+      cadastrarNovoPet: function (objetoNovoPet) {
+        const i18n = this.getView().getModel("i18n").getResourceBundle();
+        const enderecoApi = "/api/pets";
+
+        fetch( enderecoApi, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(objetoNovoPet),
+        })
+          .then((resposta) => {
+            if (!resposta.ok) {
+              throw new Error(i18n.getText("textoErroAoCadastrar"));
+            }
+            return resposta.json();
           })
-            .then((resposta) => {
-              if (!resposta.ok) {
-                throw new Error("Erro ao editar o pet");
-              }
-              sap.m.MessageToast.show("Pet editado com sucesso!");
-              this.irParaTelaDetalhes(dadosPet.id);
-            })
-            .catch((erro) => {
-              sap.m.MessageToast.show(erro.message);
-            });
-        } else {
-          fetch("/api/pets", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(pet),
+          .then((dados) => {
+            sap.m.MessageToast.show(i18n.getText("textoPetCadastradoComExito"));
+            this.irParaTelaDetalhes(dados.id);
           })
-            .then((resposta) => {
-              if (!resposta.ok) {
-                throw new Error("Erro ao cadastrar o pet");
-              }
-              return resposta.json();
-            })
-            .then((dados) => {
-              sap.m.MessageToast.show("Pet cadastrado com sucesso!");
-              this.irParaTelaDetalhes(dados.id);
-            })
-            .catch((erro) => {
-              sap.m.MessageToast.show(erro.message);
-            });
-        }
+          .catch((erro) => {
+            sap.m.MessageToast.show(erro.message);
+          });
+      },
+      editarPetExistente: function(objetoPetExistente, idPetExistente) {
+        const i18n = this.getView().getModel("i18n").getResourceBundle();
+        const enderecoApi = "/api/pets/";
+        fetch(enderecoApi + idPetExistente, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(objetoPetExistente),
+        })
+          .then((resposta) => {
+            if (!resposta.ok) {
+              throw new Error(i18n.getText("textoErroAoEditar"));
+            }
+            sap.m.MessageToast.show(i18n.getText("textoPetEditadoComExito"));
+            this.irParaTelaDetalhes(idPetExistente);
+          })
+          .catch((erro) => {
+            sap.m.MessageToast.show(erro.message);
+          });
       },
       aoClicarBotaoCancelar: function () {
         this.voltarParaHome();
@@ -226,10 +236,12 @@ sap.ui.define(
         );
       },
       voltarParaHome: function () {
-        this.rota.navTo("tabelaDePets", {}, true);
+        var rota = this.getOwnerComponent().getRouter();
+        rota.navTo("tabelaDePets", {}, true);
       },
       irParaTelaDetalhes: function (idDoPetCriado) {
-        this.rota.navTo("detalhes", { id: idDoPetCriado });
+        var rota = this.getOwnerComponent().getRouter();
+        rota.navTo("detalhes", { id: idDoPetCriado });
       },
     });
   }

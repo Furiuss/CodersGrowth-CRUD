@@ -12,8 +12,8 @@ sap.ui.define(
     return Controller.extend("sap.ui.petmais.controller.TabelaDePets", {
       formatter: formatter,
       onInit: function () {
-        this.rota = this.getOwnerComponent().getRouter();
-        this.rota.getRoute("tabelaDePets").attachMatched(this._aoCoincidirRota, this);
+        var rota = this.getOwnerComponent().getRouter();
+        rota.getRoute("tabelaDePets").attachMatched(this._aoCoincidirRota, this);
       },
       _aoCoincidirRota: function () {
         this.pegarDadosDaApi();
@@ -26,7 +26,8 @@ sap.ui.define(
         this.getView().setModel(petsModelo)
       },
       aoClicarBotaoAdicionar: function () {
-        this.rota.navTo("cadastro");
+        var rota = this.getOwnerComponent().getRouter();
+        rota.navTo("cadastro");
       },
       aoPesquisar: function (oEvent) {
         var aFiltro = [];
@@ -43,7 +44,8 @@ sap.ui.define(
       },
       aoClicarNoItem: function (oEvent) {
         var idDoItem = oEvent.getSource().getBindingContext().getProperty("id");
-        this.rota.navTo("detalhes", {id : idDoItem});
+        var rota = this.getOwnerComponent().getRouter();
+        rota.navTo("detalhes", {id : idDoItem});
       },
     });
   }
