@@ -2,11 +2,11 @@ sap.ui.define(
     [
         "sap/ui/core/mvc/Controller"
     ],
-    function (controller) {
+    function (Controller) {
         "use strict";
         const caminhoAppController = "sap.ui.petmais.App"
 
-        return controller.extend(caminhoAppController, {
+        return Controller.extend(caminhoAppController, {
         });
     }
 );

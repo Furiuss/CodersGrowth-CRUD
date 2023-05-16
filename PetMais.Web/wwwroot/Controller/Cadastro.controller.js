@@ -1,6 +1,6 @@
 sap.ui.define(
   [
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "sap/ui/model/json/JSONModel",
     "../model/formatador",
     "../services/validacoes",
@@ -8,7 +8,7 @@ sap.ui.define(
     "../services/repositorio",
     "../services/mensagensDeTela",
   ],
-  function (controller, jsonModel, formatador, validacoes, history, repositorio, mensagensDeTela) {
+  function (BaseController, JSONModel, Formatador, Validacoes, History, Repositorio, MensagensDeTela) {
     "use strict";
     let _i18n = null;
     const _nomeModeloi18n = "i18n"
@@ -16,17 +16,17 @@ sap.ui.define(
     const _idDatePickerNascimento = "datePickerDataNascimento";
     const _idInputNome = "inputNome";
     const _idBotaoSalvar = "botaoSalvar";
-    const caminhoCadastroController = "sap.ui.petmais.controller.Cadastro";
+    const caminhoCadastroController = "sap.ui.petmais.controller.BaseController";
     const _textoBotaoSalvarValidado = "textoBotaoSalvarValidado"
     const _textoBotaoSalvarNaoValidado = "textoBotaoSalvarNaoValidado"
 
-    return controller.extend(caminhoCadastroController, {
-      formatter: formatador,
+    return BaseController.extend(caminhoCadastroController, {
+      formatter: Formatador,
       onInit: function () {
         const nomeDaRotaCadastro = "cadastro";
         const nomeDaRotaEdicao = "edicao";
         _i18n = this.getOwnerComponent().getModel(_nomeModeloi18n).getResourceBundle();
-        validacoes.criarModeloI18n(_i18n);
+        Validacoes.criarModeloI18n(_i18n);
         var rota = this.getOwnerComponent().getRouter();
         rota
           .getRoute(nomeDaRotaCadastro)
@@ -39,7 +39,7 @@ sap.ui.define(
         this.zerarvalidacoes(false);
         this.limparFormulario();
         this.configurarCampoData();
-        var novoObjetoModeloPet = new jsonModel({});
+        var novoObjetoModeloPet = new JSONModel({});
         this.getView().setModel(novoObjetoModeloPet, _nomeModeloDadosDoPet);
       },
       _aoCoincidirRotaEdicao: function (evento) {
@@ -58,27 +58,18 @@ sap.ui.define(
         try {
           var promise = action();
           if (promise && typeof promise[tipoDaPromise] == tipoBuscado) {
-            promise.catch((error) => mensagensDeTela.erro(error.message));
+            promise.catch((error) => MensagensDeTela.erro(error.message));
           }
         } catch (error) {
-          mensagensDeTela.erro(error.message);
+          MensagensDeTela.erro(error.message);
         }
       },
       pegarDadosDaApi: function (id) {
-        var petModelo = new jsonModel();
-        repositorio.pegarPetPeloId(id)
+        var petModelo = new JSONModel();
+        Repositorio.pegarPetPeloId(id)
           .then(dados => petModelo.setData(dados))
-          .catch((erro) => mensagensDeTela.erro(erro.message))
+          .catch((erro) => MensagensDeTela.erro(erro.message))
         this.getView().setModel(petModelo, _nomeModeloDadosDoPet)
-      },
-      aoClicarEmVoltar: function () {
-        var historico = history.getInstance();
-        var hashAnterior = historico.getPreviousHash();
-        if (hashAnterior !== undefined) {
-          window.history.go(-1);
-        } else {
-          this.voltarParaHome();
-        }
       },
       aoClicarBotaoSalvar: function () {
         var modeloPet = this.getView().getModel(_nomeModeloDadosDoPet);
@@ -100,24 +91,24 @@ sap.ui.define(
       },
       cadastrarNovoPet: function (objetoNovoPet) {
         const textoPetCadastradoComExito = "textoPetCadastradoComExito";
-        repositorio.criarPet(objetoNovoPet)
+        Repositorio.criarPet(objetoNovoPet)
           .then((dados) => {
-            mensagensDeTela.sucesso(_i18n.getText(textoPetCadastradoComExito));
+            MensagensDeTela.sucesso(_i18n.getText(textoPetCadastradoComExito));
             this.irParaTelaDetalhes(dados.id);
           })
           .catch((erro) => {
-            mensagensDeTela.erro(erro.message);
+            MensagensDeTela.erro(erro.message);
           });
       },
       editarPetExistente: function (objetoPetExistente, idPetExistente) {
         const textoPetEditadoComExito = "textoPetEditadoComExito";
-        repositorio.editarPet(idPetExistente, objetoPetExistente)
+        Repositorio.editarPet(idPetExistente, objetoPetExistente)
           .then((dados) => {
-            mensagensDeTela.sucesso(_i18n.getText(textoPetEditadoComExito));
+            MensagensDeTela.sucesso(_i18n.getText(textoPetEditadoComExito));
             this.irParaTelaDetalhes(idPetExistente);
           })
           .catch((erro) => {
-            mensagensDeTela.erro(erro.message);
+            MensagensDeTela.erro(erro.message);
           });
       },
       aoClicarBotaoCancelar: function () {
@@ -126,14 +117,14 @@ sap.ui.define(
       aoMudarValorInput: function () {
 
         var oInputNome = this.getView().byId(_idInputNome);
-        var resultadoValidacaoInput = validacoes.validarInput(oInputNome);
+        var resultadoValidacaoInput = Validacoes.validarInput(oInputNome);
         this.validacaoResultado.nome = resultadoValidacaoInput;
         this.aoValidarAtivarOuNaoBotaoSalvar();
       },
       aoMudarValorSelect: function (evento) {
         this._processarEvento(() => {
           var campoSelect = evento.getSource();
-          var resultadoValidacaoSelect = validacoes.validarSelect(campoSelect);
+          var resultadoValidacaoSelect = Validacoes.validarSelect(campoSelect);
           var idNaoTratado = campoSelect.getId();
           var idTratado = this.tratarIdElemento(idNaoTratado);
           const idSelectTipo = "selectTipo";
@@ -159,7 +150,7 @@ sap.ui.define(
         var oDatePickerNascimento = this.getView().byId(
           _idDatePickerNascimento
         );
-        var resultadoValidacaoDatePicker = validacoes.validarDatePicker(
+        var resultadoValidacaoDatePicker = Validacoes.validarDatePicker(
           oDatePickerNascimento
         );
         this.validacaoResultado.data = resultadoValidacaoDatePicker;
@@ -246,7 +237,7 @@ sap.ui.define(
           oDataNascimentoDatePicker,
         ];
         arrayDeCampos.forEach((elemento) =>
-          validacoes.removerMensagemDeErro(elemento)
+          Validacoes.removerMensagemDeErro(elemento)
         );
       },
       voltarParaHome: function () {

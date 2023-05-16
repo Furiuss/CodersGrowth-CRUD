@@ -8,11 +8,11 @@ sap.ui.define(
     "../services/repositorio",
     "../services/mensagensDeTela"
   ],
-  function (Controller, JSONModel, formatador, filter, filterOperator, repositorio, mensagensDeTela) {
+  function (Controller, JSONModel, Formatador, Filter, FilterOperator, Repositorio, MensagensDeTela) {
     "use strict";
 
     return Controller.extend("sap.ui.petmais.controller.TabelaDePets", {
-      formatter: formatador,
+      formatter: Formatador,
       onInit: function () {
         const rotaTabelaDePets = "tabelaDePets"
         var rota = this.getOwnerComponent().getRouter();
@@ -27,17 +27,17 @@ sap.ui.define(
         try {
           var promise = action();
           if (promise && typeof promise[tipoDaPromise] == tipoBuscado) {
-            promise.catch((error) => mensagensDeTela.erro(error.message));
+            promise.catch((error) => MensagensDeTela.erro(error.message));
           }
         } catch (error) {
-          mensagensDeTela.erro(error.message);
+          MensagensDeTela.erro(error.message);
         }
       },
       pegarDadosDaApi: function () {
         var petsModelo = new JSONModel();
-        repositorio.pegarPets()
+        Repositorio.pegarPets()
           .then(dados => petsModelo.setData({pets: dados}))
-          .catch((erro) => mensagensDeTela.sucesso(erro.message))
+          .catch((erro) => MensagensDeTela.sucesso(erro.message))
         this.getView().setModel(petsModelo)
       },
       aoClicarBotaoAdicionar: function () {
@@ -52,7 +52,7 @@ sap.ui.define(
           var sQuery = evento.getParameter(query);
           if (sQuery) {
             aFiltro.push(
-              new filter("nome", filterOperator.Contains, sQuery)
+              new Filter("nome", FilterOperator.Contains, sQuery)
             );
           }
           const idPetsTable = "petsTable"
