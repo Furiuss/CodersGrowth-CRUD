@@ -2,13 +2,13 @@ sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-    "../model/formatter",
-    "../services/Validacoes",
+    "../model/formatador",
+    "../services/validacoes",
     "sap/ui/core/routing/History",
     "../services/repositorio",
-    "../services/MensagensDeTela",
+    "../services/mensagensDeTela",
   ],
-  function (Controller, JSONModel, formatter, Validacoes, History, repositorio, MensagensDeTela) {
+  function (controller, jsonModel, formatador, validacoes, history, repositorio, mensagensDeTela) {
     "use strict";
     let _i18n = null;
     const _nomeModeloi18n = "i18n"
@@ -20,13 +20,13 @@ sap.ui.define(
     const _textoBotaoSalvarValidado = "textoBotaoSalvarValidado"
     const _textoBotaoSalvarNaoValidado = "textoBotaoSalvarNaoValidado"
 
-    return Controller.extend(caminhoCadastroController, {
-      formatter: formatter,
+    return controller.extend(caminhoCadastroController, {
+      formatter: formatador,
       onInit: function () {
         const nomeDaRotaCadastro = "cadastro";
         const nomeDaRotaEdicao = "edicao";
         _i18n = this.getOwnerComponent().getModel(_nomeModeloi18n).getResourceBundle();
-        Validacoes.criarModeloI18n(_i18n);
+        validacoes.criarModeloI18n(_i18n);
         var rota = this.getOwnerComponent().getRouter();
         rota
           .getRoute(nomeDaRotaCadastro)
@@ -36,15 +36,15 @@ sap.ui.define(
           .attachMatched(this._aoCoincidirRotaEdicao, this);
       },
       _aoCoincidirRotaCadastro: function () {
-        this.zerarValidacoes(false);
+        this.zerarvalidacoes(false);
         this.limparFormulario();
         this.configurarCampoData();
-        var novoObjetoModeloPet = new JSONModel({});
+        var novoObjetoModeloPet = new jsonModel({});
         this.getView().setModel(novoObjetoModeloPet, _nomeModeloDadosDoPet);
       },
       _aoCoincidirRotaEdicao: function (evento) {
         this._processarEvento(() => {
-          this.zerarValidacoes(true);
+          this.zerarvalidacoes(true);
           this.limparFormulario();
           this.configurarCampoData();
           var parametros = evento.getParameters();
@@ -58,21 +58,21 @@ sap.ui.define(
         try {
           var promise = action();
           if (promise && typeof promise[tipoDaPromise] == tipoBuscado) {
-            promise.catch((error) => MensagensDeTela.erro(error.message));
+            promise.catch((error) => mensagensDeTela.erro(error.message));
           }
         } catch (error) {
-          MensagensDeTela.erro(error.message);
+          mensagensDeTela.erro(error.message);
         }
       },
       pegarDadosDaApi: function (id) {
-        var petModelo = new JSONModel();
+        var petModelo = new jsonModel();
         repositorio.pegarPetPeloId(id)
           .then(dados => petModelo.setData(dados))
-          .catch((erro) => MensagensDeTela.erro(erro.message))
+          .catch((erro) => mensagensDeTela.erro(erro.message))
         this.getView().setModel(petModelo, _nomeModeloDadosDoPet)
       },
       aoClicarEmVoltar: function () {
-        var historico = History.getInstance();
+        var historico = history.getInstance();
         var hashAnterior = historico.getPreviousHash();
         if (hashAnterior !== undefined) {
           window.history.go(-1);
@@ -102,22 +102,22 @@ sap.ui.define(
         const textoPetCadastradoComExito = "textoPetCadastradoComExito";
         repositorio.criarPet(objetoNovoPet)
           .then((dados) => {
-            MensagensDeTela.sucesso(_i18n.getText(textoPetCadastradoComExito));
+            mensagensDeTela.sucesso(_i18n.getText(textoPetCadastradoComExito));
             this.irParaTelaDetalhes(dados.id);
           })
           .catch((erro) => {
-            MensagensDeTela.erro(erro.message);
+            mensagensDeTela.erro(erro.message);
           });
       },
       editarPetExistente: function (objetoPetExistente, idPetExistente) {
         const textoPetEditadoComExito = "textoPetEditadoComExito";
         repositorio.editarPet(idPetExistente, objetoPetExistente)
           .then((dados) => {
-            MensagensDeTela.sucesso(_i18n.getText(textoPetEditadoComExito));
+            mensagensDeTela.sucesso(_i18n.getText(textoPetEditadoComExito));
             this.irParaTelaDetalhes(idPetExistente);
           })
           .catch((erro) => {
-            MensagensDeTela.erro(erro.message);
+            mensagensDeTela.erro(erro.message);
           });
       },
       aoClicarBotaoCancelar: function () {
@@ -126,14 +126,14 @@ sap.ui.define(
       aoMudarValorInput: function () {
 
         var oInputNome = this.getView().byId(_idInputNome);
-        var resultadoValidacaoInput = Validacoes.validarInput(oInputNome);
+        var resultadoValidacaoInput = validacoes.validarInput(oInputNome);
         this.validacaoResultado.nome = resultadoValidacaoInput;
         this.aoValidarAtivarOuNaoBotaoSalvar();
       },
       aoMudarValorSelect: function (evento) {
         this._processarEvento(() => {
           var campoSelect = evento.getSource();
-          var resultadoValidacaoSelect = Validacoes.validarSelect(campoSelect);
+          var resultadoValidacaoSelect = validacoes.validarSelect(campoSelect);
           var idNaoTratado = campoSelect.getId();
           var idTratado = this.tratarIdElemento(idNaoTratado);
           const idSelectTipo = "selectTipo";
@@ -159,7 +159,7 @@ sap.ui.define(
         var oDatePickerNascimento = this.getView().byId(
           _idDatePickerNascimento
         );
-        var resultadoValidacaoDatePicker = Validacoes.validarDatePicker(
+        var resultadoValidacaoDatePicker = validacoes.validarDatePicker(
           oDatePickerNascimento
         );
         this.validacaoResultado.data = resultadoValidacaoDatePicker;
@@ -209,7 +209,7 @@ sap.ui.define(
           botaoSalvar.setText(_i18n.getText(_textoBotaoSalvarValidado));
         }
       },
-      zerarValidacoes: function (estado) {
+      zerarvalidacoes: function (estado) {
         this.validacaoResultado = {
           nome: estado,
           selectTipo: estado,
@@ -246,7 +246,7 @@ sap.ui.define(
           oDataNascimentoDatePicker,
         ];
         arrayDeCampos.forEach((elemento) =>
-          Validacoes.removerMensagemDeErro(elemento)
+          validacoes.removerMensagemDeErro(elemento)
         );
       },
       voltarParaHome: function () {

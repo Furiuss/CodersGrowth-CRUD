@@ -1,35 +1,35 @@
 sap.ui.define([
   "sap/m/MessageBox",
   "sap/m/MessageToast"
-], function (MessageBox, MessageToast) {
+], function (messageBox, messageToast) {
   "use strict";
 
   return {
     sucesso: function (mensagem) {
-      return MessageToast.show(mensagem);
+      return messageToast.show(mensagem);
     },
     erro: function (mensagem) {
-      return MessageBox.error(mensagem);
+      return messageBox.error(mensagem);
     },
-    erroComBotao: function (mensagem, funcaoCallback, thisDaFuncaoCallback, args = null) {
-      return MessageBox.error(mensagem, {
-        actions: [MessageBox.Action.YES],
-        onClose: function (acao) {
-          if (acao === MessageBox.Action.YES) {
-            return funcaoCallback.apply(thisDaFuncaoCallback, args)
+    erroComBotao: function (mensagem, funcaoCallback, args = null) {
+      return messageBox.error(mensagem, {
+        actions: [messageBox.Action.YES],
+        onClose: (acao) => {
+          if (acao === messageBox.Action.YES) {
+            return funcaoCallback.apply(this, args)
           }
-        }.bind(this)
+        }
       })
     },
-    confirmar: function (mensagem, funcaoCallback, args, thisDaFuncaoCallback) {
-      return MessageBox.confirm(mensagem, {
-        actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-        onClose: function (acao) {
-          if (acao === MessageBox.Action.YES) {
-            return funcaoCallback.apply(thisDaFuncaoCallback, args)
+    confirmar: function (mensagem, funcaoCallback, id) {
+      return messageBox.confirm(mensagem, {
+        actions: [messageBox.Action.YES, messageBox.Action.NO],
+        onClose: (acao) => {
+          if (acao === messageBox.Action.YES) {
+            return funcaoCallback.apply(this, id)
           }
-          return
-        }.bind(this)
+          return 
+        }
       })
     }
   }

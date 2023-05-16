@@ -2,21 +2,20 @@ sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-    "../model/formatter",
-    "sap/m/MessageBox",
+    "../model/formatador",
     "../services/repositorio",
-    "../services/MensagensDeTela",
+    "../services/mensagensDeTela",
     "sap/ui/core/routing/History",
   ],
-  function (Controller, JSONModel, formatter, MessageBox, repositorio, MensagensDeTela, History) {
+  function (controller, jsonModel, formatador, repositorio, mensagensDeTela, history) {
     "use strict";
     let _i18n = null;
     const _nomeModeloi18n = "i18n"
     const _rotaTabelaDePets = "tabelaDePets";
     const caminhoControllerDetalhes = "sap.ui.petmais.controller.Detalhes"
 
-    return Controller.extend(caminhoControllerDetalhes, {
-      formatter: formatter,
+    return controller.extend(caminhoControllerDetalhes, {
+      formatter: formatador,
       onInit: function () {
         _i18n = this.getOwnerComponent().getModel(_nomeModeloi18n).getResourceBundle();
         const rotaDetalhes = "detalhes";
@@ -36,14 +35,14 @@ sap.ui.define(
         try {
           var promise = action();
           if (promise && typeof promise[tipoDaPromise] == tipoBuscado) {
-            promise.catch((error) => MensagensDeTela.erro(error.message));
+            promise.catch((error) => mensagensDeTela.erro(error.message));
           }
         } catch (error) {
-          MensagensDeTela.erro(error.message);
+          mensagensDeTela.erro(error.message);
         }
       },
       pegarDadosDaApi: function (id) {
-        var modeloDadosDoPet = new JSONModel();
+        var modeloDadosDoPet = new jsonModel();
         repositorio.pegarPetPeloId(id)
           .then(dadosDoPet => {
             if (dadosDoPet === false) {
@@ -52,15 +51,15 @@ sap.ui.define(
               modeloDadosDoPet.setData({ pet: dadosDoPet })
             }
           })
-          .catch((erro) => MensagensDeTela.erro(erro.message))
+          .catch((erro) => mensagensDeTela.erro(erro.message))
         this.getView().setModel(modeloDadosDoPet)
       },
       mensagemDePaginaNaoEncontrada: function () {
         const textoPaginaNaoEncontrada = "textoPaginaNaoEncontrada"
-        MensagensDeTela.erroComBotao(_i18n.getText(textoPaginaNaoEncontrada), this.irParaTelaInicial, this)
+        mensagensDeTela.erroComBotao(_i18n.getText(textoPaginaNaoEncontrada), this.irParaTelaInicial.bind(this))
       },
       aoClicarEmVoltar: function () {
-        var historico = History.getInstance();
+        var historico = history.getInstance();
         var hashAnterior = historico.getPreviousHash();
 
         if (hashAnterior !== undefined) {
@@ -87,17 +86,17 @@ sap.ui.define(
           const textoConfirmacaoAoRemover = "textoConfirmacaoAoRemover"
           const idDoPetPropriedade = "id"
           const idDoPet = evento.getSource().getBindingContext().getProperty(idDoPetPropriedade);
-          MensagensDeTela.confirmar(_i18n.getText(textoConfirmacaoAoRemover), this.removerPet, [idDoPet], this)
+          mensagensDeTela.confirmar(_i18n.getText(textoConfirmacaoAoRemover), this.removerPet.bind(this), [idDoPet])
         })
       },
       removerPet: function (idDoPet) {
         const textoPetRemovidoComExito = "textoPetRemovidoComExito"
         repositorio.deletarPet(idDoPet)
           .then((dadosDoPet) => {
-            MensagensDeTela.sucesso(_i18n.getText(textoPetRemovidoComExito));
+            mensagensDeTela.sucesso(_i18n.getText(textoPetRemovidoComExito));
             this.irParaTelaInicial();
           })
-          .catch((erro) => MensagensDeTela.erro(erro.message))
+          .catch((erro) => mensagensDeTela.erro(erro.message))
       },
       irParaTelaInicial: function () {
         var rota = this.getOwnerComponent().getRouter();

@@ -2,17 +2,17 @@ sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-    "../model/formatter",
+    "../model/formatador",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "../services/repositorio",
-    "../services/MensagensDeTela"
+    "../services/mensagensDeTela"
   ],
-  function (Controller, JSONModel, formatter, Filter, FilterOperator, repositorio, MensagensDeTela) {
+  function (Controller, JSONModel, formatador, filter, filterOperator, repositorio, mensagensDeTela) {
     "use strict";
 
     return Controller.extend("sap.ui.petmais.controller.TabelaDePets", {
-      formatter: formatter,
+      formatter: formatador,
       onInit: function () {
         const rotaTabelaDePets = "tabelaDePets"
         var rota = this.getOwnerComponent().getRouter();
@@ -27,17 +27,17 @@ sap.ui.define(
         try {
           var promise = action();
           if (promise && typeof promise[tipoDaPromise] == tipoBuscado) {
-            promise.catch((error) => MensagensDeTela.erro(error.message));
+            promise.catch((error) => mensagensDeTela.erro(error.message));
           }
         } catch (error) {
-          MensagensDeTela.erro(error.message);
+          mensagensDeTela.erro(error.message);
         }
       },
       pegarDadosDaApi: function () {
         var petsModelo = new JSONModel();
         repositorio.pegarPets()
           .then(dados => petsModelo.setData({pets: dados}))
-          .catch((erro) => MensagensDeTela.sucesso(erro.message))
+          .catch((erro) => mensagensDeTela.sucesso(erro.message))
         this.getView().setModel(petsModelo)
       },
       aoClicarBotaoAdicionar: function () {
@@ -52,7 +52,7 @@ sap.ui.define(
           var sQuery = evento.getParameter(query);
           if (sQuery) {
             aFiltro.push(
-              new Filter("nome", FilterOperator.Contains, sQuery)
+              new filter("nome", filterOperator.Contains, sQuery)
             );
           }
           const idPetsTable = "petsTable"

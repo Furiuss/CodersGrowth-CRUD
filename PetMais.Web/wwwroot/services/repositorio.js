@@ -5,14 +5,17 @@ sap.ui.define([
     _urlBase: "/api",
 
     _mandarRequisicao: function (urlDoMetodo, opcoesDoMetodo) {
+      const statusNaoEncontrado = 404;
+      const statusSemConteudo = 204;
+      const textoErroAoCadastrar = "textoErroAoCadastrar"
       var urlInteira = this._urlBase + urlDoMetodo;
       return fetch(urlInteira, opcoesDoMetodo).then((resposta) => {
-        if (resposta.status === 404) {
+        if (resposta.status === statusNaoEncontrado) {
           return false
         }
         if (!resposta.ok) {
-          throw new Error(i18n.getText("textoErroAoCadastrar"));
-        } else if (resposta.status === 204) {
+          throw new Error(i18n.getText(textoErroAoCadastrar));
+        } else if (resposta.status === statusSemConteudo) {
           return {};
         } else {
           return resposta.json();
