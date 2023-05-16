@@ -1,6 +1,5 @@
 sap.ui.define([
-  "./MensagensDeTela"
-], function (MensagensDeTela) {
+], function () {
   "use strict";
   return {
     _urlBase: "/api",

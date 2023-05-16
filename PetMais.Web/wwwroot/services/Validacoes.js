@@ -10,15 +10,18 @@ sap.ui.define([
     validarInput: function (input) {
       const nome = input.getValue();
       if (!nome) {
-        this.mostrarMensagemDeErro(input, this._i18n.getText("textoInputVazio"));
+        const textoInputVazio = "textoInputVazio"
+        this.mostrarMensagemDeErro(input, this._i18n.getText(textoInputVazio));
         return false;
       }
       if (!this.validarNome(nome)) {
-        this.mostrarMensagemDeErro(input, this._i18n.getText("textoValidacaoDoNome"));
+        const textoValidacaoDoNome = "textoValidacaoDoNome"
+        this.mostrarMensagemDeErro(input, this._i18n.getText(textoValidacaoDoNome));
         return false;
       }
       if (!this.validarTamanhoMinimoNome(nome)) {
-        this.mostrarMensagemDeErro(input, this._i18n.getText("textoValidarTamanhoMinimo"));
+        const textoValidarTamanhoMinimo = "textoValidarTamanhoMinimo"
+        this.mostrarMensagemDeErro(input, this._i18n.getText(textoValidarTamanhoMinimo));
         return false;
       }
       this.removerMensagemDeErro(input);
@@ -28,7 +31,8 @@ sap.ui.define([
     validarSelect: function (select) {
       const valorSelect = select.getSelectedKey();
       if (!valorSelect) {
-        this.mostrarMensagemDeErro(select, this._i18n.getText("textoValidarSelect"));
+        const textoValidarSelect = "textoValidarSelect"
+        this.mostrarMensagemDeErro(select, this._i18n.getText(textoValidarSelect));
         return false;
       }
       this.removerMensagemDeErro(select);
@@ -38,7 +42,8 @@ sap.ui.define([
     validarDatePicker: function (datePicker) {
       const valorDatePicker = datePicker.getValue();
       if (!valorDatePicker) {
-        this.mostrarMensagemDeErro(datePicker, this._i18n.getText("textoValidarDatePicker"));
+        const textoValidarDatePicker = "textoValidarDatePicker"
+        this.mostrarMensagemDeErro(datePicker, this._i18n.getText(textoValidarDatePicker));
         return false;
       }
       this.removerMensagemDeErro(datePicker);

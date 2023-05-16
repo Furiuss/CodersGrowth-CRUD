@@ -39,13 +39,13 @@
 				<Input 
 					id="inputNome" 
 					liveChange=".aoMudarValorInput"
-					value="{dados>/nome}"
+					value="{dadosDoPet>/nome}"
 					valueState="None"
 					valueStateText=""
 					maxLength="20"
 					placeholder="{i18n>textoInicialNome}"/>				
 				<Label text="{i18n>campoTipo}" />
-					<Select change=".aoMudarValorSelect" id="selectTipo" selectedKey="{dados>/tipo}">
+					<Select change=".aoMudarValorSelect" id="selectTipo" selectedKey="{dadosDoPet>/tipo}">
 						<items>
 							<core:Item text="" key=""/>
 							<core:Item text="{i18n>textoSelectCachorro}" key="CACHORRO"/>
@@ -58,7 +58,7 @@
 						</items>
 					</Select>
 					<Label text="{i18n>campoCor}" />
-					<Select change=".aoMudarValorSelect" id="selectCor" selectedKey="{dados>/cor}">
+					<Select change=".aoMudarValorSelect" id="selectCor" selectedKey="{dadosDoPet>/cor}">
 						<items>
 							<core:Item text="" key=""/>
 							<core:Item text="{i18n>textoSelectBranco}" key="BRANCO"/>
@@ -71,7 +71,7 @@
 						</items>
 					</Select>
 					<Label text="{i18n>campoSexo}" />
-					<Select change=".aoMudarValorSelect" id="selectSexo" selectedKey="{dados>/sexo}">
+					<Select change=".aoMudarValorSelect" id="selectSexo" selectedKey="{dadosDoPet>/sexo}">
 						<items>
 							<core:Item text="" key=""/>
 							<core:Item text="{i18n>textoSelectMacho}" key="MASCULINO"/>
@@ -84,7 +84,7 @@
 							ariaHasPopup="Dialog"
 							tooltip="Clique para selecionar a data"
 							icon="sap-icon://appointment-2"
-							text=" {path: 'dados>/dataDeNascimento', formatter: '.formatter.formatarData'}"
+							text=" {path: 'dadosDoPet>/dataDeNascimento', formatter: '.formatter.formatarData'}"
 							press=".abrirDatePicker" />
 					<DatePicker
 						id="datePickerDataNascimento"
@@ -92,7 +92,7 @@
 						valueState="None"
 						hideInput="true"
 						valueStateText=""
-						value="{dados>/dataDeNascimento}" 
+						value="{dadosDoPet>/dataDeNascimento}" 
 						placeholder="Dia/Mês/Ano" 
 						valueFormat="yyyy-MM-ddTHH:mm:ss.mmm'" 
 						displayFormat="dd/MM/yyyy" />

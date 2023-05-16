@@ -53,11 +53,11 @@ sap.ui.define([
 		formatarData: function(data) {
 			if (!data) {
 				const i18n = this.getView().getModel("i18n").getResourceBundle();
-				return i18n.getText("textoDatePickerNaoEscolhido")
+				const textoDatePickerNaoEscolhido = "textoDatePickerNaoEscolhido"
+				return i18n.getText(textoDatePickerNaoEscolhido)
 			}
 			var dataMoment = moment(data,"YYYY-MM-DDTHH:mm:ss.MMM");
       var dataHoraFormatada = dataMoment.format("DD/MM/YYYY");
-			console.log(dataHoraFormatada)
       return dataHoraFormatada;
 		},
 	};

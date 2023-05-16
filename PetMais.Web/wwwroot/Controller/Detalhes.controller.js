@@ -4,23 +4,25 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "../model/formatter",
     "sap/m/MessageBox",
-    "../services/ChamadasApi",
+    "../services/repositorio",
     "../services/MensagensDeTela",
     "sap/ui/core/routing/History",
   ],
-  function (Controller, JSONModel, formatter, MessageBox, ChamadasApi, MensagensDeTela, History) {
+  function (Controller, JSONModel, formatter, MessageBox, repositorio, MensagensDeTela, History) {
     "use strict";
+    let _i18n = null;
+    const _nomeModeloi18n = "i18n"
+    const _rotaTabelaDePets = "tabelaDePets";
+    const caminhoControllerDetalhes = "sap.ui.petmais.controller.Detalhes"
 
-    const _stringRotaTabelaDePets = "tabelaDePets";
-    const _stringModeloi18n = "i18n"
-
-    return Controller.extend("sap.ui.petmais.controller.Detalhes", {
+    return Controller.extend(caminhoControllerDetalhes, {
       formatter: formatter,
       onInit: function () {
-        const stringRotaNome = "detalhes";
+        _i18n = this.getOwnerComponent().getModel(_nomeModeloi18n).getResourceBundle();
+        const rotaDetalhes = "detalhes";
         var rota = this.getOwnerComponent().getRouter();
         rota
-          .getRoute(stringRotaNome)
+          .getRoute(rotaDetalhes)
           .attachMatched(this._aoCoincidirRota, this);
       },
       _aoCoincidirRota: function (evento) {
@@ -41,25 +43,21 @@ sap.ui.define(
         }
       },
       pegarDadosDaApi: function (id) {
-        var petModelo = new JSONModel();
-        ChamadasApi.pegarPetPeloId(id)
-          .then(dados => {
-            if (dados === false) {
+        var modeloDadosDoPet = new JSONModel();
+        repositorio.pegarPetPeloId(id)
+          .then(dadosDoPet => {
+            if (dadosDoPet === false) {
               this.mensagemDePaginaNaoEncontrada()
             } else {
-              petModelo.setData({ pet: dados })
+              modeloDadosDoPet.setData({ pet: dadosDoPet })
             }
           })
           .catch((erro) => MensagensDeTela.erro(erro.message))
-        this.getView().setModel(petModelo)
+        this.getView().setModel(modeloDadosDoPet)
       },
       mensagemDePaginaNaoEncontrada: function () {
-        const i18n = this.getView().getModel(_stringModeloi18n).getResourceBundle();
-        MessageBox.error(i18n.getText("textoPaginaNaoEncontrada"), {
-          onClose: function () {
-            this.irParaTelaInicial()
-          }.bind(this)
-        })
+        const textoPaginaNaoEncontrada = "textoPaginaNaoEncontrada"
+        MensagensDeTela.erroComBotao(_i18n.getText(textoPaginaNaoEncontrada), this.irParaTelaInicial, this)
       },
       aoClicarEmVoltar: function () {
         var historico = History.getInstance();
@@ -69,48 +67,41 @@ sap.ui.define(
           window.history.go(-1);
         } else {
           var rota = this.getOwnerComponent().getRouter();
-          rota.navTo(_stringRotaTabelaDePets, {}, true);
+          rota.navTo(_rotaTabelaDePets, {}, true);
         }
       },
       aoClicarBotaoEditar: function (evento) {
         this._processarEvento(() => {
-          const stringRotaNome = "edicao";
-          const stringPropriedadeId = "id"
+          const rotaEdicao = "edicao";
+          const idPropriedade = "id"
           var rota = this.getOwnerComponent().getRouter();
           const idDoPet = evento
             .getSource()
             .getBindingContext()
-            .getProperty(stringPropriedadeId);
-          rota.navTo(stringRotaNome, { id: idDoPet });
+            .getProperty(idPropriedade);
+          rota.navTo(rotaEdicao, { id: idDoPet });
         })
       },
       aoClicarBotaoRemover: function (evento) {
         this._processarEvento(() => {
-          const idDoPet = evento.getSource().getBindingContext().getProperty("id");
-          const i18n = this.getView().getModel(_stringModeloi18n).getResourceBundle();
-          MessageBox.confirm(i18n.getText("textoConfirmacaoAoRemover"), {
-            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-            onClose: function (acao) {
-              if (acao === MessageBox.Action.YES) {
-                return this.removerPet(idDoPet)
-              }
-              return
-            }.bind(this)
-          })
+          const textoConfirmacaoAoRemover = "textoConfirmacaoAoRemover"
+          const idDoPetPropriedade = "id"
+          const idDoPet = evento.getSource().getBindingContext().getProperty(idDoPetPropriedade);
+          MensagensDeTela.confirmar(_i18n.getText(textoConfirmacaoAoRemover), this.removerPet, [idDoPet], this)
         })
       },
       removerPet: function (idDoPet) {
-        const i18n = this.getView().getModel(_stringModeloi18n).getResourceBundle();
-        ChamadasApi.deletarPet(idDoPet)
-          .then((dados) => {
-            MensagensDeTela.sucesso(i18n.getText("textoPetRemovidoComExito"));
+        const textoPetRemovidoComExito = "textoPetRemovidoComExito"
+        repositorio.deletarPet(idDoPet)
+          .then((dadosDoPet) => {
+            MensagensDeTela.sucesso(_i18n.getText(textoPetRemovidoComExito));
             this.irParaTelaInicial();
           })
           .catch((erro) => MensagensDeTela.erro(erro.message))
       },
       irParaTelaInicial: function () {
         var rota = this.getOwnerComponent().getRouter();
-        rota.navTo(_stringRotaTabelaDePets, {}, true);
+        rota.navTo(_rotaTabelaDePets, {}, true);
       },
     });
   }
