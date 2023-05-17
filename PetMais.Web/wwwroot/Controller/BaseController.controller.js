@@ -10,13 +10,15 @@ sap.ui.define(
 
     return Controller.extend(caminhoBaseController, {
       aoClicarEmVoltar: function (nomeRota, id = null) {
-        var historico = History.getInstance();
-        var hashAnterior = historico.getPreviousHash();
-        if (hashAnterior !== undefined) {
-          window.history.go(-1);
-        } else {
-          this.aoNavegar(nomeRota, id);
-        }
+        this._processarEvento(() => {
+          var historico = History.getInstance();
+          var hashAnterior = historico.getPreviousHash();
+          if (hashAnterior !== undefined) {
+            window.history.go(-1);
+          } else {
+            this.aoNavegar(nomeRota, id);
+          }
+        })
       },
       _processarEvento: function (action) {
         const tipoDaPromise = "catch",

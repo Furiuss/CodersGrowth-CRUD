@@ -23,9 +23,11 @@ sap.ui.define(
           .attachMatched(this._aoCoincidirRota, this);
       },
       _aoCoincidirRota: function (evento) {
-        var parametros = evento.getParameters();
-        var idDoPet = parametros.arguments.id;
-        this.pegarDadosDaApi(idDoPet);
+        this._processarEvento(() => {
+          var parametros = evento.getParameters();
+          var idDoPet = parametros.arguments.id;
+          this.pegarDadosDaApi(idDoPet);
+        })
       },
       pegarDadosDaApi: function (id) {
         var modeloDadosDoPet = new JSONModel();
@@ -74,8 +76,10 @@ sap.ui.define(
           .catch((erro) => MensagensDeTela.erro(erro.message))
       },
       aoClicarEmVoltar: function () {
-        const rotaTabela = "tabelaDePets"
-        this.aoNavegar(rotaTabela);
+        this._processarEvento(() => {
+          const rotaTabela = "tabelaDePets"
+          this.aoNavegar(rotaTabela);
+        })
       },
     });
   }

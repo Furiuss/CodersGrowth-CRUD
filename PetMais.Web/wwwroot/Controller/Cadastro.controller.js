@@ -36,11 +36,13 @@ sap.ui.define(
           .attachMatched(this._aoCoincidirRotaEdicao, this);
       },
       _aoCoincidirRotaCadastro: function () {
-        this.zerarvalidacoes(false);
-        this.limparFormulario();
-        this.configurarCampoData();
-        var novoObjetoModeloPet = new JSONModel({});
-        this.getView().setModel(novoObjetoModeloPet, _nomeModeloDadosDoPet);
+        this._processarEvento(() => {
+          this.zerarvalidacoes(false);
+          this.limparFormulario();
+          this.configurarCampoData();
+          var novoObjetoModeloPet = new JSONModel({});
+          this.getView().setModel(novoObjetoModeloPet, _nomeModeloDadosDoPet);
+        })
       },
       _aoCoincidirRotaEdicao: function (evento) {
         this._processarEvento(() => {
@@ -60,22 +62,24 @@ sap.ui.define(
         this.getView().setModel(petModelo, _nomeModeloDadosDoPet)
       },
       aoClicarBotaoSalvar: function () {
-        var modeloPet = this.getView().getModel(_nomeModeloDadosDoPet);
-        var dadosPet = modeloPet.getData();
-
-        var pet = {
-          nome: dadosPet.nome,
-          tipo: dadosPet.tipo,
-          cor: dadosPet.cor,
-          sexo: dadosPet.sexo,
-          dataDeNascimento: dadosPet.dataDeNascimento,
-        };
-
-        if (dadosPet.id) {
-          return this.editarPetExistente(pet, dadosPet.id)
-        }
-
-        return this.cadastrarNovoPet(pet)
+        this._processarEvento(() => {
+          var modeloPet = this.getView().getModel(_nomeModeloDadosDoPet);
+          var dadosPet = modeloPet.getData();
+  
+          var pet = {
+            nome: dadosPet.nome,
+            tipo: dadosPet.tipo,
+            cor: dadosPet.cor,
+            sexo: dadosPet.sexo,
+            dataDeNascimento: dadosPet.dataDeNascimento,
+          };
+  
+          if (dadosPet.id) {
+            return this.editarPetExistente(pet, dadosPet.id)
+          }
+  
+          return this.cadastrarNovoPet(pet)
+        })
       },
       cadastrarNovoPet: function (objetoNovoPet) {
         const textoPetCadastradoComExito = "textoPetCadastradoComExito";
@@ -100,10 +104,11 @@ sap.ui.define(
           });
       },
       aoClicarBotaoCancelar: function () {
-        this.voltarPagina();
+        this._processarEvento(() => {
+          this.voltarPagina();
+        })
       },
       aoMudarValorInput: function () {
-
         var oInputNome = this.getView().byId(_idInputNome);
         var resultadoValidacaoInput = Validacoes.validarInput(oInputNome);
         this.validacaoResultado.nome = resultadoValidacaoInput;
@@ -134,7 +139,6 @@ sap.ui.define(
         })
       },
       aoMudarValorDatePicker: function () {
-
         var oDatePickerNascimento = this.getView().byId(
           _idDatePickerNascimento
         );

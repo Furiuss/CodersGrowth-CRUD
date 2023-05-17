@@ -19,7 +19,9 @@ sap.ui.define(
         rota.getRoute(rotaTabelaDePets).attachMatched(this._aoCoincidirRota, this);
       },
       _aoCoincidirRota: function () {
-        this.pegarDadosDaApi();
+        this._processarEvento(() => {
+          this.pegarDadosDaApi();
+        })
       },
       pegarDadosDaApi: function () {
         var petsModelo = new JSONModel();
@@ -29,8 +31,10 @@ sap.ui.define(
         this.getView().setModel(petsModelo)
       },
       aoClicarBotaoAdicionar: function () {
-        const rotaCadastro = "cadastro";
-        this.aoNavegar(rotaCadastro);
+        this._processarEvento(() => {
+          const rotaCadastro = "cadastro";
+          this.aoNavegar(rotaCadastro);
+        })
       },
       aoPesquisar: function (evento) {
         this._processarEvento(() => {
