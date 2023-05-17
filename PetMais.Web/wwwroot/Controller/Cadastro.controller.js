@@ -1,11 +1,11 @@
 sap.ui.define(
   [
-    "./BaseController",
+    "./BaseController.controller",
     "sap/ui/model/json/JSONModel",
     "../model/formatador",
     "../services/validacoes",
     "sap/ui/core/routing/History",
-    "../services/repositorio",
+    "../services/repositorio",  
     "../services/mensagensDeTela",
   ],
   function (BaseController, JSONModel, Formatador, Validacoes, History, Repositorio, MensagensDeTela) {
@@ -16,7 +16,7 @@ sap.ui.define(
     const _idDatePickerNascimento = "datePickerDataNascimento";
     const _idInputNome = "inputNome";
     const _idBotaoSalvar = "botaoSalvar";
-    const caminhoCadastroController = "sap.ui.petmais.controller.BaseController";
+    const caminhoCadastroController = "sap.ui.petmais.controller.Cadastro";
     const _textoBotaoSalvarValidado = "textoBotaoSalvarValidado"
     const _textoBotaoSalvarNaoValidado = "textoBotaoSalvarNaoValidado"
 
@@ -51,18 +51,6 @@ sap.ui.define(
           var idDoPet = parametros.arguments.id;
           this.pegarDadosDaApi(idDoPet);
         })
-      },
-      _processarEvento: function (action) {
-        const tipoDaPromise = "catch",
-          tipoBuscado = "function";
-        try {
-          var promise = action();
-          if (promise && typeof promise[tipoDaPromise] == tipoBuscado) {
-            promise.catch((error) => MensagensDeTela.erro(error.message));
-          }
-        } catch (error) {
-          MensagensDeTela.erro(error.message);
-        }
       },
       pegarDadosDaApi: function (id) {
         var petModelo = new JSONModel();
@@ -112,7 +100,7 @@ sap.ui.define(
           });
       },
       aoClicarBotaoCancelar: function () {
-        this.voltarParaHome();
+        this.voltarPagina();
       },
       aoMudarValorInput: function () {
 
@@ -242,14 +230,21 @@ sap.ui.define(
       },
       voltarParaHome: function () {
         const rotaTabelaDePets = "tabelaDePets";
-        var rota = this.getOwnerComponent().getRouter();
-        rota.navTo(rotaTabelaDePets, {}, true);
+        this.aoNavegar(rotaTabelaDePets)
       },
       irParaTelaDetalhes: function (idDoPetCriado) {
         const rotaDetalhes = "detalhes";
-        var rota = this.getOwnerComponent().getRouter();
-        rota.navTo(rotaDetalhes, { id: idDoPetCriado });
+        this.aoNavegar(rotaDetalhes, idDoPetCriado)
       },
+      voltarPagina: function () {
+        var historico = History.getInstance();
+        var hashAnterior = historico.getPreviousHash();
+        if (hashAnterior !== undefined) {
+          window.history.go(-1);
+        } else {
+          this.voltarParaHome();
+        }
+      } 
     });
   }
 );

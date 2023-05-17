@@ -14,7 +14,7 @@
 			<ToolbarSpacer />
 			<Button 
 				id="botaoSalvar"
-				tooltip="{i18n>textoTooltipBotaoCadastrar}" 
+				tooltip="{i18n>textoTooltipBotaoSalvar}" 
 				type="Success"  press=".aoClicarBotaoSalvar" />
 			<Button id="botaoCancelar" text="{i18n>textoBotaoCancelar}" type="Negative" press=".aoClicarBotaoCancelar" />
 		</headerContent>

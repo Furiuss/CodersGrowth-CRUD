@@ -1,17 +1,17 @@
 sap.ui.define(
   [
-    "sap/ui/core/mvc/Controller",
+    "./BaseController.controller",
     "sap/ui/model/json/JSONModel",
+    "../services/repositorio",
     "../model/formatador",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "../services/repositorio",
     "../services/mensagensDeTela"
   ],
-  function (Controller, JSONModel, Formatador, Filter, FilterOperator, Repositorio, MensagensDeTela) {
+  function (BaseController, JSONModel, Repositorio, Formatador, Filter, FilterOperator, MensagensDeTela) {
     "use strict";
-
-    return Controller.extend("sap.ui.petmais.controller.TabelaDePets", {
+    const caminhoControllerTabelaDePets = "sap.ui.petmais.controller.TabelaDePets"
+    return BaseController.extend(caminhoControllerTabelaDePets, {
       formatter: Formatador,
       onInit: function () {
         const rotaTabelaDePets = "tabelaDePets"
@@ -21,18 +21,6 @@ sap.ui.define(
       _aoCoincidirRota: function () {
         this.pegarDadosDaApi();
       },
-      _processarEvento: function (action) {
-        const tipoDaPromise = "catch",
-          tipoBuscado = "function";
-        try {
-          var promise = action();
-          if (promise && typeof promise[tipoDaPromise] == tipoBuscado) {
-            promise.catch((error) => MensagensDeTela.erro(error.message));
-          }
-        } catch (error) {
-          MensagensDeTela.erro(error.message);
-        }
-      },
       pegarDadosDaApi: function () {
         var petsModelo = new JSONModel();
         Repositorio.pegarPets()
@@ -41,9 +29,8 @@ sap.ui.define(
         this.getView().setModel(petsModelo)
       },
       aoClicarBotaoAdicionar: function () {
-        const rotaCadastro = "cadastro"
-        var rota = this.getOwnerComponent().getRouter();
-        rota.navTo(rotaCadastro);
+        const rotaCadastro = "cadastro";
+        this.aoNavegar(rotaCadastro);
       },
       aoPesquisar: function (evento) {
         this._processarEvento(() => {
@@ -67,8 +54,7 @@ sap.ui.define(
           const rotaDetalhes = "detalhes"
           const idPropriedadeItem = "id"
           var idDoItem = evento.getSource().getBindingContext().getProperty(idPropriedadeItem);
-          var rota = this.getOwnerComponent().getRouter();
-          rota.navTo(rotaDetalhes, {id : idDoItem});
+          this.aoNavegar(rotaDetalhes, idDoItem)
         })
       },
     });

@@ -1,17 +1,15 @@
 sap.ui.define(
   [
-    "./BaseController",
+    "./BaseController.controller",
     "sap/ui/model/json/JSONModel",
-    "../model/formatador",
     "../services/repositorio",
+    "../model/formatador",
     "../services/mensagensDeTela",
-    "sap/ui/core/routing/History",
   ],
-  function (BaseController, JSONModel, Formatador, Repositorio, MensagensDeTela, History) {
+  function (BaseController, JSONModel, Repositorio, Formatador, MensagensDeTela) {
     "use strict";
     let _i18n = null;
     const _nomeModeloi18n = "i18n"
-    const _rotaTabelaDePets = "tabelaDePets";
     const caminhoControllerDetalhes = "sap.ui.petmais.controller.Detalhes"
 
     return BaseController.extend(caminhoControllerDetalhes, {
@@ -29,18 +27,6 @@ sap.ui.define(
         var idDoPet = parametros.arguments.id;
         this.pegarDadosDaApi(idDoPet);
       },
-      _processarEvento: function (action) {
-        const tipoDaPromise = "catch",
-          tipoBuscado = "function";
-        try {
-          var promise = action();
-          if (promise && typeof promise[tipoDaPromise] == tipoBuscado) {
-            promise.catch((error) => MensagensDeTela.erro(error.message));
-          }
-        } catch (error) {
-          MensagensDeTela.erro(error.message);
-        }
-      },
       pegarDadosDaApi: function (id) {
         var modeloDadosDoPet = new JSONModel();
         Repositorio.pegarPetPeloId(id)
@@ -56,19 +42,8 @@ sap.ui.define(
       },
       mensagemDePaginaNaoEncontrada: function () {
         const textoPaginaNaoEncontrada = "textoPaginaNaoEncontrada"
-        MensagensDeTela.erroComBotao(_i18n.getText(textoPaginaNaoEncontrada), this.irParaTelaInicial.bind(this))
+        MensagensDeTela.erroComBotao(_i18n.getText(textoPaginaNaoEncontrada), this.voltarParaHome.bind(this))
       },
-      // aoClicarEmVoltar: function () {
-      //   var historico = History.getInstance();
-      //   var hashAnterior = historico.getPreviousHash();
-
-      //   if (hashAnterior !== undefined) {
-      //     window.history.go(-1);
-      //   } else {
-      //     var rota = this.getOwnerComponent().getRouter();
-      //     rota.navTo(_rotaTabelaDePets, {}, true);
-      //   }
-      // },
       aoClicarBotaoEditar: function (evento) {
         this._processarEvento(() => {
           const rotaEdicao = "edicao";
@@ -94,13 +69,13 @@ sap.ui.define(
         Repositorio.deletarPet(idDoPet)
           .then((dadosDoPet) => {
             MensagensDeTela.sucesso(_i18n.getText(textoPetRemovidoComExito));
-            this.irParaTelaInicial();
+            this.aoClicarEmVoltar();
           })
           .catch((erro) => MensagensDeTela.erro(erro.message))
       },
-      irParaTelaInicial: function () {
-        var rota = this.getOwnerComponent().getRouter();
-        rota.navTo(_rotaTabelaDePets, {}, true);
+      aoClicarEmVoltar: function () {
+        const rotaTabela = "tabelaDePets"
+        this.aoNavegar(rotaTabela);
       },
     });
   }
