@@ -2,9 +2,9 @@ sap.ui.define(
   [
     "./BaseController.controller",
     "sap/ui/model/json/JSONModel",
-    "../services/repositorio",
-    "../model/formatador",
-    "../services/mensagensDeTela",
+    "../services/Repositorio",
+    "../model/Formatador",
+    "../services/MensagensDeTela",
   ],
   function (BaseController, JSONModel, Repositorio, Formatador, MensagensDeTela) {
     "use strict";

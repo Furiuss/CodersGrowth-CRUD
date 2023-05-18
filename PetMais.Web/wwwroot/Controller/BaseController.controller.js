@@ -2,7 +2,7 @@ sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
-    "../services/mensagensDeTela"
+    "../services/MensagensDeTela"
   ],
   function (Controller, History, MensagensDeTela) {
     "use strict";
