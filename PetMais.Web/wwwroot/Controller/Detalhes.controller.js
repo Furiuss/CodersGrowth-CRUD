@@ -1,88 +1,85 @@
 sap.ui.define(
   [
-    "sap/ui/core/mvc/Controller",
+    "./BaseController.controller",
     "sap/ui/model/json/JSONModel",
-    "../model/formatter",
-    "sap/m/MessageBox",
-    "sap/ui/core/routing/History",
+    "../services/Repositorio",
+    "../model/Formatador",
+    "../services/MensagensDeTela",
   ],
-  function (Controller, JSONModel, formatter, MessageBox, History) {
+  function (BaseController, JSONModel, Repositorio, Formatador, MensagensDeTela) {
     "use strict";
+    let _i18n = null;
+    const _nomeModeloi18n = "i18n"
+    const caminhoControllerDetalhes = "sap.ui.petmais.controller.Detalhes"
 
-    return Controller.extend("sap.ui.petmais.controller.Detalhes", {
-      formatter: formatter,
+    return BaseController.extend(caminhoControllerDetalhes, {
+      formatter: Formatador,
       onInit: function () {
+        _i18n = this.getOwnerComponent().getModel(_nomeModeloi18n).getResourceBundle();
+        const rotaDetalhes = "detalhes";
         var rota = this.getOwnerComponent().getRouter();
         rota
-          .getRoute("detalhes")
+          .getRoute(rotaDetalhes)
           .attachMatched(this._aoCoincidirRota, this);
       },
       _aoCoincidirRota: function (evento) {
-        var parametros = evento.getParameters();
-        var idDoPet = parametros.arguments.id;
-        this.pegarDadosDaApi(idDoPet);
+        this._processarEvento(() => {
+          var parametros = evento.getParameters();
+          var idDoPet = parametros.arguments.id;
+          this.pegarDadosDaApi(idDoPet);
+        })
       },
       pegarDadosDaApi: function (id) {
-        const enderecoApi = "/api/pets/";
-        var petsModelo = new JSONModel();
-        fetch(enderecoApi + id)
-          .then((dados) => dados.json())
-          .then((dados) => petsModelo.setData({ pet: dados }));
-        this.getView().setModel(petsModelo);
+        var modeloDadosDoPet = new JSONModel();
+        Repositorio.pegarPetPeloId(id)
+          .then(dadosDoPet => {
+            if (dadosDoPet === false) {
+              this.mensagemDePaginaNaoEncontrada()
+            } else {
+              modeloDadosDoPet.setData({ pet: dadosDoPet })
+            }
+          })
+          .catch((erro) => MensagensDeTela.erro(erro.message))
+        this.getView().setModel(modeloDadosDoPet)
       },
-      aoClicarEmVoltar: function () {
-        var historico = History.getInstance();
-        var hashAnterior = historico.getPreviousHash();
-
-        if (hashAnterior !== undefined) {
-          window.history.go(-1);
-        } else {
-          var rota = this.getOwnerComponent().getRouter();
-          rota.navTo("tabelaDePets", {}, true);
-        }
+      mensagemDePaginaNaoEncontrada: function () {
+        const textoPaginaNaoEncontrada = "textoPaginaNaoEncontrada"
+        MensagensDeTela.erroComBotao(_i18n.getText(textoPaginaNaoEncontrada), this.voltarParaHome.bind(this))
       },
       aoClicarBotaoEditar: function (evento) {
-        var rota = this.getOwnerComponent().getRouter();
-        const idDoPet = evento
-          .getSource()
-          .getBindingContext()
-          .getProperty("id");
-        rota.navTo("edicao", { id: idDoPet });
+        this._processarEvento(() => {
+          const rotaEdicao = "edicao";
+          const idPropriedade = "id"
+          var rota = this.getOwnerComponent().getRouter();
+          const idDoPet = evento
+            .getSource()
+            .getBindingContext()
+            .getProperty(idPropriedade);
+          rota.navTo(rotaEdicao, { id: idDoPet });
+        })
       },
       aoClicarBotaoRemover: function (evento) {
-        const idDoPet = evento.getSource().getBindingContext().getProperty("id");
-        MessageBox.confirm("Tem certeza que deseja remover esse pet permanentemente?", {
-          actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-          onClose: function (acao) {
-            if (acao === MessageBox.Action.YES) {
-              return this.removerPet(idDoPet)
-            }
-            return
-          }.bind(this)
+        this._processarEvento(() => {
+          const textoConfirmacaoAoRemover = "textoConfirmacaoAoRemover"
+          const idDoPetPropriedade = "id"
+          const idDoPet = evento.getSource().getBindingContext().getProperty(idDoPetPropriedade);
+          MensagensDeTela.confirmar(_i18n.getText(textoConfirmacaoAoRemover), this.removerPet.bind(this), [idDoPet])
         })
       },
-      removerPet: function(idDoPet) {
-        console.log("oi")
-        const i18n = this.getView().getModel("i18n").getResourceBundle();
-        
-        const enderecoApi = "/api/pets/";
-        fetch(enderecoApi + idDoPet, {
-          method: "DELETE",
-        })
-          .then((resposta) => {
-            if (!resposta.ok) {
-              throw new Error(i18n.getText("textoErroAoRemover"));
-            }
-            sap.m.MessageToast.show(i18n.getText("textoPetRemovidoComExito"));
-            this.irParaTelaInicial();
+      removerPet: function (idDoPet) {
+        const textoPetRemovidoComExito = "textoPetRemovidoComExito"
+        Repositorio.deletarPet(idDoPet)
+          .then((dadosDoPet) => {
+            MensagensDeTela.sucesso(_i18n.getText(textoPetRemovidoComExito));
+            this.aoClicarEmVoltar();
           })
-          .catch((erro) => {
-            sap.m.MessageToast.show(erro.message);
-          });
+          .catch((erro) => MensagensDeTela.erro(erro.message))
       },
-       irParaTelaInicial: function () {
-        var rota = this.getOwnerComponent().getRouter();
-        rota.navTo("tabelaDePets", {}, true);
+      aoClicarEmVoltar: function () {
+        this._processarEvento(() => {
+          const rotaTabela = "tabelaDePets"
+          this.aoNavegar(rotaTabela);
+        })
       },
     });
   }

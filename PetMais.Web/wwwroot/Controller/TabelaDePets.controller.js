@@ -1,51 +1,65 @@
 sap.ui.define(
   [
-    "sap/ui/core/mvc/Controller",
+    "./BaseController.controller",
     "sap/ui/model/json/JSONModel",
-    "../model/formatter",
+    "../services/Repositorio",
+    "../model/Formatador",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "../services/MensagensDeTela"
   ],
-  function (Controller, JSONModel, formatter, Filter, FilterOperator) {
+  function (BaseController, JSONModel, Repositorio, Formatador, Filter, FilterOperator, MensagensDeTela) {
     "use strict";
-
-    return Controller.extend("sap.ui.petmais.controller.TabelaDePets", {
-      formatter: formatter,
+    const caminhoControllerTabelaDePets = "sap.ui.petmais.controller.TabelaDePets"
+    return BaseController.extend(caminhoControllerTabelaDePets, {
+      formatter: Formatador,
       onInit: function () {
+        const rotaTabelaDePets = "tabelaDePets"
         var rota = this.getOwnerComponent().getRouter();
-        rota.getRoute("tabelaDePets").attachMatched(this._aoCoincidirRota, this);
+        rota.getRoute(rotaTabelaDePets).attachMatched(this._aoCoincidirRota, this);
       },
       _aoCoincidirRota: function () {
-        this.pegarDadosDaApi();
+        this._processarEvento(() => {
+          this.pegarDadosDaApi();
+        })
       },
       pegarDadosDaApi: function () {
         var petsModelo = new JSONModel();
-        fetch("/api/pets")
-          .then(dados => dados.json())
-          .then(dados => petsModelo.setData({ pets: dados }))  
+        Repositorio.pegarPets()
+          .then(dados => petsModelo.setData({pets: dados}))
+          .catch((erro) => MensagensDeTela.sucesso(erro.message))
         this.getView().setModel(petsModelo)
       },
       aoClicarBotaoAdicionar: function () {
-        var rota = this.getOwnerComponent().getRouter();
-        rota.navTo("cadastro");
+        this._processarEvento(() => {
+          const rotaCadastro = "cadastro";
+          this.aoNavegar(rotaCadastro);
+        })
       },
-      aoPesquisar: function (oEvent) {
-        var aFiltro = [];
-        var sQuery = oEvent.getParameter("query");
-        if (sQuery) {
-          aFiltro.push(
-            new Filter("nome", FilterOperator.Contains, sQuery)
-          );
-        }
-
-        var oTabela = this.byId("petsTable");
-        var oBinding = oTabela.getBinding("items");
-        oBinding.filter(aFiltro);
+      aoPesquisar: function (evento) {
+        this._processarEvento(() => {
+          const query = "query"
+          var aFiltro = [];
+          var sQuery = evento.getParameter(query);
+          if (sQuery) {
+            aFiltro.push(
+              new Filter("nome", FilterOperator.Contains, sQuery)
+            );
+          }
+          const idPetsTable = "petsTable"
+          const bindingItems = "items"
+          var oTabela = this.byId(idPetsTable);
+          var oBinding = oTabela.getBinding(bindingItems);
+          oBinding.filter(aFiltro);
+        })
       },
-      aoClicarNoItem: function (oEvent) {
-        var idDoItem = oEvent.getSource().getBindingContext().getProperty("id");
-        var rota = this.getOwnerComponent().getRouter();
-        rota.navTo("detalhes", {id : idDoItem});
+      aoClicarNoItem: function (evento) {
+        this._processarEvento(() => {
+          const rotaDetalhes = "detalhes"
+          const idPropriedadeItem = "id"
+          var idDoItem = evento.getSource().getBindingContext().getProperty(idPropriedadeItem);
+          this.aoNavegar(rotaDetalhes, idDoItem)
+        })
       },
     });
   }
