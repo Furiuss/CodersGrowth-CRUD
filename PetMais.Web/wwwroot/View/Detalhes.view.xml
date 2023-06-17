@@ -1,0 +1,25 @@
+<mvc:View controllerName="sap.ui.petmais.controller.Detalhes"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc">
+	<Page binding="{/pet}">
+		<headerContent>
+			<Button icon="sap-icon://nav-back" press=".aoClicarEmVoltar" />
+			<ToolbarSpacer />
+			<Title text="{i18n>tituloPaginaDetalhes}"/>
+			<ToolbarSpacer />
+			<Button icon="sap-icon://edit" press=".aoClicarBotaoEditar" text="{i18n>textoBotaoEditar}" type="Attention"/>
+			<Button icon="sap-icon://delete" press=".aoClicarBotaoRemover" text="{i18n>textoBotaoRemover}" type="Reject" />
+		</headerContent>
+		<ObjectHeader title="{nome}">
+			<ObjectAttribute text="Um(a) {path: 'tipo', formatter: '.formatter.paraMinusculo'}(a)
+						{path: 'sexo', formatter: '.formatter.paraMinusculo'}" />
+			<ObjectAttribute text="Com a idade de 
+						{path: 'dataDeNascimento', formatter: '.formatter.idadeEmAnos'} 
+						ano(s) e
+						{path: 'dataDeNascimento', formatter: '.formatter.idadeEmMeses'}
+						mes(es) " />
+			<ObjectAttribute text="Da cor {path: 'cor', formatter: '.formatter.paraMinusculo'}"/>
+
+		</ObjectHeader>
+	</Page>
+</mvc:View>

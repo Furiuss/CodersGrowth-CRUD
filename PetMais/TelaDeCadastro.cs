@@ -33,7 +33,6 @@ namespace PetMais
 		{
 			try
 			{
-				Pet pet;
 
 				if (_pet != null)
 				{

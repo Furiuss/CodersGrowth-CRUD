@@ -1,0 +1,102 @@
+<mvc:View
+	height="100%"
+	controllerName="sap.ui.petmais.controller.Cadastro"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	>
+	<Page>
+		<headerContent>
+			<Button icon="sap-icon://nav-back" press=".aoClicarEmVoltar" />
+			<ToolbarSpacer />
+			<Title text="{i18n>tituloPaginaCadastro}"/> 
+			<ToolbarSpacer />
+			<Button 
+				id="botaoSalvar"
+				tooltip="{i18n>textoTooltipBotaoSalvar}" 
+				type="Success"  press=".aoClicarBotaoSalvar" />
+			<Button id="botaoCancelar" text="{i18n>textoBotaoCancelar}" type="Negative" press=".aoClicarBotaoCancelar" />
+		</headerContent>
+		<f:SimpleForm id="SimpleFormChange354"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+			<f:content>
+				<Label text="{i18n>campoNome}" />
+				<Input 
+					id="inputNome" 
+					liveChange=".aoMudarValorInput"
+					value="{dadosDoPet>/nome}"
+					valueState="None"
+					valueStateText=""
+					maxLength="20"
+					placeholder="{i18n>textoInicialNome}"/>				
+				<Label text="{i18n>campoTipo}" />
+					<Select change=".aoMudarValorSelect" id="selectTipo" selectedKey="{dadosDoPet>/tipo}">
+						<items>
+							<core:Item text="" key=""/>
+							<core:Item text="{i18n>textoSelectCachorro}" key="CACHORRO"/>
+							<core:Item text="{i18n>textoSelectGato}" key="GATO"/>
+							<core:Item text="{i18n>textoSelectPato}" key="PATO"/>
+							<core:Item text="{i18n>textoSelectPassaro}" key="PASSARO"/>
+							<core:Item text="{i18n>textoSelectPeixe}" key="PEIXE"/>
+							<core:Item text="{i18n>textoSelectCoelho}" key="COELHO"/>
+							<core:Item text="{i18n>textoSelectTartaruga}" key="TARTARUGA"/>
+						</items>
+					</Select>
+					<Label text="{i18n>campoCor}" />
+					<Select change=".aoMudarValorSelect" id="selectCor" selectedKey="{dadosDoPet>/cor}">
+						<items>
+							<core:Item text="" key=""/>
+							<core:Item text="{i18n>textoSelectBranco}" key="BRANCO"/>
+							<core:Item text="{i18n>textoSelectPreto}" key="PRETO"/>
+							<core:Item text="{i18n>textoSelectCinzento}" key="CINZENTO"/>
+							<core:Item text="{i18n>textoSelectCreme}" key="CREME"/>
+							<core:Item text="{i18n>textoSelectChocolate}" key="CHOCOLATE"/>
+							<core:Item text="{i18n>textoSelectAmarelo}" key="AMARELO"/>
+							<core:Item text="{i18n>textoSelectCaramelo}" key="CARAMELO"/>
+						</items>
+					</Select>
+					<Label text="{i18n>campoSexo}" />
+					<Select change=".aoMudarValorSelect" id="selectSexo" selectedKey="{dadosDoPet>/sexo}">
+						<items>
+							<core:Item text="" key=""/>
+							<core:Item text="{i18n>textoSelectMacho}" key="MASCULINO"/>
+							<core:Item text="{i18n>textoSelectFemea}" key="FEMININO"/>
+						</items>
+					</Select>
+					<Label text="{i18n>campoDataNascimento}"/>
+					<Button
+							width="100%"
+							ariaHasPopup="Dialog"
+							tooltip="Clique para selecionar a data"
+							icon="sap-icon://appointment-2"
+							text=" {path: 'dadosDoPet>/dataDeNascimento', formatter: '.formatter.formatarData'}"
+							press=".abrirDatePicker" />
+					<DatePicker
+						id="datePickerDataNascimento"
+						change=".aoMudarValorDatePicker"
+						valueState="None"
+						hideInput="true"
+						valueStateText=""
+						value="{dadosDoPet>/dataDeNascimento}" 
+						placeholder="Dia/Mês/Ano" 
+						valueFormat="yyyy-MM-ddTHH:mm:ss.mmm'" 
+						displayFormat="dd/MM/yyyy" />
+				</f:content>
+		</f:SimpleForm>
+	</Page>
+</mvc:View>

@@ -1,0 +1,117 @@
+{
+  "_version": "1.12.0",
+  "sap.app": {
+    "id": "sap.ui.petmais",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "dataSources": {
+      "default": {
+        "uri": "https://services.odata.org/TripPinRESTierService/(S(id))/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "applicationVersion": {
+      "version": "1.0.0"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "sap.ui.petmais.view.App",
+      "type": "XML",
+      "id": "app"
+    },
+    "dependencies": {
+      "minUI5Version": "1.93",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {}
+      }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "sap.ui.petmais.i18n.i18n",
+          "supportedLocales": [
+            ""
+          ],
+          "fallbackLocale": ""
+        }
+      },
+      "invoice": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "localService/mockdata/Invoices.json"
+      }
+    },
+    "routing": {
+      "config": {
+      "routerClass": "sap.m.routing.Router",
+      "type": "View",
+      "viewType": "XML",
+      "path": "sap.ui.petmais.view",
+      "controlId": "app",
+      "controlAggregation": "pages"
+      },
+      "routes": [
+      {
+        "pattern": "",
+        "name": "tabelaDePets",
+        "target": "tabelaDePets"
+      },
+      {
+        "pattern": "detalhes/{id}",
+        "name": "detalhes",
+        "target": "detalhes"
+      },
+      {
+        "pattern": "cadastro",
+        "name": "cadastro",
+        "target": "cadastro"
+      },
+      {
+        "pattern": "edicao/{id}",
+        "name": "edicao",
+        "target": "edicao"
+      }
+      ],
+      "targets": {
+      "tabelaDePets": {
+        "id": "tabelaDePets",
+        "name": "TabelaDePets"
+      },
+      "detalhes": {
+        "id": "detalhes",
+        "name": "Detalhes"
+      },
+      "cadastro": {
+        "id": "cadastro",
+        "name": "Cadastro"
+      },
+      "edicao": {
+        "id": "edicao",
+        "name": "Cadastro"
+      }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    }
+  }
+}
